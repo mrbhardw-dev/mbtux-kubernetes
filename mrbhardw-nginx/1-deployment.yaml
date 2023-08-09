@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment
-  namespace: mrbhardw-app
+  namespace: mrbhardw-nginx
 spec:
   selector:
     matchLabels:
