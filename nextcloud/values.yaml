@@ -1,41 +1,45 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: nextcloud
-  namespace: argocd
-spec:
-  project: default
-  sources:
-    - repoURL: https://nextcloud.github.io/helm/
-      chart: nextcloud
-      targetRevision: 9.0.3
-      helm:
-        valueFiles:
-          - $values/nextcloud/values.yaml
-    - repoURL: https://github.com/mrbhardw-dev/ArgoCD
-      targetRevision: main
-      ref: values
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: nextcloud
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - RespectIgnoreDifferences=true
-  ignoreDifferences:
-    - group: ""
-      kind: Secret
-      name: nextcloud-postgresql
-      namespace: nextcloud
-      jsonPointers:
-        - /data/password
-        - /data/postgres-password
-    - group: ""
-      kind: Secret
-      name: nextcloud-redis
-      namespace: nextcloud
-      jsonPointers:
-        - /data/redis-password
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+  hosts:
+    - host: nextcloud.mbtux.com
+      paths:
+        - path: /
+          pathType: Prefix
+
+nextcloud:
+  host: nextcloud.mbtux.com
+  username: admin
+  password: "changeme123"
+
+persistence:
+  enabled: true
+  storageClass: nfs-client
+  accessMode: ReadWriteOnce
+  size: 50Gi
+
+postgresql:
+  enabled: true
+  global:
+    postgresql:
+      auth:
+        password: "nextcloud123"
+        username: nextcloud
+        database: nextcloud
+
+redis:
+  enabled: true
+  auth:
+    enabled: true
+    password: "redis123"
+
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 100m
+  limits:
+    memory: 2Gi
+    cpu: 1000m
