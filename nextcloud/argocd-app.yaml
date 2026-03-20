@@ -8,7 +8,7 @@ spec:
   sources:
     - repoURL: https://github.com/nextcloud/all-in-one
       targetRevision: main
-      path: nextcloud-aio-helm-chart/versions/latest
+      path: nextcloud-aio-helm-chart
       helm:
         valueFiles:
           - $values/nextcloud/values.yaml
