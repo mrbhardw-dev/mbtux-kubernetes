@@ -1,5 +1,7 @@
-nextcloudHost: nextcloud.mbtux.com
-skipDomainValidation: "true"
-apachePort: 11000
-timezone: Europe/Dublin
-storageClass: nfs-client
+NEXTCLOUD_HOST: nextcloud.mbtux.com
+SKIP_DOMAIN_VALIDATION: "true"
+APACHE_PORT: "11000"
+TIMEZONE: Europe/Dublin
+STORAGE_CLASS: nfs-client
+NEXTCLOUD_STORAGE_SIZE: 10Gi
+NEXTCLOUD_DATA_STORAGE_SIZE: 50Gi
