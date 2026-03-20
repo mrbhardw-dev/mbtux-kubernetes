@@ -1,8 +1,72 @@
-NEXTCLOUD_HOST: nextcloud.mbtux.com
-SKIP_DOMAIN_VALIDATION: "true"
-APACHE_PORT: "11000"
-TIMEZONE: Europe/Dublin
-STORAGE_CLASS: nfs-client
-NEXTCLOUD_STORAGE_SIZE: 10Gi
-NEXTCLOUD_DATA_STORAGE_SIZE: 50Gi
-DATABASE_PASSWORD: "changeme123!"
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+  hosts:
+    - host: nextcloud.mbtux.com
+      paths:
+        - path: /
+          pathType: Prefix
+
+nextcloud:
+  host: nextcloud.mbtux.com
+  username: admin
+  password: changeme123!
+
+persistence:
+  enabled: true
+  storageClass: nfs-client
+  accessMode: ReadWriteOnce
+  size: 50Gi
+
+postgresql:
+  enabled: true
+  global:
+    postgresql:
+      auth:
+        password: nextcloud123!
+        username: nextcloud
+        database: nextcloud
+
+redis:
+  enabled: true
+  auth:
+    enabled: true
+    password: redis123!
+
+resources:
+  requests:
+    memory: 512Mi
+    cpu: 250m
+  limits:
+    memory: 1Gi
+    cpu: 500m
+EOF
+
+# Create ArgoCD app
+cat > nextcloud/argocd-app.yaml << 'EOF'
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nextcloud
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://nextcloud.github.io/helm/
+    chart: nextcloud
+    targetRevision: 6.6.1
+    helm:
+      valueFiles:
+        - $values/nextcloud/values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nextcloud
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
