@@ -13,7 +13,7 @@ ingress:
 nextcloud:
   host: nextcloud.mbtux.com
   username: admin
-  password: changeme123!
+  password: "changeme123"
 
 persistence:
   enabled: true
@@ -26,7 +26,7 @@ postgresql:
   global:
     postgresql:
       auth:
-        password: nextcloud123!
+        password: "nextcloud123"
         username: nextcloud
         database: nextcloud
 
@@ -34,39 +34,4 @@ redis:
   enabled: true
   auth:
     enabled: true
-    password: redis123!
-
-resources:
-  requests:
-    memory: 512Mi
-    cpu: 250m
-  limits:
-    memory: 1Gi
-    cpu: 500m
-EOF
-
-# Create ArgoCD app
-cat > nextcloud/argocd-app.yaml << 'EOF'
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: nextcloud
-  namespace: argocd
-spec:
-  project: default
-  source:
-    repoURL: https://nextcloud.github.io/helm/
-    chart: nextcloud
-    targetRevision: 6.6.1
-    helm:
-      valueFiles:
-        - $values/nextcloud/values.yaml
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: nextcloud
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+    password: "redis123"
