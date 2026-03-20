@@ -1,0 +1,24 @@
+nextcloud-aio:
+  # Your domain
+  nextcloudHost: nextcloud.mbtux.com
+
+  # Skip domain validation since we use cloudflare tunnel
+  skipDomainValidation: true
+
+  # Apache port inside cluster
+  apachePort: 11000
+
+  # Storage
+  persistence:
+    nextcloudData:
+      storageClass: local-path
+      size: 50Gi
+    mastercontainer:
+      storageClass: local-path
+      size: 1Gi
+
+  # Timezone
+  timezone: Europe/Dublin
+
+  # Optional apps to enable
+  nextcloudAdditionalApps: "collabora"
