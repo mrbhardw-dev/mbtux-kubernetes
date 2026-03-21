@@ -7,13 +7,6 @@ metadata:
   namespace: argocd
 spec:
   project: default
-  source:
-    repoURL: https://charts.jetstack.io
-    chart: cert-manager
-    targetRevision: 1.14.0
-    helm:
-      valueFiles:
-        - $values/mbtux-kubernetes/infrastructure/cert-manager/values.yaml
   sources:
     - repoURL: https://charts.jetstack.io
       chart: cert-manager
