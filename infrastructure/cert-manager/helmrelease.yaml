@@ -13,7 +13,7 @@ spec:
       targetRevision: 1.14.0
       helm:
         valueFiles:
-          - $values/mbtux-kubernetes/infrastructure/cert-manager/values.yaml
+          - $values/infrastructure/cert-manager/values.yaml
     - repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes
       targetRevision: main
       ref: values

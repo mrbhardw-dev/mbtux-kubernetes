@@ -13,7 +13,7 @@ spec:
       targetRevision: 1.7.2
       helm:
         valueFiles:
-          - $values/mbtux-kubernetes/infrastructure/longhorn/values.yaml
+          - $values/infrastructure/longhorn/values.yaml
     - repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes
       targetRevision: main
       ref: values
