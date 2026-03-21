@@ -1,6 +1,11 @@
 # Longhorn Helm Values
 # https://github.com/longhorn/charts/blob/main/charts/longhorn/values.yaml
 
+# Service Account - needed for pre-upgrade hook
+serviceAccount:
+  create: true
+  name: longhorn-service-account
+
 # Default replica count - will be enforced by CronJob
 defaultSettings:
   defaultReplicaCount: 1
