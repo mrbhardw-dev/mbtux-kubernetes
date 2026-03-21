@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: codecombat
+  labels:
+    app.kubernetes.io/name: codecombat
+    app.kubernetes.io/part-of: codecombat

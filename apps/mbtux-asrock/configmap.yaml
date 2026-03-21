@@ -16,39 +16,33 @@ data:
     # Ingress rules for all services
     # All traffic goes to the Nginx Ingress Controller at 192.168.0.210
     ingress:
+      # ACME HTTP01 challenge - must be HTTP for Let's Encrypt
+      - hostname: "*.mbtux.com"
+        service: http://192.168.0.210:80
+        originRequest:
+          connectTimeout: 60s
+        pathMatch: "/.well-known/acme-challenge/*"
+      
       # ArgoCD - argo.mbtux.com
       - hostname: argo.mbtux.com
-        service: https://192.168.0.210
+        service: http://192.168.0.210:80
         originRequest:
-          noTLSVerify: false
           connectTimeout: 60s
-          tlsTimeout: 10s
       
-      # Nextcloud - nextcloud.mbtux.com
-      - hostname: nextcloud.mbtux.com
-        service: https://192.168.0.210
-        originRequest:
-          noTLSVerify: false
-          connectTimeout: 60s
-          tlsTimeout: 10s
       
       # Longhorn - longhorn.mbtux.com
       - hostname: longhorn.mbtux.com
-        service: https://192.168.0.210
+        service: http://192.168.0.210:80
         originRequest:
-          noTLSVerify: false
           connectTimeout: 60s
-          tlsTimeout: 10s
       
-      # Grafana - grafana.mbtux.com (direct to grafana service)
-      - hostname: grafana.mbtux.com
-        service: http://192.168.0.196:3000
+      # Codecombat - codecombat.mbtux.com
+      - hostname: codecombat.mbtux.com
+        service: http://192.168.0.210:80
         originRequest:
           connectTimeout: 60s
       
       # Catch-all rule - route to Nginx Ingress Controller
-      - service: https://192.168.0.210
+      - service: http://192.168.0.210:80
         originRequest:
-          noTLSVerify: false
           connectTimeout: 60s
-          tlsTimeout: 10s

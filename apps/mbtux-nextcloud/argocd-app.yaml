@@ -11,8 +11,8 @@ spec:
       targetRevision: 9.0.3
       helm:
         valueFiles:
-          - $values/ArgoCD/nextcloud/values.yaml
-    - repoURL: https://github.com/mrbhardw-dev/ArgoCD
+          - $values/mbtux-kubernetes/nextcloud/values.yaml
+    - repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes
       targetRevision: main
       ref: values
   destination:

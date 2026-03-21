@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codecombat
+  namespace: codecombat
+  labels:
+    app: codecombat
+    app.kubernetes.io/name: codecombat
+    app.kubernetes.io/component: application
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: codecombat
+      app.kubernetes.io/name: codecombat
+  template:
+    metadata:
+      labels:
+        app: codecombat
+        app.kubernetes.io/name: codecombat
+        app.kubernetes.io/component: application
+    spec:
+      containers:
+        - name: codecombat
+          image: nginx:latest
+          ports:
+            - containerPort: 3000
+              name: http
+          env:
+            - name: COCO_MONGO_URL
+              value: "mongodb://mongodb:27017/codecombat"
+            - name: PORT
+              value: "3000"
+            - name: NODE_ENV
+              value: "production"
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu: "1"
+            limits:
+              memory: "4Gi"
+              cpu: "2"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 5
