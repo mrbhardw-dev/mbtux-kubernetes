@@ -27,6 +27,7 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - PrunePropagationPolicy=foreground
+      - SkipHooks=true
   ignoreDifferences:
     - group: longhorn.io
       kind: Volume
