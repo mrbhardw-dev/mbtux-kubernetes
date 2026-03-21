@@ -1,0 +1,201 @@
+# Nextcloud Helm Values
+# https://github.com/nextcloud/helm/blob/main/charts/nextcloud/values.yaml
+
+# Image settings
+image:
+  repository: nextcloud
+  tag: 29.0.1-apache
+  pullPolicy: IfNotPresent
+  # Image pull secrets if needed
+  # pullSecrets:
+  #   - my-registry-secret
+
+# Number of replicas
+replicaCount: 1
+
+# Nextcloud configuration
+nextcloud:
+  host: nextcloud.mbtux.com
+  username: admin
+  password: changeme123
+  # Use existing secret
+  # existingSecret:
+  #   usernameKey: username
+  #   passwordKey: password
+  # Config files
+  configs:
+    # Custom config
+    custom.config.php: |
+      <?php
+      $CONFIG = [
+        'trusted_domains' => [
+          'nextcloud.mbtux.com',
+          'localhost',
+        ],
+        'overwrite.cli.url' => 'https://nextcloud.mbtux.com',
+        'overwriteprotocol' => 'https',
+        'htaccess.RewriteBase' => '/',
+        'memcache.local' => '\\OC\\Memcache\\APCu',
+        'redis' => [
+          'host' => 'nextcloud-redis',
+          'port' => 6379,
+        ],
+      ];
+  # Additional environment variables
+  # extraEnv:
+  #   - name: NEXTCLOUD_DATA_DIR
+  #     value: /var/www/html/data
+
+# PHP configuration with increased probe timeouts
+phpClientHttpsFix:
+  enabled: true
+  protocol: https
+
+# Internal PHP settings
+internalDatabase:
+  enabled: true
+  type: pgsql
+  # PostgreSQL settings are auto-managed by the chart
+
+# PostgreSQL configuration
+postgresql:
+  enabled: true
+  primary:
+    persistence:
+      enabled: true
+      storageClass: longhorn
+      size: 10Gi
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 1Gi
+
+# Redis configuration
+redis:
+  enabled: true
+  master:
+    persistence:
+      enabled: true
+      storageClass: longhorn
+      size: 8Gi
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 200m
+        memory: 512Mi
+
+# Persistence settings
+persistence:
+  enabled: true
+  storageClass: longhorn
+  size: 50Gi
+  accessMode: ReadWriteOnce
+  # Use existing PVC
+  # existingClaim:
+  # Use storage size from default storage class
+  # size: 50Gi
+
+# Service settings
+service:
+  type: ClusterIP
+  loadBalancerIP: null
+  nodePort: null
+
+# Ingress configuration (HTTP only - Cloudflare flexible SSL)
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/proxy-body-size: "512m"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+  hosts:
+    - host: nextcloud.mbtux.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+  # TLS disabled - using Cloudflare flexible SSL for now
+  # tls:
+  #   - secretName: nextcloud-tls
+  #     hosts:
+  #       - nextcloud.mbtux.com
+
+# Resources
+resources:
+  requests:
+    cpu: 100m
+    memory: 512Mi
+  limits:
+    cpu: 1000m
+    memory: 2Gi
+
+# Startup, liveness, and readiness probes with increased timeouts
+startupProbe:
+  enabled: true
+  initialDelaySeconds: 60
+  periodSeconds: 30
+  timeoutSeconds: 30
+  failureThreshold: 120
+  successThreshold: 1
+
+livenessProbe:
+  enabled: true
+  initialDelaySeconds: 600
+  periodSeconds: 30
+  timeoutSeconds: 30
+  failureThreshold: 3
+  successThreshold: 1
+
+readinessProbe:
+  enabled: true
+  initialDelaySeconds: 600
+  periodSeconds: 30
+  timeoutSeconds: 30
+  failureThreshold: 3
+  successThreshold: 1
+
+# Pod annotations
+podAnnotations:
+  # Linkerd configuration
+  # linkerd.io/inject: enabled
+
+# Pod security context
+podSecurityContext:
+  runAsUser: 33
+  fsGroup: 33
+  runAsNonRoot: true
+
+# Security context
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+
+# Node selector
+nodeSelector:
+  # node-role.kubernetes.io/worker: ""
+
+# Tolerations
+tolerations: []
+
+# Affinity
+affinity: {}
+
+# Metrics
+metrics:
+  enabled: false
+  # Prometheus metrics if needed
+  # prometheus:
+  #   rule:
+  #     enabled: true

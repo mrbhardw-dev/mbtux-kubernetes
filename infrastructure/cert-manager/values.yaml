@@ -1,0 +1,57 @@
+# Cert-Manager Helm Values
+# https://github.com/cert-manager/cert-manager/blob/master/deploy/charts/cert-manager/values.yaml
+
+# Install CRDs
+installCRDs: true
+
+# Global values
+global:
+  logLevel: 2
+  leaderElection:
+    namespace: cert-manager
+  podSecurityPolicy:
+    enabled: true
+    useAppArmor: false
+
+# Cert-manager controller settings
+cert-manager:
+  replicaCount: 1
+  startupAPICheck:
+    enabled: false
+
+# Webhook settings
+webhook:
+  replicaCount: 1
+  timeoutSeconds: 30
+
+# Cainjector settings
+cainjector:
+  replicaCount: 1
+
+# ACME DNS01 solver configuration
+acmeDNS01:
+  cloudflare:
+    email: admin@mbtux.com
+
+# IngressShim settings
+ingressShim:
+  enabled: true
+  defaultIssuerName: letsencrypt-prod
+  defaultIssuerKind: ClusterIssuer
+  defaultIssuerGroup: cert-manager.io
+
+# Prometheus metrics
+prometheus:
+  enabled: true
+  servicemonitor:
+    enabled: true
+    prometheusInstance: default
+
+# Resources
+resources:
+  requests:
+    cpu: 10m
+    memory: 32Mi
+  limits:
+    cpu: 100m
+    memory: 128Mi

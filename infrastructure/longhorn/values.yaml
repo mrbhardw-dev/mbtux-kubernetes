@@ -1,0 +1,115 @@
+# Longhorn Helm Values
+# https://github.com/longhorn/charts/blob/main/charts/longhorn/values.yaml
+
+# Default replica count - will be enforced by CronJob
+defaultSettings:
+  defaultReplicaCount: 1
+  replicaSoftAntiAffinity: "false"
+  storageOverProvisioningPercentage: "200"
+  storageMinimalAvailablePercentage: "25"
+  upgradeChecker: "false"
+  defaultDataPath: "/var/lib/longhorn/replicas"
+
+# Longhorn UI settings
+longhornUI:
+  replicas: 1
+
+# Longhorn Manager settings
+longhornManager:
+  replicas: 1
+
+# Longhorn Driver Deployer settings
+longhornDriver:
+  replicas: 1
+
+# Longhorn Instance Manager settings
+longhornInstanceManager:
+  replicas: 1
+
+# Longhorn Share Manager settings
+longhornShareManager:
+  replicas: 1
+
+# Longhorn Backlong Manager settings
+longhornBackingImageManager:
+  replicas: 1
+
+# Enable CSI Driver
+csi:
+  attacherImage: "registry.k8s.io/sig-storage/csi-attacher:v4.5.0"
+  provisionerImage: "registry.k8s.io/sig-storage/csi-provisioner:v3.6.4"
+  nodeDriverRegistrarImage: "registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.10.1"
+  resizerImage: "registry.k8s.io/sig-storage/csi-resizer:v1.10.1"
+  snapshotterImage: "registry.k8s.io/sig-storage/csi-snapshotter:v6.3.3"
+
+# Persistence settings
+persistence:
+  defaultClass: "true"
+  defaultClassReplicaCount: 1
+  reclaimPolicy: "Delete"
+  migratable: "false"
+
+# Service settings
+service:
+  ui:
+    type: ClusterIP
+    nodePort: null
+  manager:
+    type: ClusterIP
+    nodePort: null
+
+# Ingress settings (for Longhorn UI)
+ingress:
+  enabled: true
+  ingressClassName: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+  hosts:
+    - host: longhorn.mbtux.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: longhorn-tls
+      hosts:
+        - longhorn.mbtux.com
+
+# Enable monitoring with Prometheus
+prometheus:
+  enabled: true
+  operator:
+    enabled: true
+
+# Resource settings
+resources:
+  longhorn-manager:
+    limits:
+      cpu: 1000m
+      memory: 1024Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+  longhorn-ui:
+    limits:
+      cpu: 500m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+# Node settings
+nodeSelector:
+  node-role.kubernetes.io/control-plane: ""
+
+# tolerations for Longhorn components
+tolerations:
+  - key: "node-role.kubernetes.io/control-plane"
+    operator: "Exists"
+    effect: "NoSchedule"
+  - key: "CriticalAddonsOnly"
+    operator: "Exists"
+    effect: "NoExecute"
+  - key: "CriticalAddonsOnly"
+    operator: "Exists"
+    effect: "NoSchedule"

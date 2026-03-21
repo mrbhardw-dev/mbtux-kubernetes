@@ -1,0 +1,199 @@
+# ArgoCD App of Apps - Root Application
+# This is the root application that manages all other ArgoCD applications
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mbtux-kubernetes-root
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: mbtux-kubernetes
+    app.kubernetes.io/part-of: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes
+    targetRevision: main
+    path: bootstrap
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+      - CreateNamespace=true
+      - PruneLast=true
+      - PrunePropagationPolicy=foreground
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+---
+# Infrastructure Applications
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: longhorn
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: longhorn
+    app.kubernetes.io/part-of: infrastructure
+    tier: storage
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes
+    targetRevision: main
+    path: infrastructure/longhorn
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: longhorn-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  ignoreDifferences:
+    - group: longhorn.io
+      kind: Volume
+      jsonPointers:
+        - /spec/numberOfReplicas
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/part-of: infrastructure
+    tier: security
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes
+    targetRevision: main
+    path: infrastructure/cert-manager
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cert-manager
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: monitoring
+    app.kubernetes.io/part-of: infrastructure
+    tier: observability
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes
+    targetRevision: main
+    path: infrastructure/monitoring
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+---
+# Application Applications
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nextcloud
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: nextcloud
+    app.kubernetes.io/part-of: applications
+    tier: apps
+spec:
+  project: default
+  source:
+    repoURL: https://nextcloud.github.io/helm/
+    chart: nextcloud
+    targetRevision: 9.0.3
+    helm:
+      valueFiles:
+        - $values/mbtux-kubernetes/apps/nextcloud/values.yaml
+  sources:
+    - repoURL: https://nextcloud.github.io/helm/
+      chart: nextcloud
+      targetRevision: 9.0.3
+      helm:
+        valueFiles:
+          - $values/mbtux-kubernetes/apps/nextcloud/values.yaml
+    - repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes
+      targetRevision: main
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nextcloud
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  ignoreDifferences:
+    - group: ""
+      kind: Secret
+      name: nextcloud-postgresql
+      namespace: nextcloud
+      jsonPointers:
+        - /data/password
+        - /data/postgres-password
+    - group: ""
+      kind: Secret
+      name: nextcloud-redis
+      namespace: nextcloud
+      jsonPointers:
+        - /data/redis-password
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: codecombat
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: codecombat
+    app.kubernetes.io/part-of: applications
+    tier: apps
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes
+    targetRevision: main
+    path: apps/codecombat
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: codecombat
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas

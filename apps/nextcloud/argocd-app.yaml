@@ -1,0 +1,48 @@
+# Nextcloud ArgoCD Application
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nextcloud
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: nextcloud
+    app.kubernetes.io/part-of: applications
+    tier: apps
+spec:
+  project: default
+  sources:
+    - repoURL: https://nextcloud.github.io/helm/
+      chart: nextcloud
+      targetRevision: 9.0.3
+      helm:
+        valueFiles:
+          - $values/mbtux-kubernetes/apps/nextcloud/values.yaml
+    - repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes
+      targetRevision: main
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nextcloud
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+  # Ignore differences for secrets that are managed by Helm but contain auto-generated values
+  ignoreDifferences:
+    - group: ""
+      kind: Secret
+      name: nextcloud-postgresql
+      namespace: nextcloud
+      jsonPointers:
+        - /data/password
+        - /data/postgres-password
+    - group: ""
+      kind: Secret
+      name: nextcloud-redis
+      namespace: nextcloud
+      jsonPointers:
+        - /data/redis-password
