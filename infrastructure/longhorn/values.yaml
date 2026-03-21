@@ -6,6 +6,10 @@ serviceAccount:
   create: true
   name: longhorn-service-account
 
+# Disable pre-upgrade checker (fails on Proxmox VMs due to RBAC/env issues)
+preUpgradeChecker:
+  enabled: false
+
 # Default replica count - will be enforced by CronJob
 defaultSettings:
   defaultReplicaCount: 1
@@ -22,6 +26,8 @@ longhornUI:
 # Longhorn Manager settings
 longhornManager:
   replicas: 1
+  rbac:
+    csiDriver: true  # Add permission for CSI drivers
 
 # Longhorn Driver Deployer settings
 longhornDriver:
