@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: nextcloud-aio
+  name: nextcloud
   namespace: argocd
 spec:
   project: default
   sources:
-    - repoURL: https://github.com/nextcloud/all-in-one
-      targetRevision: main
-      path: nextcloud-aio-helm-chart
+    - repoURL: https://nextcloud.github.io/helm/
+      chart: nextcloud
+      targetRevision: 9.0.3
       helm:
         valueFiles:
           - $values/nextcloud/values.yaml
@@ -24,3 +24,17 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+  ignoreDifferences:
+    - group: ""
+      kind: Secret
+      name: nextcloud-postgresql
+      namespace: nextcloud
+      jsonPointers:
+        - /data/password
+        - /data/postgres-password
+    - group: ""
+      kind: Secret
+      name: nextcloud-redis
+      namespace: nextcloud
+      jsonPointers:
+        - /data/redis-password
