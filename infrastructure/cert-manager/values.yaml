@@ -9,8 +9,9 @@ global:
   logLevel: 2
   leaderElection:
     namespace: cert-manager
+  # Disable PSP (removed in K8s 1.25+)
   podSecurityPolicy:
-    enabled: true
+    enabled: false
     useAppArmor: false
 
 # Cert-manager controller settings
@@ -40,11 +41,11 @@ ingressShim:
   defaultIssuerKind: ClusterIssuer
   defaultIssuerGroup: cert-manager.io
 
-# Prometheus metrics
+# Prometheus metrics (disable - requires prometheus-operator)
 prometheus:
-  enabled: true
+  enabled: false
   servicemonitor:
-    enabled: true
+    enabled: false
     prometheusInstance: default
 
 # Resources
