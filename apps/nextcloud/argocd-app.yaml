@@ -17,7 +17,7 @@ spec:
       targetRevision: 9.0.3
       helm:
         valueFiles:
-          - $values/mbtux-kubernetes/apps/nextcloud/values.yaml
+          - $values/apps/nextcloud/values.yaml
     - repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes
       targetRevision: main
       ref: values
