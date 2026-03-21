@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mbtux-longhorn-volume-fix
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/mrbhardw-dev/ArgoCD
+    targetRevision: main
+    path: ArgoCD/mbtux-asrock/longhorn
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: longhorn-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
