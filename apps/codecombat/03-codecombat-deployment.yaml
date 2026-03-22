@@ -22,33 +22,33 @@ spec:
     spec:
       containers:
         - name: codecombat
-          image: nginx:latest
+          image: httpd:2.4
           ports:
-            - containerPort: 3000
+            - containerPort: 80
               name: http
           env:
             - name: COCO_MONGO_URL
               value: "mongodb://mongodb:27017/codecombat"
             - name: PORT
-              value: "3000"
+              value: "80"
             - name: NODE_ENV
               value: "production"
           resources:
             requests:
-              memory: "2Gi"
-              cpu: "1"
+              memory: "512Mi"
+              cpu: "250m"
             limits:
-              memory: "4Gi"
-              cpu: "2"
+              memory: "1Gi"
+              cpu: "1"
           livenessProbe:
             httpGet:
               path: /
-              port: 3000
-            initialDelaySeconds: 60
+              port: 80
+            initialDelaySeconds: 30
             periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /
-              port: 3000
-            initialDelaySeconds: 30
+              port: 80
+            initialDelaySeconds: 10
             periodSeconds: 5

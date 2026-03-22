@@ -91,4 +91,32 @@ spec:
       - CreateNamespace=true
 ---
 # Application Applications
-# NOTE: nextcloud and codecombat applications removed - focusing on infrastructure only
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: codecombat
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: codecombat
+    app.kubernetes.io/part-of: applications
+    tier: apps
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes
+    targetRevision: main
+    path: apps/codecombat
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: codecombat
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas
