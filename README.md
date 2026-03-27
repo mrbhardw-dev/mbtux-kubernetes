@@ -5,6 +5,7 @@ GitOps repository for the mbtux.com Kubernetes cluster managed by ArgoCD.
 ## Cluster Information
 
 
+
 - **Kubernetes Version**: v1.31.14
 - **Nodes**: 
   - asrock-master-01 (192.168.0.101)
