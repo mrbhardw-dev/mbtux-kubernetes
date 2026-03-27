@@ -45,6 +45,9 @@ spec:
           args:
             - --redis
             - redis:6379
+          env:
+            - name: KUSTOMIZE_ENABLE_HELM
+              value: "true"
           ports:
             - name: server
               containerPort: 8081
