@@ -5,6 +5,7 @@ namespace: monitoring
 
 resources:
   - prometheus-deployment.yaml
+  - prometheus-nodeport.yaml
   - node-exporter.yaml
   - cadvisor.yaml
   - headlamp-prometheus-config.yaml

@@ -13,8 +13,18 @@ data:
   config.json: |
     {
       "prometheus": {
-        "url": "http://192.168.0.201:32631",
-        "serviceAddress": "monitoring/prometheus-http:9090",
+        "clusters": [
+          {
+            "cluster": "mgmt-context",
+            "url": "http://192.168.0.201:30090",
+            "serviceAddress": "monitoring/prometheus-service:9090"
+          },
+          {
+            "cluster": "data-context",
+            "url": "http://192.168.0.211:30090",
+            "serviceAddress": "monitoring/prometheus-service:9090"
+          }
+        ],
         "queryRangeDuration": "1h",
         "maxSamples": 10000,
         "cacheEnabled": true,
