@@ -71,10 +71,10 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: monitoring
+  name: monitoring-mgmt
   namespace: argocd
   labels:
-    app.kubernetes.io/name: monitoring
+    app.kubernetes.io/name: monitoring-mgmt
     app.kubernetes.io/part-of: infrastructure
     cluster: mgmt
 spec:
