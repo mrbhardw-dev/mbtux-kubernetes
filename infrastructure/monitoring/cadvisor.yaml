@@ -20,6 +20,8 @@ spec:
     spec:
       hostNetwork: true
       hostPID: true
+      serviceAccountName: cadvisor
+      automountServiceAccountToken: false
       containers:
         - name: cadvisor
           image: gcr.io/cadvisor/cadvisor:v0.47.2

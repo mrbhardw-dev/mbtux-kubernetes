@@ -1,0 +1,69 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cloudflared-mgmt
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: cloudflared-mgmt
+    app.kubernetes.io/part-of: infrastructure
+    cluster: mgmt
+spec:
+  project: mgmt-cluster
+  source:
+    repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes
+    targetRevision: main
+    path: infrastructure/cloudflared-mgmt
+  destination:
+    server: mgmt
+    namespace: cloudflared-mgmt
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - PruneLast=true
+      - PrunePropagationPolicy=foreground
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: headlamp
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: headlamp
+    app.kubernetes.io/part-of: management
+    cluster: mgmt
+spec:
+  project: mgmt-cluster
+  source:
+    repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes
+    targetRevision: main
+    path: management/headlamp
+  destination:
+    server: mgmt
+    namespace: headlamp
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - PruneLast=true
+      - PrunePropagationPolicy=foreground
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m

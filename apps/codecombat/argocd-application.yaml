@@ -6,8 +6,9 @@ metadata:
   labels:
     app.kubernetes.io/name: codecombat
     app.kubernetes.io/part-of: codecombat
+    cluster: data
 spec:
-  project: default
+  project: data-cluster
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes
     targetRevision: main
@@ -22,6 +23,7 @@ spec:
       allowEmpty: false
     syncOptions:
       - CreateNamespace=true
+      - ServerSideApply=true
       - PruneLast=true
       - PrunePropagationPolicy=foreground
     retry:

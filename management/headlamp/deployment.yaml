@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: headlamp
+  namespace: headlamp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: headlamp
+  template:
+    metadata:
+      labels:
+        app: headlamp
+    spec:
+      serviceAccountName: headlamp
+      containers:
+      - name: headlamp
+        image: ghcr.io/headlamp-k8s/headlamp:latest
+        ports:
+        - containerPort: 4466
+        env:
+        - name: HEADLAMP_INCLUSTER
+          value: "false"
+        - name: HEADLAMP_KUBECONFIG
+          value: /home/headlamp/.kube/config
+        - name: HEADLAMP_PLUGINS_DIR
+          value: /headlamp/plugins
+        - name: HEADLAMP_CONFIG_LOCATION
+          value: /config
+        - name: DEFAULT_CONTEXT
+          value: "mgmt-context"
+        volumeMounts:
+        - name: kubeconfig
+          mountPath: /home/headlamp/.kube
+        - name: headlamp-config
+          mountPath: /config
+        - name: kube-token
+          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+          readOnly: true
+        - name: plugins
+          mountPath: /headlamp/plugins
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+      volumes:
+      - name: kubeconfig
+        secret:
+          secretName: headlamp-kubeconfig
+          items:
+          - key: config
+            path: config
+      - name: headlamp-config
+        configMap:
+          name: headlamp-config
+      - name: kube-token
+        projected:
+          sources:
+          - serviceAccountToken:
+              expirationSeconds: 3600
+              path: token
+          - configMap:
+              name: kube-root-ca.crt
+              items:
+              - key: ca.crt
+                path: ca.crt
+          - downwardAPI:
+              items:
+              - fieldRef:
+                  fieldPath: metadata.namespace
+                path: namespace
+      - name: plugins
+        emptyDir: {}

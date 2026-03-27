@@ -1,27 +1,18 @@
-# DEPRECATED: This file is a legacy monolithic bootstrap.
-# The multi-cluster setup uses bootstrap/data-cluster/ and bootstrap/mgmt-cluster/ instead.
-# This file is kept for reference only and should NOT be used as an Argo CD source path.
-#
-# To migrate:
-#   1. Use bootstrap/data-cluster/applications.yaml for data cluster apps
-#   2. Use bootstrap/mgmt-cluster/applications.yaml for management cluster apps
-#   3. Delete this file once migration is confirmed
----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mbtux-kubernetes-root
+  name: argocd
   namespace: argocd
   labels:
-    app.kubernetes.io/name: mbtux-kubernetes
-    app.kubernetes.io/part-of: argocd
-    deprecated: "true"
+    app.kubernetes.io/name: argocd
+    app.kubernetes.io/part-of: infrastructure
+    cluster: data
 spec:
   project: data-cluster
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes
     targetRevision: main
-    path: bootstrap
+    path: infrastructure/argocd-data
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
@@ -42,38 +33,40 @@ spec:
         factor: 2
         maxDuration: 3m
 ---
-# Infrastructure Applications
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: longhorn
+  name: cloudflared-data
   namespace: argocd
   labels:
-    app.kubernetes.io/name: longhorn
+    app.kubernetes.io/name: cloudflared-data
     app.kubernetes.io/part-of: infrastructure
-    tier: storage
-    deprecated: "true"
+    cluster: data
 spec:
   project: data-cluster
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes
     targetRevision: main
-    path: infrastructure/longhorn
+    path: infrastructure/cloudflared-data
   destination:
     server: https://kubernetes.default.svc
-    namespace: longhorn-system
+    namespace: cloudflared-data
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+      allowEmpty: false
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
-  ignoreDifferences:
-    - group: longhorn.io
-      kind: Volume
-      jsonPointers:
-        - /spec/numberOfReplicas
+      - PruneLast=true
+      - PrunePropagationPolicy=foreground
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -83,8 +76,7 @@ metadata:
   labels:
     app.kubernetes.io/name: monitoring
     app.kubernetes.io/part-of: infrastructure
-    tier: observability
-    deprecated: "true"
+    cluster: data
 spec:
   project: data-cluster
   source:
@@ -98,38 +90,50 @@ spec:
     automated:
       prune: true
       selfHeal: true
+      allowEmpty: false
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+      - PruneLast=true
+      - PrunePropagationPolicy=foreground
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: codecombat
+  name: proxmox-csi
   namespace: argocd
   labels:
-    app.kubernetes.io/name: codecombat
-    app.kubernetes.io/part-of: applications
-    tier: apps
-    deprecated: "true"
+    app.kubernetes.io/name: proxmox-csi
+    app.kubernetes.io/part-of: infrastructure
+    cluster: data
 spec:
   project: data-cluster
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes
     targetRevision: main
-    path: apps/codecombat
+    path: infrastructure/proxmox-csi
   destination:
     server: https://kubernetes.default.svc
-    namespace: codecombat
+    namespace: proxmox-csi
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+      allowEmpty: false
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
-  ignoreDifferences:
-    - group: apps
-      kind: Deployment
-      jsonPointers:
-        - /spec/replicas
+      - PruneLast=true
+      - PrunePropagationPolicy=foreground
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
