@@ -14,6 +14,4 @@ resources:
   - server.yaml
   - projects.yaml
   - applications.yaml
-  # cluster-secret.yaml is excluded from Argo CD management.
-  # Apply it manually with real credentials:
-  #   kubectl apply -f infrastructure/argocd-data/cluster-secret.yaml
+  - cluster-secret.yaml
