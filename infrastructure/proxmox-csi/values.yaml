@@ -1,0 +1,16 @@
+config:
+  existingSecret: proxmox-csi-secret
+
+controller:
+  enabled: true
+
+node:
+  enabled: true
+
+storageClass: []  # we manage it ourselves
+
+rbac:
+  create: true
+
+serviceAccount:
+  create: true
