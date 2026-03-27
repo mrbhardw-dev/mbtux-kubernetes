@@ -7,3 +7,10 @@ resources:
   - namespace.yaml
   - secret.yaml
   - storageclass.yaml
+
+helmCharts:
+  - name: proxmox-csi-plugin
+    repo: oci://ghcr.io/sergelogvinov/charts
+    releaseName: proxmox-csi
+    namespace: kube-system
+    valuesFile: values.yaml
