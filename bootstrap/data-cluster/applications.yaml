@@ -115,22 +115,9 @@ metadata:
 spec:
   project: data-cluster
   source:
-    chart: proxmox-csi-plugin
-    repoURL: https://sergelogvinov.github.io/proxmox-csi-plugin
-    targetRevision: 0.3.0
-    helm:
-      values: |
-        config:
-          existingSecret: proxmox-csi-secret
-        controller:
-          enabled: true
-        node:
-          enabled: true
-        storageClass: []
-        rbac:
-          create: true
-        serviceAccount:
-          create: true
+    repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes
+    targetRevision: main
+    path: infrastructure/proxmox-csi
   destination:
     server: https://kubernetes.default.svc
     namespace: proxmox-csi
