@@ -14,7 +14,7 @@ spec:
     targetRevision: main
     path: infrastructure/cloudflared-mgmt
   destination:
-    server: mgmt
+    server: https://192.168.0.201:6443
     namespace: cloudflared-mgmt
   syncPolicy:
     automated:
@@ -49,7 +49,7 @@ spec:
     targetRevision: main
     path: management/headlamp
   destination:
-    server: mgmt
+    server: https://192.168.0.201:6443
     namespace: headlamp
   syncPolicy:
     automated:

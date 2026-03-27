@@ -43,7 +43,7 @@ spec:
     - https://github.com/mrbhardw-dev/mbtux-kubernetes
   destinations:
     - namespace: '*'
-      server: mgmt
+      server: https://192.168.0.201:6443
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'
