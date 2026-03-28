@@ -1,0 +1,37 @@
+# Fleet Cluster Registration
+# This file defines the Fleet cluster configuration for the data cluster.
+# After Rancher is deployed, apply the import manifest to the data cluster.
+---
+apiVersion: fleet.cattle.io/v1alpha1
+kind: ClusterRegistrationToken
+metadata:
+  name: data-cluster-token
+  namespace: fleet-default
+  labels:
+    app.kubernetes.io/name: fleet
+    app.kubernetes.io/part-of: rancher
+    cluster: data
+spec:
+  ttl: 720h
+---
+# Fleet workspace for organizing clusters
+apiVersion: fleet.cattle.io/v1alpha1
+kind: GitRepo
+metadata:
+  name: mbtux-kubernetes
+  namespace: fleet-default
+  labels:
+    app.kubernetes.io/name: fleet
+    app.kubernetes.io/part-of: rancher
+spec:
+  repo: https://github.com/mrbhardw-dev/mbtux-kubernetes
+  revision: main
+  paths:
+    - infrastructure
+  targets:
+    - clusterSelector:
+        matchLabels:
+          management.cattle.io/cluster-display-name: mbtux-data-cluster
+    - clusterSelector:
+        matchLabels:
+          management.cattle.io/cluster-display-name: mbtux-mgmt-cluster

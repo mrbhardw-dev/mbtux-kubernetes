@@ -1,0 +1,42 @@
+hostname: rancher.mbtux.com
+replicas: 1
+
+bootstrapPassword: "admin"
+
+tls: external
+
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  extraAnnotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+
+service:
+  type: ClusterIP
+
+# Fleet configuration
+fleet:
+  agentImage: ""
+  agentImagePullPolicy: IfNotPresent
+
+# Resource limits for single-node management cluster
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: "1"
+    memory: 1Gi
+
+# Anti-affinity not needed on single node
+noAntiAffinity: "true"
+
+# Audit log level
+auditLevel: 0
+
+# Debug logging off for production
+debug: false
+
+# Use letsencrypt for internal TLS if needed
+privateCA: false
