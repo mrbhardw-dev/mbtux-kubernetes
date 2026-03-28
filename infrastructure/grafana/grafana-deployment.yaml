@@ -40,7 +40,7 @@ data:
       - name: Prometheus
         type: prometheus
         access: proxy
-        url: http://prometheus-service:9090
+        url: http://kube-prometheus-stack-prometheus.monitoring.svc:9090
         isDefault: true
         editable: true
         jsonData:

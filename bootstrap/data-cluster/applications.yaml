@@ -82,7 +82,7 @@ spec:
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes
     targetRevision: main
-    path: infrastructure/monitoring
+    path: infrastructure/monitoring-data
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
