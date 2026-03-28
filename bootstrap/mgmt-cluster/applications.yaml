@@ -116,7 +116,7 @@ spec:
   project: mgmt-cluster
   source:
     repoURL: https://releases.rancher.com/server-charts/stable
-    targetRevision: 2.10.3
+    targetRevision: 2.13.3
     chart: rancher
     helm:
       values: |
