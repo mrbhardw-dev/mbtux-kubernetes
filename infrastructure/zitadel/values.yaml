@@ -1,0 +1,74 @@
+postgresql:
+  enabled: true
+  auth:
+    database: zitadel
+    username: zitadel
+    password: zitadel
+    postgresPassword: zitadel
+  primary:
+    persistence:
+      enabled: true
+      size: 10Gi
+
+zitadel:
+  masterkeySecretName: zitadel-masterkey
+
+  configmapConfig:
+    ExternalDomain: auth.mbtux.com
+    ExternalSecure: true
+    ExternalPort: 443
+
+    TLS:
+      Enabled: false
+
+    FirstInstance:
+      Org:
+        Machine:
+          Machine:
+            Username: admin
+            Name: IAM Admin
+          MachineKey:
+            ExpirationDate: "2029-01-01T00:00:00Z"
+            Type: 1
+          Pat:
+            ExpirationDate: "2029-01-01T00:00:00Z"
+
+replicaCount: 1
+
+ingress:
+  enabled: true
+  controller: nginx
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+  hosts:
+    - host: auth.mbtux.com
+      paths:
+        - path: /
+          pathType: Prefix
+
+login:
+  enabled: true
+  replicaCount: 1
+
+  ingress:
+    enabled: true
+    controller: nginx
+    className: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    hosts:
+      - host: auth.mbtux.com
+        paths:
+          - path: /ui/v2/login
+            pathType: Prefix
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 256Mi
+  limits:
+    cpu: "1"
+    memory: 1Gi

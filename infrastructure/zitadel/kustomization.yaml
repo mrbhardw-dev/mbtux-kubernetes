@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: identity
+
+resources:
+  - namespace.yaml
+  - masterkey-secret.yaml
+
+helmCharts:
+  - name: zitadel
+    repo: oci://ghcr.io/zitadel/charts
+    releaseName: zitadel
+    namespace: identity
+    valuesFile: values.yaml
