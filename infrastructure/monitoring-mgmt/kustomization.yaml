@@ -4,4 +4,7 @@ kind: Kustomization
 namespace: monitoring
 
 resources:
-  - grafana.yaml
+  - namespace.yaml
+  - prometheus.yaml
+  - node-exporter.yaml
+  - cadvisor.yaml
