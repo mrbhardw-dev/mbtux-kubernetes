@@ -26,6 +26,7 @@ zitadel:
 
     FirstInstance:
       Org:
+        Name: mbtux
         Human:
           UserName: mritunjay.bhardwaj
           Email: mritunjay.bhardwaj@mbtux.com
@@ -43,15 +44,15 @@ zitadel:
 
     SMTP:
       Host: smtppro.zoho.eu
-      Port: 465
-      SSL: true
+      Port: 587
+      TLS: true
       From: "mritunjay.bhardwaj@mbtux.com"
       FromName: "ZITADEL Auth"
 
   secretConfig:
     SMTP:
       User: "mritunjay.bhardwaj@mbtux.com"
-      Password: "YRwrYGj8xNP9"
+      Password: "7CsTsGcGbntE"
 
 replicaCount: 1
 
