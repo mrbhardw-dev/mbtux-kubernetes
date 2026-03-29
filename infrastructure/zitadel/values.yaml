@@ -30,7 +30,7 @@ zitadel:
           UserName: admin
           Email: admin@auth.mbtux.com
           Password: "Admin@2026!"
-          PasswordChangeRequired: true
+          PasswordChangeRequired: false
           EmailVerified: true
         Machine:
           Machine:
@@ -41,6 +41,8 @@ zitadel:
             Type: 1
           Pat:
             ExpirationDate: "2029-01-01T00:00:00Z"
+    EmailVerification:
+      Skip: true
 
 replicaCount: 1
 
