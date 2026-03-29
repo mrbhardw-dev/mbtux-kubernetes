@@ -26,9 +26,14 @@ zitadel:
 
     FirstInstance:
       Org:
+        Human:
+          UserName: admin
+          Email: admin@auth.mbtux.com
+          Password: "Admin@2026!"
+          PasswordChangeRequired: true
         Machine:
           Machine:
-            Username: admin
+            Username: iam-admin
             Name: IAM Admin
           MachineKey:
             ExpirationDate: "2029-01-01T00:00:00Z"
