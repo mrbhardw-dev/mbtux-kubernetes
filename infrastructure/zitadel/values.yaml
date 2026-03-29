@@ -54,6 +54,9 @@ zitadel:
       User: "mritunjay.bhardwaj@mbtux.com"
       Password: "7CsTsGcGbntE"
 
+  debug:
+    enabled: true
+
 replicaCount: 1
 
 ingress:
