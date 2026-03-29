@@ -110,6 +110,12 @@ spec:
   destination:
     server: https://192.168.0.201:6443
     namespace: cattle-system
+  ignoreDifferences:
+    - group: ""
+      kind: Secret
+      name: bootstrap-secret
+      jsonPointers:
+        - /data
   syncPolicy:
     automated:
       prune: true
