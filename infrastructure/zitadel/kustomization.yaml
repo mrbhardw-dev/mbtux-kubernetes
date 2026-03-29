@@ -9,7 +9,7 @@ resources:
 
 helmCharts:
   - name: zitadel
-    repo: oci://ghcr.io/zitadel/charts
+    repo: https://charts.zitadel.com
     releaseName: zitadel
     namespace: identity
     valuesFile: values.yaml

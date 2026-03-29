@@ -11,6 +11,7 @@ spec:
   description: Data cluster - infrastructure and application workloads
   sourceRepos:
     - https://github.com/mrbhardw-dev/mbtux-kubernetes
+    - https://charts.zitadel.com
   destinations:
     - namespace: '*'
       server: https://kubernetes.default.svc
