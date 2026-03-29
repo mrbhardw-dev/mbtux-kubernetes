@@ -27,8 +27,8 @@ zitadel:
     FirstInstance:
       Org:
         Human:
-          UserName: admin
-          Email: admin@auth.mbtux.com
+          UserName: mritunjay.bhardwaj
+          Email: mritunjay.bhardwaj@mbtux.com
           Password: "Admin@2026!"
           PasswordChangeRequired: false
         Machine:
