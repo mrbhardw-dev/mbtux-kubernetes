@@ -16,6 +16,7 @@ spec:
     spec:
       hostNetwork: true
       hostPID: true
+      automountServiceAccountToken: false
       tolerations:
         - operator: Exists
       containers:
