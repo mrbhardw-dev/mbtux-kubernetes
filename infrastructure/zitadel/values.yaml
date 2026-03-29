@@ -55,7 +55,7 @@ zitadel:
       Password: "7CsTsGcGbntE"
 
   debug:
-    enabled: false
+    enabled: true
 
 replicaCount: 1
 
