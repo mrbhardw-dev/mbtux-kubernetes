@@ -31,7 +31,6 @@ zitadel:
           Email: admin@auth.mbtux.com
           Password: "Admin@2026!"
           PasswordChangeRequired: false
-          EmailVerified: true
         Machine:
           Machine:
             Username: iam-admin
@@ -41,8 +40,18 @@ zitadel:
             Type: 1
           Pat:
             ExpirationDate: "2029-01-01T00:00:00Z"
-    EmailVerification:
-      Skip: true
+
+    SMTP:
+      Host: smtppro.zoho.eu
+      Port: 465
+      SSL: true
+      From: "mritunjay.bhardwaj@mbtux.com"
+      FromName: "ZITADEL Auth"
+
+  secretConfig:
+    SMTP:
+      User: "mritunjay.bhardwaj@mbtux.com"
+      Password: "YRwrYGj8xNP9"
 
 replicaCount: 1
 
