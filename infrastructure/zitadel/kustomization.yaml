@@ -6,6 +6,7 @@ namespace: identity
 resources:
   - namespace.yaml
   - masterkey-secret.yaml
+  - placeholder-secrets.yaml
 
 helmCharts:
   - name: zitadel
