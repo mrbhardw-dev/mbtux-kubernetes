@@ -31,6 +31,7 @@ zitadel:
           Email: admin@auth.mbtux.com
           Password: "Admin@2026!"
           PasswordChangeRequired: true
+          EmailVerified: true
         Machine:
           Machine:
             Username: iam-admin
