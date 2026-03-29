@@ -86,6 +86,11 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: identity
+  ignoreDifferences:
+    - group: ""
+      kind: Secret
+      jsonPointers:
+        - /data
   syncPolicy:
     automated:
       prune: true
