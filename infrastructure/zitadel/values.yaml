@@ -32,17 +32,10 @@ zitadel:
           Password: "Admin@2026!"
           PasswordChangeRequired: true
 
-    SMTP:
-      Host: smtppro.zoho.eu
-      Port: 587
-      TLS: true
-      From: "mritunjay.bhardwaj@mbtux.com"
-      FromName: "ZITADEL Auth"
-
-  secretConfig:
-    SMTP:
-      User: "mritunjay.bhardwaj@mbtux.com"
-      Password: "7CsTsGcGbntE"
+    # SMTP must be configured via Console UI after first login:
+    # Settings -> SMTP Settings -> Add SMTP Provider
+    # Host: smtppro.zoho.eu:587 (StartTLS)
+    # User: mritunjay.bhardwaj@mbtux.com
 
   debug:
     enabled: false
