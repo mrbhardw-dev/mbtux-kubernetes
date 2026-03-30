@@ -165,9 +165,9 @@ mongodb:
   livenessProbe:
     exec:
       command:
-        - mongosh
-        - --eval
-        - "db.adminCommand('ping')"
+        - sh
+        - -c
+        - "mongosh -u $MONGO_INITDB_ROOT_USERNAME -p $MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase admin --eval 'db.adminCommand(\"ping\")'"
     initialDelaySeconds: 30
     periodSeconds: 10
     timeoutSeconds: 5
@@ -176,9 +176,9 @@ mongodb:
   readinessProbe:
     exec:
       command:
-        - mongosh
-        - --eval
-        - "db.adminCommand('ping')"
+        - sh
+        - -c
+        - "mongosh -u $MONGO_INITDB_ROOT_USERNAME -p $MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase admin --eval 'db.adminCommand(\"ping\")'"
     initialDelaySeconds: 5
     periodSeconds: 5
     timeoutSeconds: 3
@@ -187,9 +187,9 @@ mongodb:
   startupProbe:
     exec:
       command:
-        - mongosh
-        - --eval
-        - "db.adminCommand('ping')"
+        - sh
+        - -c
+        - "mongosh -u $MONGO_INITDB_ROOT_USERNAME -p $MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase admin --eval 'db.adminCommand(\"ping\")'"
     initialDelaySeconds: 10
     periodSeconds: 5
     failureThreshold: 30

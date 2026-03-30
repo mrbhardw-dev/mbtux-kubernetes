@@ -62,12 +62,12 @@ spec:
             - sh
             - -c
             - |
-              if [ ! -d "/app/node_modules/.package-lock.json" ]; then
-                echo "Running npm install..."
-                npm install 2>&1
-              fi
+              echo "Running npm install..."
+              npm install 2>&1
+              echo "Installing missing production deps..."
+              npm install compressible 2>&1 || true
               echo "Starting CodeCombat..."
-              npm start 2>&1
+              node index.js 2>&1
           ports:
             - containerPort: 3000
               name: http
