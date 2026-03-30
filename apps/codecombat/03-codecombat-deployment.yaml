@@ -32,9 +32,28 @@ spec:
                 sleep 2
               done
               echo "MongoDB is ready"
+        - name: clone-codecombat
+          image: alpine/git:latest
+          command:
+            - sh
+            - -c
+            - |
+              if [ ! -f /app/package.json ]; then
+                git clone --depth 1 https://github.com/codecombat/codecombat.git /app
+              fi
+          volumeMounts:
+            - name: app-code
+              mountPath: /app
       containers:
         - name: codecombat
-          image: codecombat/codecombat:latest
+          image: node:20
+          workingDir: /app
+          command:
+            - sh
+            - -c
+            - |
+              npm install --production 2>&1 || true
+              node /app/index.js 2>&1 || node /app/server.js 2>&1 || npm start 2>&1
           ports:
             - containerPort: 3000
               name: http
@@ -59,16 +78,6 @@ spec:
                 configMapKeyRef:
                   name: codecombat-config
                   key: COCO_ENV
-            - name: COCO_ANALYTICS
-              valueFrom:
-                configMapKeyRef:
-                  name: codecombat-config
-                  key: COCO_ANALYTICS
-            - name: COCO_SSL_HIERARCHY
-              valueFrom:
-                configMapKeyRef:
-                  name: codecombat-config
-                  key: COCO_SSL_HIERARCHY
           resources:
             requests:
               memory: "512Mi"
@@ -80,22 +89,22 @@ spec:
             httpGet:
               path: /
               port: 3000
-            initialDelaySeconds: 60
+            initialDelaySeconds: 120
             periodSeconds: 15
             timeoutSeconds: 5
-            failureThreshold: 3
+            failureThreshold: 5
           readinessProbe:
             httpGet:
               path: /
               port: 3000
-            initialDelaySeconds: 30
+            initialDelaySeconds: 90
             periodSeconds: 5
             timeoutSeconds: 3
-            failureThreshold: 3
-          startupProbe:
-            httpGet:
-              path: /
-              port: 3000
-            initialDelaySeconds: 10
-            periodSeconds: 5
-            failureThreshold: 30
+            failureThreshold: 10
+          volumeMounts:
+            - name: app-code
+              mountPath: /app
+      volumes:
+        - name: app-code
+          emptyDir:
+            sizeLimit: 2Gi

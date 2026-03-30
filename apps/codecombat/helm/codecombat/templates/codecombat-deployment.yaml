@@ -23,7 +23,6 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if .Values.mongodb.enabled }}
       initContainers:
         - name: wait-for-mongodb
           image: busybox:1.36
@@ -36,11 +35,29 @@ spec:
                 sleep 2
               done
               echo "MongoDB is ready"
-      {{- end }}
+        - name: clone-codecombat
+          image: alpine/git:latest
+          command:
+            - sh
+            - -c
+            - |
+              if [ ! -f /app/package.json ]; then
+                git clone --depth 1 https://github.com/codecombat/codecombat.git /app
+              fi
+          volumeMounts:
+            - name: app-code
+              mountPath: /app
       containers:
         - name: codecombat
           image: "{{ .Values.codecombat.image.repository }}:{{ .Values.codecombat.image.tag }}"
           imagePullPolicy: {{ .Values.codecombat.image.pullPolicy }}
+          workingDir: /app
+          command:
+            - sh
+            - -c
+            - |
+              npm install --production 2>&1 || true
+              node /app/index.js 2>&1 || node /app/server.js 2>&1 || npm start 2>&1
           ports:
             - containerPort: {{ .Values.codecombat.port }}
               name: http
@@ -77,18 +94,25 @@ spec:
                   key: COCO_SSL_HIERARCHY
           resources:
             {{- toYaml .Values.codecombat.resources | nindent 12 }}
-          {{- if .Values.codecombat.livenessProbe }}
           livenessProbe:
-            {{- toYaml .Values.codecombat.livenessProbe | nindent 12 }}
-          {{- end }}
-          {{- if .Values.codecombat.readinessProbe }}
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 120
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 5
           readinessProbe:
-            {{- toYaml .Values.codecombat.readinessProbe | nindent 12 }}
-          {{- end }}
-          {{- if .Values.codecombat.startupProbe }}
-          startupProbe:
-            {{- toYaml .Values.codecombat.startupProbe | nindent 12 }}
-          {{- end }}
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 90
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 10
+          volumeMounts:
+            - name: app-code
+              mountPath: /app
       {{- with .Values.codecombat.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -101,3 +125,7 @@ spec:
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+        - name: app-code
+          emptyDir:
+            sizeLimit: 2Gi

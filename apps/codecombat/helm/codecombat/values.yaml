@@ -19,11 +19,10 @@ codecombat:
   replicaCount: 1
 
   image:
-    # -- CodeCombat container image
-    repository: codecombat/codecombat
-    # -- Image tag (use specific version for production, e.g., "v0.1.0")
-    tag: "latest"
-    # -- Image pull policy
+    # -- CodeCombat container image (build from https://github.com/codecombat/codecombat)
+    # No official image exists; use node:20 with init container to clone source
+    repository: node
+    tag: "20"
     pullPolicy: IfNotPresent
 
   # -- Service account configuration
