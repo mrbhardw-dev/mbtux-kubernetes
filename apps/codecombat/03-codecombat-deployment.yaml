@@ -53,8 +53,12 @@ spec:
             - sh
             - -c
             - |
-              npm install --production 2>&1 || true
-              node /app/index.js 2>&1 || node /app/server.js 2>&1 || npm start 2>&1
+              if [ ! -d "/app/node_modules/.package-lock.json" ]; then
+                echo "Running npm install..."
+                npm install 2>&1
+              fi
+              echo "Starting CodeCombat..."
+              npm start 2>&1
           ports:
             - containerPort: 3000
               name: http
@@ -84,7 +88,7 @@ spec:
               memory: "1Gi"
               cpu: "500m"
             limits:
-              memory: "2Gi"
+              memory: "4Gi"
               cpu: "2"
           livenessProbe:
             httpGet:
