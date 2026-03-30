@@ -1,12 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cloudflared
+  name: cloudflared-mgmt
   namespace: cloudflared-mgmt
-  labels:
-    app: cloudflared
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: cloudflared
@@ -19,41 +17,14 @@ spec:
       - name: cloudflared
         image: cloudflare/cloudflared:latest
         args:
-          - tunnel
-          - --no-autoupdate
-          - run
-          - --token
-          - $(TUNNEL_TOKEN)
-          - --protocol
-          - quic
-
+        - tunnel
+        - --no-autoupdate
+        - run
+        - --token
+        - $(CLOUDFLARE_TUNNEL_TOKEN)
         env:
-        - name: TUNNEL_TOKEN
+        - name: CLOUDFLARE_TUNNEL_TOKEN
           valueFrom:
             secretKeyRef:
               name: cloudflared-token
               key: TUNNEL_TOKEN
-
-        resources:
-          requests:
-            cpu: 100m
-            memory: 128Mi
-          limits:
-            cpu: 500m
-            memory: 256Mi
-
-        livenessProbe:
-          httpGet:
-            path: /ready
-            port: 20241
-          initialDelaySeconds: 15
-          periodSeconds: 15
-          failureThreshold: 10
-
-        readinessProbe:
-          httpGet:
-            path: /ready
-            port: 20241
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          failureThreshold: 5

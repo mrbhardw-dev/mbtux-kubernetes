@@ -76,7 +76,7 @@ codecombat:
 
   # -- Node selector for pod scheduling
   nodeSelector:
-    kubernetes.io/hostname: tuna-master-data-cluster.mbtux.com
+    kubernetes.io/hostname: mouse-worker-data-cluster.mbtux.com
 
   # -- Tolerations for pod scheduling
   tolerations: []

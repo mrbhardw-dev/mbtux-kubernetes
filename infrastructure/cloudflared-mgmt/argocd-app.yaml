@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cloudflare-mgmt
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/mrbhardw/mbtux-kubernetes.git
+    targetRevision: HEAD
+    path: infrastructure/cloudflared-mgmt
+  destination:
+    name: mgmt
+    namespace: cloudflared-mgmt
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

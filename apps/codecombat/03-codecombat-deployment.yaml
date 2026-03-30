@@ -124,4 +124,4 @@ spec:
           emptyDir:
             sizeLimit: 8Gi
       nodeSelector:
-        kubernetes.io/hostname: tuna-master-data-cluster.mbtux.com
+        kubernetes.io/hostname: mouse-worker-data-cluster.mbtux.com
