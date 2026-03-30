@@ -38,9 +38,18 @@ spec:
             - sh
             - -c
             - |
-              apk add --no-cache git
+              for i in 1 2 3 4 5; do
+                apk add --no-cache git && break
+                echo "apk attempt $i failed, retrying..."
+                sleep 10
+              done
               if [ ! -f /app/package.json ]; then
-                git clone --depth 1 https://github.com/codecombat/codecombat.git /app
+                for i in 1 2 3 4 5; do
+                  git clone --depth 1 https://github.com/codecombat/codecombat.git /app && break
+                  echo "git clone attempt $i failed, retrying..."
+                  rm -rf /app/*
+                  sleep 10
+                done
               fi
           volumeMounts:
             - name: app-code
