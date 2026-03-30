@@ -5,3 +5,38 @@ metadata:
   labels:
     app.kubernetes.io/name: codecombat
     app.kubernetes.io/part-of: codecombat
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: codecombat-secrets
+  namespace: codecombat
+  labels:
+    app.kubernetes.io/name: codecombat
+type: Opaque
+stringData:
+  MONGO_INITDB_ROOT_USERNAME: "codecombat"
+  MONGO_INITDB_ROOT_PASSWORD: "changeme-use-strong-password"
+  COCO_MONGO_URL: "mongodb://codecombat:changeme-use-strong-password@mongodb:27017/codecombat?authSource=admin"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: codecombat-config
+  namespace: codecombat
+  labels:
+    app.kubernetes.io/name: codecombat
+data:
+  NODE_ENV: "production"
+  PORT: "3000"
+  COCO_ENV: "production"
+  COCO_ANALYTICS: "false"
+  COCO_SSL_HIERARCHY: "true"
+  # SMTP configuration (update with your SMTP provider)
+  COCO_SMTP_HOST: ""
+  COCO_SMTP_PORT: "587"
+  COCO_SMTP_USER: ""
+  # Feature flags
+  COCO_DISABLE_THANG_SAVING: "false"
+  # Proxy / CDN settings
+  COCO_PROXY: "false"

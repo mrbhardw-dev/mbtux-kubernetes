@@ -1,0 +1,21 @@
+apiVersion: v2
+name: codecombat
+description: CodeCombat - A gamified coding education platform deployed on Kubernetes
+type: application
+version: 1.0.0
+appVersion: "latest"
+keywords:
+  - codecombat
+  - education
+  - coding
+  - gamification
+maintainers:
+  - name: mbtux
+home: https://codecombat.com
+sources:
+  - https://github.com/codecombat/codecombat
+dependencies:
+  - name: mongodb
+    version: "~15.6"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: mongodb.enabled

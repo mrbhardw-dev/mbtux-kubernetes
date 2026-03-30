@@ -11,8 +11,17 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "50m"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
+    nginx.ingress.kubernetes.io/websocket-services: "codecombat"
+    # Uncomment after installing cert-manager
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   ingressClassName: nginx
+  # Uncomment after installing cert-manager and creating ClusterIssuer
+  # tls:
+  #   - hosts:
+  #       - codecombat.mbtux.com
+  #     secretName: codecombat-tls
   rules:
     - host: codecombat.mbtux.com
       http:
