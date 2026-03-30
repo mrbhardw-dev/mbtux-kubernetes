@@ -53,7 +53,8 @@ spec:
               node setup-aether.js 2>&1 | tail -5
               echo "Creating minimal public dir..."
               mkdir -p public_coco/images/favicon
-              touch public_coco/.gitkeep
+              cp -r static/images/favicon/* public_coco/images/favicon/ 2>/dev/null || true
+              touch public_coco/images/favicon/favicon-coco
               echo "Setup complete"
           volumeMounts:
             - name: app-code
