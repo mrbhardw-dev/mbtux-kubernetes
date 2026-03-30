@@ -47,17 +47,19 @@ spec:
               cd /app
               echo "Running npm install..."
               npm install --force 2>&1 | tail -10
-              echo "npm install complete"
+              echo "Running build..."
+              npm run build 2>&1 | tail -10
+              echo "Build complete"
           volumeMounts:
             - name: app-code
               mountPath: /app
           resources:
             requests:
-              memory: "2Gi"
+              memory: "4Gi"
               cpu: "500m"
             limits:
-              memory: "4Gi"
-              cpu: "2"
+              memory: "8Gi"
+              cpu: "4"
       containers:
         - name: codecombat
           image: node:20
@@ -120,6 +122,6 @@ spec:
       volumes:
         - name: app-code
           emptyDir:
-            sizeLimit: 4Gi
+            sizeLimit: 8Gi
       nodeSelector:
         kubernetes.io/hostname: tuna-master-data-cluster.mbtux.com
