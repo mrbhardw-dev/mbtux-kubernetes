@@ -46,7 +46,7 @@ spec:
               fi
               cd /app
               echo "Running npm install..."
-              npm install --legacy-peer-deps 2>&1 | tail -5
+              npm install --force 2>&1 | tail -10
               echo "npm install complete"
           volumeMounts:
             - name: app-code
