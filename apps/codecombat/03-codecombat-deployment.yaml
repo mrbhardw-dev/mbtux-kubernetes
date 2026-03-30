@@ -122,3 +122,5 @@ spec:
         - name: app-code
           emptyDir:
             sizeLimit: 2Gi
+      nodeSelector:
+        kubernetes.io/hostname: tuna-master-data-cluster.mbtux.com

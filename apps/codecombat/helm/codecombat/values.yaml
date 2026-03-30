@@ -75,7 +75,8 @@ codecombat:
     failureThreshold: 30
 
   # -- Node selector for pod scheduling
-  nodeSelector: {}
+  nodeSelector:
+    kubernetes.io/hostname: tuna-master-data-cluster.mbtux.com
 
   # -- Tolerations for pod scheduling
   tolerations: []
