@@ -75,8 +75,7 @@ codecombat:
     failureThreshold: 30
 
   # -- Node selector for pod scheduling
-  nodeSelector:
-    kubernetes.io/hostname: mouse-worker-data-cluster.mbtux.com
+  nodeSelector: {}
 
   # -- Tolerations for pod scheduling
   tolerations: []

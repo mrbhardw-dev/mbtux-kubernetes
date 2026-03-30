@@ -47,9 +47,14 @@ spec:
               cd /app
               echo "Running npm install..."
               npm install --force 2>&1 | tail -10
-              echo "Running build..."
-              npm run build 2>&1 | tail -10
-              echo "Build complete"
+              echo "Running bower install..."
+              npx bower install --allow-root 2>&1 | tail -5
+              echo "Running build-aether..."
+              node setup-aether.js 2>&1 | tail -5
+              echo "Creating minimal public dir..."
+              mkdir -p public_coco/images/favicon
+              touch public_coco/.gitkeep
+              echo "Setup complete"
           volumeMounts:
             - name: app-code
               mountPath: /app
@@ -122,6 +127,5 @@ spec:
       volumes:
         - name: app-code
           emptyDir:
-            sizeLimit: 8Gi
-      nodeSelector:
-        kubernetes.io/hostname: mouse-worker-data-cluster.mbtux.com
+            sizeLimit: 4Gi
+      # No nodeSelector - let scheduler pick available worker
