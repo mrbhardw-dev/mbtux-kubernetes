@@ -13,7 +13,7 @@ spec:
   resources:
     requests:
       storage: 10Gi
-  storageClassName: proxmox-zfs
+  storageClassName: local-path
 ---
 apiVersion: apps/v1
 kind: StatefulSet

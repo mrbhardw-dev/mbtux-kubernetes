@@ -1,7 +1,7 @@
 hostname: rancher.mbtux.com
 replicas: 1
 
-bootstrapPassword: "admin"
+bootstrapPassword: "nFtMpT^z!1B&la^WDiBd"
 
 tls: external
 

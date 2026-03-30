@@ -9,7 +9,7 @@ global:
   # -- Image pull secrets for private registries
   imagePullSecrets: []
   # -- Storage class for PVCs (use "proxmox-csi" for this cluster)
-  storageClass: "proxmox-zfs"
+  storageClass: "local-path"
 
 # =============================================================================
 # CodeCombat Application Configuration
@@ -148,7 +148,7 @@ mongodb:
   persistence:
     enabled: true
     size: 10Gi
-    storageClass: "proxmox-zfs"
+    storageClass: "local-path"
     accessModes:
       - ReadWriteOnce
 
@@ -255,4 +255,4 @@ backup:
   # -- Backup PVC size
   storageSize: 20Gi
   # -- Storage class for backup PVC
-  storageClass: "proxmox-zfs"
+  storageClass: "local-path"
