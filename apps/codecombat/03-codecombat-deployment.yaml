@@ -55,10 +55,10 @@ spec:
               mountPath: /app
           resources:
             requests:
-              memory: "4Gi"
+              memory: "1Gi"
               cpu: "500m"
             limits:
-              memory: "8Gi"
+              memory: "4Gi"
               cpu: "4"
       containers:
         - name: codecombat
