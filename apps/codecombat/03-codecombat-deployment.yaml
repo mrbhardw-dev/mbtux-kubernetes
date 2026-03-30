@@ -80,11 +80,11 @@ spec:
                   key: COCO_ENV
           resources:
             requests:
-              memory: "512Mi"
-              cpu: "250m"
-            limits:
               memory: "1Gi"
-              cpu: "1"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "2"
           livenessProbe:
             httpGet:
               path: /
