@@ -1,4 +1,6 @@
-# Data Cluster Registration
+# Data Cluster Import Registration
+# This creates the cluster entry in Rancher. After applying, you must
+# run the import command on the data cluster to install the Rancher agent.
 ---
 apiVersion: provisioning.cattle.io/v1
 kind: Cluster
@@ -11,64 +13,9 @@ metadata:
     data: "true"
   annotations:
     description: "Data cluster for application workloads"
-spec:
-  kubernetesVersion: "v1.31.14"
-  rkeConfig:
-    machinePools:
-      - name: data-master
-        controlPlaneRole:
-          - controlplane
-        etcdRole:
-          - etcd
-        workerRole:
-          - worker
-        quantity: 1
-        machineConfigRef:
-          kind: VMwareCloudProviderConfig
-          name: data-master-config
-      - name: data-worker
-        workerRole:
-          - worker
-        quantity: 2
-        machineConfigRef:
-          kind: VMwareCloudProviderConfig
-          name: data-worker-config
-    chartValues:
-      rke2-coredns:
-        global:
-          coredns:
-            image:
-              tag: "1.11.3"
-    machineSelectorConfig:
-      - config:
-          kubelet-arg:
-            - "max-pods=110"
-            - "image-gc-high-threshold=85"
-            - "image-gc-low-threshold=80"
-          kube-apiserver-arg:
-            - "enable-admission-plugins=NodeRestriction,PodSecurity"
-          kube-controller-manager-arg:
-            - "terminated-pod-gc-threshold=100"
-          kube-proxy-arg:
-            - "proxy-mode=ipvs"
+spec: {}
 ---
-# Fleet Cluster Registration
-apiVersion: fleet.cattle.io/v1alpha1
-kind: Cluster
-metadata:
-  name: data-cluster
-  namespace: fleet-default
-  labels:
-    cluster: data
-    environment: production
-    data: "true"
-  annotations:
-    description: "Data cluster for application workloads"
-spec:
-  clientID: "data-cluster"
-  agentNamespace: "cattle-fleet-system"
----
-# Fleet Cluster Group
+# Fleet Cluster Group for targeting GitRepos
 apiVersion: fleet.cattle.io/v1alpha1
 kind: ClusterGroup
 metadata:
@@ -81,53 +28,3 @@ spec:
   selector:
     matchLabels:
       cluster: data
----
-# Rancher Cluster Registration Token
-apiVersion: management.cattle.io/v3
-kind: ClusterRegistrationToken
-metadata:
-  name: data-cluster-token
-  namespace: fleet-default
-  labels:
-    cluster: data
-spec:
-  clusterName: "data-cluster"
----
-# Fleet Agent Bundle
-apiVersion: fleet.cattle.io/v1alpha1
-kind: Bundle
-metadata:
-  name: data-fleet-agent
-  namespace: fleet-default
-  labels:
-    cluster: data
-spec:
-  namespace: cattle-fleet-system
-  rolloutStrategy:
-    maxUnavailable: 0
-    maxUnavailablePartitions: 0
-  resources:
-    - content: |
-        apiVersion: apps/v1
-        kind: Deployment
-        metadata:
-          name: fleet-agent
-          namespace: cattle-fleet-system
-        spec:
-          replicas: 1
-          selector:
-            matchLabels:
-              app: fleet-agent
-          template:
-            metadata:
-              labels:
-                app: fleet-agent
-            spec:
-          containers:
-            - name: fleet-agent
-              image: rancher/fleet-agent:v0.11.4
-              env:
-                - name: CLUSTER_ID
-                  value: "data-cluster"
-                - name: CLUSTER_NAMESPACE
-                  value: "fleet-default"

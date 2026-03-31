@@ -46,20 +46,21 @@ spec:
   project: mgmt-cluster
   source:
     repoURL: https://releases.rancher.com/server-charts/stable
-    targetRevision: 2.13.3
+    targetRevision: 2.14.0
     chart: rancher
     helm:
       values: |
         hostname: rancher.mbtux.com
-        replicas: 1
-        bootstrapPassword: "admin"
+        replicas: 3
+        bootstrapPassword: "nFtMpT^z!1B&la^WDiBd"
         tls: external
         ingress:
           enabled: true
           ingressClassName: nginx
           extraAnnotations:
-            nginx.ingress.kubernetes.io/ssl-redirect: "false"
+            nginx.ingress.kubernetes.io/ssl-redirect: "true"
             nginx.ingress.kubernetes.io/proxy-body-size: "0"
+            cert-manager.io/cluster-issuer: "letsencrypt-prod"
         service:
           type: ClusterIP
         resources:

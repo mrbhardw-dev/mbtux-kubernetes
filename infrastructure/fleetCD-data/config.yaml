@@ -12,9 +12,9 @@ metadata:
 spec:
   repo: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
   branch: main
-  revision: f31e67c
   pollingInterval: 60s
   insecureSkipTLSVerify: false
+  clientSecretName: git-http-basic-auth
   correctDrift:
     enabled: true
     force: false

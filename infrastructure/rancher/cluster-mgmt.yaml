@@ -118,7 +118,7 @@ spec:
             spec:
           containers:
             - name: fleet-agent
-              image: rancher/fleet-agent:v0.11.4
+              image: rancher/fleet-agent:v0.12.0
               env:
                 - name: CLUSTER_ID
                   value: "mgmt-cluster"
