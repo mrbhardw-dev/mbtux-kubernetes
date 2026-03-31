@@ -2,7 +2,7 @@ apiVersion: fleet.cattle.io/v1alpha1
 kind: GitRepo
 metadata:
   name: fleet-mgmt
-  namespace: fleet-local
+  namespace: fleet-mgmt
   labels:
     app: mbtux-kubernetes
     environment: production

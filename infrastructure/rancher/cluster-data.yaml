@@ -14,17 +14,3 @@ metadata:
   annotations:
     description: "Data cluster for application workloads"
 spec: {}
----
-# Fleet Cluster Group for targeting GitRepos
-apiVersion: fleet.cattle.io/v1alpha1
-kind: ClusterGroup
-metadata:
-  name: data-cluster-group
-  namespace: fleet-default
-  labels:
-    cluster: data
-    environment: production
-spec:
-  selector:
-    matchLabels:
-      cluster: data
