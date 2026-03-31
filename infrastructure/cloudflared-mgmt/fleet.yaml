@@ -1,3 +1,4 @@
 defaultNamespace: cloudflared-mgmt
+name: cloudflared-mgmt
 helm:
   takeOwnership: true
