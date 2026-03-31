@@ -15,7 +15,6 @@ spec:
   revision: HEAD
   pollingInterval: 60s
   insecureSkipTLSVerify: false
-  clientSecretName: github-credentials
   correctDrift:
     enabled: true
     force: false
