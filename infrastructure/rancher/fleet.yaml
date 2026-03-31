@@ -2,8 +2,6 @@ defaultNamespace: cattle-system
 helm:
   repo: https://releases.rancher.com/server-charts/stable
   chart: rancher
-  version: 2.13.3
-  releaseName: rancher
   values:
     hostname: rancher.mbtux.com
     replicas: 1
