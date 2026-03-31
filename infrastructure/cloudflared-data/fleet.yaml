@@ -1,1 +1,3 @@
 defaultNamespace: cloudflared-data
+helm:
+  takeOwnership: true
