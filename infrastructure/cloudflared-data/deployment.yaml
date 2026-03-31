@@ -21,8 +21,6 @@ spec:
         args:
           - tunnel
           - --no-autoupdate
-          - --metrics
-          - :2000
           - run
           - --token
           - $(TUNNEL_TOKEN)
@@ -43,19 +41,3 @@ spec:
           limits:
             cpu: 500m
             memory: 256Mi
-
-        livenessProbe:
-          httpGet:
-            path: /ready
-            port: 2000
-          initialDelaySeconds: 15
-          periodSeconds: 15
-          failureThreshold: 10
-
-        readinessProbe:
-          httpGet:
-            path: /ready
-            port: 2000
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          failureThreshold: 5
