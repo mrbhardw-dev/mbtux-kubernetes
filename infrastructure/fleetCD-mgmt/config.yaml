@@ -1,0 +1,29 @@
+apiVersion: fleet.cattle.io/v1alpha1
+kind: GitRepo
+metadata:
+  name: mbtux-kubernetes
+  namespace: fleet-default
+  labels:
+    app: mbtux-kubernetes
+    environment: production
+    cluster: mgmt
+  annotations:
+    description: "MBTUX Kubernetes - Management cluster FleetCD configuration"
+spec:
+  repo: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
+  branch: main
+  revision: HEAD
+  pollingInterval: 60s
+  insecureSkipTLSVerify: false
+  correctDrift:
+    enabled: true
+    force: false
+    keepFailHistory: true
+  keepResources: false
+  deleteNamespace: false
+  paths:
+    - infrastructure/rancher
+    - infrastructure/cloudflared-mgmt
+  targets:
+    - name: mgmt-cluster
+      clusterName: local

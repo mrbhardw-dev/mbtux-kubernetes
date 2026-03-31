@@ -7,3 +7,8 @@ resources:
   - namespace.yaml
   - secret.yaml
   - deployment.yaml
+
+commonLabels:
+  app.kubernetes.io/name: cloudflared-data
+  app.kubernetes.io/part-of: infrastructure
+  managed-by: fleetcd

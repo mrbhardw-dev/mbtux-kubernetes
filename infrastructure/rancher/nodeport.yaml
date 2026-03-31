@@ -9,6 +9,9 @@ metadata:
     app: rancher
     app.kubernetes.io/name: rancher
     app.kubernetes.io/part-of: rancher
+    cluster: mgmt
+  annotations:
+    description: "NodePort service for direct Rancher access"
 spec:
   type: NodePort
   selector:

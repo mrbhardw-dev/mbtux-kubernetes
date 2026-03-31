@@ -1,0 +1,34 @@
+defaultNamespace: cattle-system
+kustomize:
+  dir: infrastructure/rancher
+targetCustomizations:
+  - name: rancher-helm
+    helm:
+      chart: https://releases.rancher.com/server-charts/stable
+      version: 2.13.3
+      releaseName: rancher
+      values:
+        hostname: rancher.mbtux.com
+        replicas: 1
+        bootstrapPassword: "nFtMpT^z!1B&la^WDiBd"
+        tls: external
+        ingress:
+          enabled: true
+          ingressClassName: nginx
+          extraAnnotations:
+            nginx.ingress.kubernetes.io/ssl-redirect: "true"
+            nginx.ingress.kubernetes.io/proxy-body-size: "0"
+            cert-manager.io/cluster-issuer: "letsencrypt-prod"
+        service:
+          type: ClusterIP
+        resources:
+          requests:
+            cpu: 250m
+            memory: 512Mi
+          limits:
+            cpu: "1"
+            memory: 1Gi
+        noAntiAffinity: "true"
+        auditLevel: 0
+        debug: false
+        privateCA: false

@@ -1,0 +1,3 @@
+defaultNamespace: cloudflared-mgmt
+kustomize:
+  dir: infrastructure/cloudflared-mgmt

@@ -5,4 +5,11 @@ namespace: cattle-system
 
 resources:
   - namespace.yaml
-  - application.yaml
+  - nodeport.yaml
+  - cluster-mgmt.yaml
+  - cluster-data.yaml
+
+commonLabels:
+  app.kubernetes.io/name: rancher
+  app.kubernetes.io/part-of: infrastructure
+  managed-by: fleetcd

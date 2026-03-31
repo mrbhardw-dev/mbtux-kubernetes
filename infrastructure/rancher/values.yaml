@@ -41,3 +41,53 @@ debug: false
 
 # Use letsencrypt for internal TLS if needed
 privateCA: false
+
+# Feature flags
+features: ""
+
+# Cluster provisioning
+extraEnv:
+  - name: CATTLE_ANNOTATIONS_NAMESPACE
+    value: "cattle-system"
+  - name: CATTLE_CLUSTER_REGISTRATION
+    value: "true"
+
+# Agent configuration
+agent:
+  image:
+    tag: ""
+  tolerations:
+    - effect: NoSchedule
+      operator: Exists
+    - effect: NoExecute
+      operator: Exists
+
+# Rancher server URL
+rancherUrl: "https://rancher.mbtux.com"
+
+# Cluster configuration for managed clusters
+clusters:
+  mgmt:
+    name: "mgmt-cluster"
+    displayName: "Management Cluster"
+    description: "Management cluster for infrastructure services"
+    labels:
+      cluster: mgmt
+      environment: production
+    annotations:
+      management: "true"
+    enableNetworkPolicy: false
+    enableClusterAlerting: true
+    enableClusterMonitoring: true
+  data:
+    name: "data-cluster"
+    displayName: "Data Cluster"
+    description: "Data cluster for application workloads"
+    labels:
+      cluster: data
+      environment: production
+    annotations:
+      data: "true"
+    enableNetworkPolicy: false
+    enableClusterAlerting: true
+    enableClusterMonitoring: true

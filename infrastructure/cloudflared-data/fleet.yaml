@@ -1,0 +1,3 @@
+defaultNamespace: cloudflared-data
+kustomize:
+  dir: infrastructure/cloudflared-data

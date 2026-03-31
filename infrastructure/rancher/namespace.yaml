@@ -5,3 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/name: rancher
     app.kubernetes.io/part-of: infrastructure
+    cluster: mgmt
+    managed-by: fleetcd
+  annotations:
+    description: "Rancher management server namespace"
