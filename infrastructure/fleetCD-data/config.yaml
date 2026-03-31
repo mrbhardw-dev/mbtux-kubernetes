@@ -1,7 +1,7 @@
 apiVersion: fleet.cattle.io/v1alpha1
 kind: GitRepo
 metadata:
-  name: mbtux-kubernetes
+  name: mbtux-kubernetes-data
   namespace: fleet-default
   labels:
     app: mbtux-kubernetes
@@ -25,4 +25,6 @@ spec:
     - infrastructure/cloudflared-data
   targets:
     - name: data-cluster
-      clusterName: local
+      clusterSelector:
+        matchLabels:
+          cluster: data
