@@ -23,6 +23,12 @@ spec:
       containers:
         - name: codecombat
           image: eedkevin/codecombat:latest
+          command:
+            - sh
+            - -c
+            - |
+              node index.js 2>&1
+          workingDir: /app
           ports:
             - containerPort: 3000
               name: http
