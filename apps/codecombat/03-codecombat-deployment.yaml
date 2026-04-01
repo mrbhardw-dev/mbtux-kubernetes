@@ -22,12 +22,19 @@ spec:
     spec:
       containers:
         - name: codecombat
-          image: operepo/ope-codecombat:latest
+          image: eedkevin/codecombat:latest
           command:
             - sh
             - -c
             - |
-              cd /home/coco/codecombat && node index.js 2>&1
+              echo "=== Root ===" && ls / 2>&1
+              echo "=== /opt ===" && ls /opt/ 2>&1
+              echo "=== /home ===" && ls /home/ 2>&1
+              echo "=== /app ===" && ls /app/ 2>&1 || true
+              echo "=== /srv ===" && ls /srv/ 2>&1 || true
+              echo "=== env ===" && env | grep -i coco 2>&1 || true
+              echo "=== node version ===" && node --version 2>&1 || true
+              sleep 300
           ports:
             - containerPort: 3000
               name: http

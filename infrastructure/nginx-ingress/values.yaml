@@ -3,3 +3,6 @@ controller:
     type: ClusterIP
   ingressClassResource:
     default: true
+
+admissionWebhooks:
+  enabled: false
