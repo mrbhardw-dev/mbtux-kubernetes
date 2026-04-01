@@ -45,12 +45,10 @@ spec:
           args:
             - --redis
             - redis:6379
+            - --kustomize-build-options
+            - "--enable-helm"
           env:
-            - name: KUSTOMIZE_ENABLE_HELM
-              value: "true"
-            - name: ARGOCD_REPO_SERVER_KUSTOMIZE_BUILD_OPTIONS
-              value: "--enable-helm"
-            - name: ARGOCD_REPOSERVER_KUSTOMIZE_BUILD_OPTIONS
+            - name: ARGOCD_KUSTOMIZE_BUILD_OPTIONS
               value: "--enable-helm"
           ports:
             - name: server
