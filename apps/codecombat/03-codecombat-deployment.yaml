@@ -51,23 +51,18 @@ spec:
               npx bower install --allow-root 2>&1 | tail -5
               echo "Running build-aether..."
               node setup-aether.js 2>&1 | tail -5
-              echo "Creating minimal public dir..."
-              mkdir -p public_coco/images/favicon/favicon-coco
-              cp -r static/images/favicon/* public_coco/images/favicon/ 2>/dev/null || true
-              # Create minimal favicon.ico if not exists
-              if [ ! -f public_coco/images/favicon/favicon-coco/favicon.ico ]; then
-                printf '\x00\x00\x01\x00\x01\x00\x10\x10\x00\x00\x01\x00\x20\x00\x68\x04\x00\x00\x16\x00\x00\x00' > public_coco/images/favicon/favicon-coco/favicon.ico
-              fi
+              echo "Running webpack build..."
+              NODE_OPTIONS='--max-old-space-size=8192' node ./runWebpack.js 2>&1 | tail -20
               echo "Setup complete"
           volumeMounts:
             - name: app-code
               mountPath: /app
           resources:
             requests:
-              memory: "1Gi"
+              memory: "2Gi"
               cpu: "500m"
             limits:
-              memory: "4Gi"
+              memory: "10Gi"
               cpu: "4"
       containers:
         - name: codecombat
@@ -131,5 +126,5 @@ spec:
       volumes:
         - name: app-code
           emptyDir:
-            sizeLimit: 4Gi
+            sizeLimit: 10Gi
       # No nodeSelector - let scheduler pick available worker
