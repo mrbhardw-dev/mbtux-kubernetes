@@ -22,13 +22,13 @@ spec:
     spec:
       containers:
         - name: codecombat
-          image: eedkevin/codecombat:latest
+          image: operepo/ope-codecombat:latest
           command:
             - sh
             - -c
             - |
-              node index.js 2>&1
-          workingDir: /app
+              ls /home/coco/codecombat/ 2>&1 || ls / 2>&1
+              echo "Done"
           ports:
             - containerPort: 3000
               name: http
