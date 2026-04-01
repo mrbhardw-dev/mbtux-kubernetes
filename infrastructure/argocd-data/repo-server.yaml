@@ -45,8 +45,6 @@ spec:
           args:
             - --redis
             - redis:6379
-            - --kustomize-build-options
-            - "--enable-helm"
           env:
             - name: ARGOCD_KUSTOMIZE_BUILD_OPTIONS
               value: "--enable-helm"
