@@ -48,6 +48,10 @@ spec:
                 secretKeyRef:
                   name: codecombat-secrets
                   key: MONGO_INITDB_ROOT_PASSWORD
+            - name: COCO_MONGO_ANALYTICS_HOST
+              value: "mongodb"
+            - name: COCO_MONGO_ANALYTICS_PORT
+              value: "27017"
             - name: NODE_ENV
               valueFrom:
                 configMapKeyRef:
