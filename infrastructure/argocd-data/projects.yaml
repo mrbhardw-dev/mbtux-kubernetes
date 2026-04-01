@@ -13,6 +13,7 @@ spec:
     - https://github.com/mrbhardw-dev/mbtux-kubernetes
     - https://charts.zitadel.com
     - https://kubernetes.github.io/ingress-nginx
+    - oci://ghcr.io/sergelogvinov/charts
   destinations:
     - namespace: '*'
       server: https://kubernetes.default.svc
