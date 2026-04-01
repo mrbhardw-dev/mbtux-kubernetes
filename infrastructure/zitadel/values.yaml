@@ -25,9 +25,6 @@ zitadel:
       Enabled: false
 
     FirstInstance:
-      LoginClientPatPath: /login-client/pat
-      MachineKeyPath: /machinekey/sa.json
-      PatPath: /machinekey/pat
       Org:
         Human:
           UserName: admin
