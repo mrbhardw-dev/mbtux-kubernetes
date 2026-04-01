@@ -8,6 +8,7 @@ resources:
   - crds/crds.yaml
   - rbac.yaml
   - secret.yaml
+  - configmap.yaml
   - redis.yaml
   - repo-server.yaml
   - application-controller.yaml
