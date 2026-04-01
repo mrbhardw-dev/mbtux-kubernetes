@@ -52,7 +52,7 @@ spec:
               echo "Running build-aether..."
               node setup-aether.js 2>&1 | tail -5
               echo "Running webpack build..."
-              NODE_OPTIONS='--max-old-space-size=8192' node ./runWebpack.js 2>&1 | tail -20
+              NODE_OPTIONS='--max-old-space-size=8192' npx webpack --config webpack.config.js 2>&1 | tail -20
               echo "Setup complete"
           volumeMounts:
             - name: app-code
