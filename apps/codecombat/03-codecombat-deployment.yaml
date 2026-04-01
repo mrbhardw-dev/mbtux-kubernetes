@@ -20,59 +20,9 @@ spec:
         app.kubernetes.io/name: codecombat
         app.kubernetes.io/component: application
     spec:
-      initContainers:
-        - name: wait-for-mongodb
-          image: busybox:1.36
-          command:
-            - sh
-            - -c
-            - |
-              until nc -z mongodb 27017; do
-                echo "Waiting for MongoDB..."
-                sleep 2
-              done
-              echo "MongoDB is ready"
-        - name: clone-and-install
-          image: node:20
-          command:
-            - sh
-            - -c
-            - |
-              set -e
-              if [ ! -f /app/package.json ]; then
-                echo "Cloning CodeCombat..."
-                apt-get update -qq && apt-get install -y -qq git > /dev/null 2>&1
-                git clone --depth 1 https://github.com/codecombat/codecombat.git /app
-              fi
-              cd /app
-              echo "Running npm install..."
-              npm install --force 2>&1 | tail -10
-              echo "Running bower install..."
-              npx bower install --allow-root 2>&1 | tail -5
-              echo "Running build-aether..."
-              node setup-aether.js 2>&1 | tail -5
-              echo "Running webpack build..."
-              NODE_OPTIONS='--max-old-space-size=4096' npx webpack --config webpack.config.js 2>&1 | tail -20
-              echo "Setup complete"
-          volumeMounts:
-            - name: app-code
-              mountPath: /app
-          resources:
-            requests:
-              memory: "1Gi"
-              cpu: "500m"
-            limits:
-              memory: "6Gi"
-              cpu: "4"
       containers:
         - name: codecombat
-          image: node:20
-          workingDir: /app
-          command:
-            - sh
-            - -c
-            - |
-              node index.js 2>&1
+          image: eedkevin/codecombat:latest
           ports:
             - containerPort: 3000
               name: http
@@ -108,7 +58,7 @@ spec:
             httpGet:
               path: /
               port: 3000
-            initialDelaySeconds: 120
+            initialDelaySeconds: 60
             periodSeconds: 15
             timeoutSeconds: 5
             failureThreshold: 5
@@ -116,15 +66,8 @@ spec:
             httpGet:
               path: /
               port: 3000
-            initialDelaySeconds: 90
+            initialDelaySeconds: 30
             periodSeconds: 5
             timeoutSeconds: 3
             failureThreshold: 10
-          volumeMounts:
-            - name: app-code
-              mountPath: /app
-      volumes:
-        - name: app-code
-          emptyDir:
-            sizeLimit: 10Gi
       # No nodeSelector - let scheduler pick available worker
