@@ -1,9 +1,0 @@
-argocdImage: argoproj/argocd:latest
-namespace: argocd
-replicas: 1
-servicePortHttp: 80
-servicePortHttps: 443
-containerPortHttp: 8080
-containerPortHttps: 443
-configEnabled: true
-serverInsecure: true

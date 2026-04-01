@@ -16,12 +16,6 @@ ingress:
 service:
   type: ClusterIP
 
-# Fleet configuration
-fleet:
-  agentImage: ""
-  agentImagePullPolicy: IfNotPresent
-  agentImageTag: "v0.12.0"
-
 # Resource limits for single-node management cluster
 resources:
   requests:
