@@ -27,8 +27,7 @@ spec:
             - sh
             - -c
             - |
-              ls /home/coco/codecombat/ 2>&1 || ls / 2>&1
-              echo "Done"
+              cd /home/coco/codecombat && node index.js 2>&1
           ports:
             - containerPort: 3000
               name: http
