@@ -25,7 +25,9 @@ spec:
           image: eedkevin/codecombat:latest
           command:
             - sh
-            - /mnt/proxy/start.sh
+            - -c
+            - |
+              cd /home/chenlu/codecombat && node index.js 2>&1
           ports:
             - containerPort: 3000
               name: http
@@ -70,36 +72,6 @@ spec:
                 configMapKeyRef:
                   name: codecombat-config
                   key: COCO_ENV
-            - name: COCO_PROXY
-              valueFrom:
-                configMapKeyRef:
-                  name: codecombat-config
-                  key: COCO_PROXY
-            - name: COCO_PROXY_TARGET
-              valueFrom:
-                configMapKeyRef:
-                  name: codecombat-config
-                  key: COCO_PROXY_TARGET
-            - name: COCO_SMTP_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: codecombat-config
-                  key: COCO_SMTP_HOST
-            - name: COCO_SMTP_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: codecombat-config
-                  key: COCO_SMTP_PORT
-            - name: COCO_SMTP_USER
-              valueFrom:
-                configMapKeyRef:
-                  name: codecombat-config
-                  key: COCO_SMTP_USER
-            - name: COCO_SMTP_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: codecombat-secrets
-                  key: COCO_SMTP_PASSWORD
             - name: COCO_COOKIE_SECRET
               valueFrom:
                 secretKeyRef:
@@ -137,11 +109,4 @@ spec:
             periodSeconds: 10
             timeoutSeconds: 10
             failureThreshold: 20
-          volumeMounts:
-            - name: proxy-middleware
-              mountPath: /mnt/proxy
       # No nodeSelector - let scheduler pick available worker
-      volumes:
-        - name: proxy-middleware
-          configMap:
-            name: codecombat-proxy-middleware
