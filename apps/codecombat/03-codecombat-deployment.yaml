@@ -25,9 +25,10 @@ spec:
           image: eedkevin/codecombat:latest
           command:
             - sh
-            - -c
-            - |
-              cd /home/chenlu/codecombat && node index.js 2>&1
+            - /mnt/init/init.sh
+          volumeMounts:
+            - name: init-script
+              mountPath: /mnt/init
           ports:
             - containerPort: 3000
               name: http
@@ -110,3 +111,7 @@ spec:
             timeoutSeconds: 10
             failureThreshold: 20
       # No nodeSelector - let scheduler pick available worker
+      volumes:
+        - name: init-script
+          configMap:
+            name: codecombat-init
