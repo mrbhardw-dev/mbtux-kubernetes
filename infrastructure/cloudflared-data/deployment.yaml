@@ -43,12 +43,12 @@ spec:
           - $(TUNNEL_TOKEN)
           - --protocol
           - quic
-          - --config
-          - /etc/cloudflared/config/config.yaml
-        volumeMounts:
-          - name: config
-            mountPath: /etc/cloudflared/config
-            readOnly: true
+          - --ingress-rule
+          - =hostname=argocd.mbtux.com service=http://server.argocd.svc.cluster.local:80
+          - --ingress-rule
+          - =hostname=auth.mbtux.com service=http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
+          - --ingress-rule
+          - =hostname=codecombat.mbtux.com service=http://codecombat.codecombat.svc.cluster.local:80
 
         env:
         - name: TUNNEL_TOKEN
@@ -64,8 +64,3 @@ spec:
           limits:
             cpu: 500m
             memory: 256Mi
-
-      volumes:
-      - name: config
-        configMap:
-          name: cloudflared-config
