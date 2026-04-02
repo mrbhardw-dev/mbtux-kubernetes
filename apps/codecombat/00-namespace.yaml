@@ -16,8 +16,8 @@ metadata:
 type: Opaque
 stringData:
   MONGO_INITDB_ROOT_USERNAME: "codecombat"
-  MONGO_INITDB_ROOT_PASSWORD: "changeme-use-strong-password"
-  COCO_MONGO_URL: "mongodb://codecombat:changeme-use-strong-password@mongodb:27017/codecombat?authSource=admin"
+  MONGO_INITDB_ROOT_PASSWORD: "sjPHLVAlJ8/QK56M44YRImCS4u/LX00V"
+  COCO_MONGO_URL: "mongodb://codecombat:sjPHLVAlJ8/QK56M44YRImCS4u/LX00V@mongodb:27017/codecombat?authSource=admin"
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -32,10 +32,10 @@ data:
   COCO_ENV: "production"
   COCO_ANALYTICS: "false"
   COCO_SSL_HIERARCHY: "true"
-  # SMTP configuration (update with your SMTP provider)
-  COCO_SMTP_HOST: ""
+  # SMTP configuration
+  COCO_SMTP_HOST: "smtp.gmail.com"
   COCO_SMTP_PORT: "587"
-  COCO_SMTP_USER: ""
+  COCO_SMTP_USER: "mrbhardw@gmail.com"
   # Feature flags
   COCO_DISABLE_THANG_SAVING: "false"
   # Proxy / CDN settings
