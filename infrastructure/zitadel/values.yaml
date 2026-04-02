@@ -57,20 +57,7 @@ ingress:
           pathType: Prefix
 
 login:
-  enabled: true
-  replicaCount: 1
-
-  ingress:
-    enabled: true
-    controller: nginx
-    className: nginx
-    annotations:
-      nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    hosts:
-      - host: auth.mbtux.com
-        paths:
-          - path: /ui/v2/login
-            pathType: Prefix
+  enabled: false
 
 resources:
   requests:
