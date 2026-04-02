@@ -27,7 +27,7 @@ metadata:
   labels:
     app.kubernetes.io/name: codecombat
 data:
-  NODE_ENV: "production"
+  NODE_ENV: "development"
   PORT: "3000"
   COCO_ENV: "production"
   COCO_ANALYTICS: "false"
@@ -38,5 +38,6 @@ data:
   COCO_SMTP_USER: "mrbhardw@gmail.com"
   # Feature flags
   COCO_DISABLE_THANG_SAVING: "false"
-  # Proxy / CDN settings
-  COCO_PROXY: "false"
+  # Proxy / CDN settings - proxy to CodeCombat.com for game content
+  COCO_PROXY: "true"
+  COCO_PROXY_TARGET: "https://direct.codecombat.com"

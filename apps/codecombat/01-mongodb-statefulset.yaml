@@ -1,4 +1,24 @@
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongodb-init-scripts
+  namespace: codecombat
+  labels:
+    app: mongodb
+    app.kubernetes.io/name: mongodb
+    app.kubernetes.io/component: database
+data:
+  create-codecombat-user.js: |
+    // Create the codecombat user in the codecombat database
+    // This is needed because the app authenticates against the codecombat db, not admin
+    db = db.getSiblingDB('codecombat');
+    db.createUser({
+      user: 'codecombat',
+      pwd: 'sjPHLVAlJ8/QK56M44YRImCS4u/LX00V',
+      roles: [{ role: 'dbOwner', db: 'codecombat' }]
+    });
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mongodb-data
@@ -60,6 +80,8 @@ spec:
           volumeMounts:
             - name: mongodb-data
               mountPath: /data/db
+            - name: mongodb-init-scripts
+              mountPath: /docker-entrypoint-initdb.d
           resources:
             requests:
               memory: "512Mi"
@@ -91,3 +113,6 @@ spec:
         - name: mongodb-data
           persistentVolumeClaim:
             claimName: mongodb-data
+        - name: mongodb-init-scripts
+          configMap:
+            name: mongodb-init-scripts
