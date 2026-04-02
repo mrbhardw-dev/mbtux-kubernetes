@@ -1,3 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudflared-config
+  namespace: cloudflared-data
+data:
+  config.yaml: |
+    tunnel: cloudflared-tunnel
+    ingress:
+      - hostname: argocd.mbtux.com
+        service: http://server.argocd.svc.cluster.local:80
+      - hostname: auth.mbtux.com
+        service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
+      - hostname: codecombat.mbtux.com
+        service: http://codecombat.codecombat.svc.cluster.local:80
+      - service: http_status:404
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,9 +43,12 @@ spec:
           - $(TUNNEL_TOKEN)
           - --protocol
           - quic
-          - --ingress-rule=hostname=argocd.mbtux.com service=http://server.argocd.svc.cluster.local:80
-          - --ingress-rule=hostname=auth.mbtux.com service=http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
-          - --ingress-rule=hostname=codecombat.mbtux.com service=http://codecombat.codecombat.svc.cluster.local:80
+          - --config
+          - /etc/cloudflared/config/config.yaml
+        volumeMounts:
+          - name: config
+            mountPath: /etc/cloudflared/config
+            readOnly: true
 
         env:
         - name: TUNNEL_TOKEN
@@ -44,3 +64,8 @@ spec:
           limits:
             cpu: 500m
             memory: 256Mi
+
+      volumes:
+      - name: config
+        configMap:
+          name: cloudflared-config
