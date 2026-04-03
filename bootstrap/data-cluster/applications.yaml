@@ -187,21 +187,21 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: codecombat
+  name: scratch
   namespace: argocd
   labels:
-    app.kubernetes.io/name: codecombat
-    app.kubernetes.io/part-of: codecombat
+    app.kubernetes.io/name: scratch
+    app.kubernetes.io/part-of: scratch
     cluster: data
 spec:
   project: data-cluster
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes
     targetRevision: main
-    path: apps/codecombat
+    path: infrastructure/scratch
   destination:
     server: https://kubernetes.default.svc
-    namespace: codecombat
+    namespace: scratch
   syncPolicy:
     automated:
       prune: true
