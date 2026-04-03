@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: scratch
-          image: nginx:alpine
+          image: mitll/scratch-web:latest
           ports:
             - containerPort: 80
               name: http
