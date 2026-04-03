@@ -7,5 +7,5 @@ parameters:
   storage: local   # MUST match Proxmox storage name
   fstype: ext4
 reclaimPolicy: Delete
-volumeBindingMode: Immediate
+volumeBindingMode: WaitForFirstConsumer
 allowVolumeExpansion: true
