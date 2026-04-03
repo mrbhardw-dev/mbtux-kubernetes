@@ -6,4 +6,6 @@ ingress:
     service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
   - hostname: codecombat.mbtux.com
     service: http://codecombat.codecombat.svc.cluster.local:80
+  - hostname: nextcloud.mbtux.com
+    service: http://nextcloud-aio-nextcloud-aio.nextcloud-aio.svc.cluster.local:80
   - service: http_status:404
