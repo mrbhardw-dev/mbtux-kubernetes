@@ -88,27 +88,27 @@ spec:
             configMapKeyRef:
               name: outline-config
               key: URL
-        - name: POSTGRES_HOST
+        - name: DATABASE_HOST
           valueFrom:
             configMapKeyRef:
               name: outline-config
-              key: POSTGRES_HOST
-        - name: POSTGRES_PORT
+              key: DATABASE_HOST
+        - name: DATABASE_PORT
           valueFrom:
             configMapKeyRef:
               name: outline-config
-              key: POSTGRES_PORT
-        - name: POSTGRES_DB
+              key: DATABASE_PORT
+        - name: DATABASE_NAME
           valueFrom:
             configMapKeyRef:
               name: outline-config
-              key: POSTGRES_DB
-        - name: POSTGRES_USER
+              key: DATABASE_NAME
+        - name: DATABASE_USER
           valueFrom:
             configMapKeyRef:
               name: outline-config
-              key: POSTGRES_USER
-        - name: POSTGRES_PASSWORD
+              key: DATABASE_USER
+        - name: DATABASE_PASSWORD
           valueFrom:
             secretKeyRef:
               name: outline-secrets
@@ -123,6 +123,11 @@ spec:
             configMapKeyRef:
               name: outline-config
               key: REDIS_PORT
+        - name: REDIS_URL
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: REDIS_URL
         - name: SECRET_KEY
           valueFrom:
             configMapKeyRef:
