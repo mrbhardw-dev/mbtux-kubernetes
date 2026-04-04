@@ -5,7 +5,7 @@ metadata:
   namespace: outline
 data:
   NODE_ENV: "production"
-  FORCE_HTTPS: "false"
+  FORCE_HTTPS: "true"
   LOG_LEVEL: "info"
   URL: "https://outline.mbtux.com"
   DATABASE_HOST: "outline-postgres"
