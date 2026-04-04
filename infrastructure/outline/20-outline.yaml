@@ -133,11 +133,11 @@ spec:
             configMapKeyRef:
               name: outline-config
               key: SECRET_KEY
-        - name: UTILS_SECRET_KEY
+        - name: UTILS_SECRET
           valueFrom:
             configMapKeyRef:
               name: outline-config
-              key: UTILS_SECRET_KEY
+              key: UTILS_SECRET
         - name: FILE_STORAGE
           valueFrom:
             configMapKeyRef:
