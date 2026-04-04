@@ -7,5 +7,5 @@ ingress:
   - hostname: codecombat.mbtux.com
     service: http://codecombat.codecombat.svc.cluster.local:80
   - hostname: nextcloud.mbtux.com
-    service: http://nextcloud-aio-apache.nextcloud-aio.svc.cluster.local:443
+    service: http://nextcloud-aio-apache.nextcloud-aio.svc.cluster.local:80
   - service: http_status:404
