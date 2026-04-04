@@ -4,6 +4,8 @@ ingress:
     service: http://server.argocd.svc.cluster.local:80
   - hostname: auth.mbtux.com
     service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
+    originRequest:
+      noTLSVerify: true
   - hostname: codecombat.mbtux.com
     service: http://codecombat.codecombat.svc.cluster.local:80
   - hostname: nextcloud.mbtux.com

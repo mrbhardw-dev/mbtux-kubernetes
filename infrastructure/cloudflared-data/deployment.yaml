@@ -11,8 +11,12 @@ data:
         service: http://server.argocd.svc.cluster.local:80
       - hostname: auth.mbtux.com
         service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
+        originRequest:
+          noTLSVerify: true
       - hostname: codecombat.mbtux.com
         service: http://codecombat.codecombat.svc.cluster.local:80
+      - hostname: nextcloud.mbtux.com
+        service: http://nextcloud-aio-apache.nextcloud-aio.svc.cluster.local:80
       - service: http_status:404
 ---
 apiVersion: apps/v1
@@ -43,6 +47,8 @@ spec:
           - $(TUNNEL_TOKEN)
           - --protocol
           - quic
+          - --config
+          - /etc/cloudflared/config/config.yaml
 
         env:
         - name: TUNNEL_TOKEN
@@ -51,6 +57,11 @@ spec:
               name: cloudflared-token
               key: TUNNEL_TOKEN
 
+        volumeMounts:
+        - name: config
+          mountPath: /etc/cloudflared/config
+          readOnly: true
+
         resources:
           requests:
             cpu: 100m
@@ -58,3 +69,8 @@ spec:
           limits:
             cpu: 500m
             memory: 256Mi
+
+      volumes:
+      - name: config
+        configMap:
+          name: cloudflared-config
