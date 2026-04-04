@@ -58,7 +58,7 @@ ingress:
           pathType: Prefix
 
 login:
-  enabled: false
+  enabled: true
 
 resources:
   requests:
