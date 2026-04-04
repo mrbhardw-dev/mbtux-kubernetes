@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: outline-config
+  namespace: outline
+data:
+  NODE_ENV: "production"
+  FORCE_HTTPS: "true"
+  LOG_LEVEL: "info"
+  URL: "https://outline.mbtux.com"
+  DATABASE_URL_PROTOCOL: "postgres"
+  POSTGRES_HOST: "outline-postgres"
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: "outline"
+  POSTGRES_USER: "outline"
+  REDIS_HOST: "outline-redis"
+  REDIS_PORT: "6379"
+  SECRET_KEY: "REPLACE_ME_CHANGE_32_CHARS"
+  UTILS_SECRET_KEY: "REPLACE_ME_CHANGE_32_CHARS"
+  SLACK_KEY: ""
+  FILE_STORAGE: "local"
+  FILE_STORAGE_LOCAL_ROOT_DIR: "/data/uploads"
+  SMTP_HOST: ""
+  SMTP_PORT: ""
+  SMTP_USERNAME: ""
+  SMTP_FROM_EMAIL: ""
+  SMTP_TLS_CIPHERS: "DEFAULT"
+  SMTP_REPLY_EMAIL: ""

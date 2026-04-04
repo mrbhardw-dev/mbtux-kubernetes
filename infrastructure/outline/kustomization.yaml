@@ -4,11 +4,10 @@ kind: Kustomization
 namespace: outline
 
 resources:
-  - namespace.yaml
-
-helmCharts:
-  - name: outline
-    repo: oci://ghcr.io/community-charts/charts/outline
-    releaseName: outline
-    namespace: outline
-    valuesFile: values.yaml
+  - 00-namespace.yaml
+  - 01-config.yaml
+  - 02-secret.yaml
+  - 10-postgres.yaml
+  - 11-redis.yaml
+  - 20-outline.yaml
+  - 30-ingress.yaml
