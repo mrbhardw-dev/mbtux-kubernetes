@@ -3,5 +3,5 @@ ingress:
   - hostname: argocd.mbtux.com
     service: http://server.argocd.svc.cluster.local:80
   - hostname: auth.mbtux.com
-    service: http://10.43.86.136:80
+    service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
   - service: http_status:404

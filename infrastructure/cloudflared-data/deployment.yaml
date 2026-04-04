@@ -10,7 +10,7 @@ data:
       - hostname: argocd.mbtux.com
         service: http://server.argocd.svc.cluster.local:80
       - hostname: auth.mbtux.com
-        service: http://10.43.86.136:80
+        service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
       - service: http_status:404
 ---
 apiVersion: apps/v1
@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
       - name: cloudflared
-        image: cloudflare/cloudflared:2024.8.0
+        image: cloudflare/cloudflared:latest
         args:
           - tunnel
           - --no-autoupdate
@@ -41,8 +41,6 @@ spec:
           - $(TUNNEL_TOKEN)
           - --protocol
           - quic
-          - --config
-          - /etc/cloudflared/config/config.yaml
 
         env:
         - name: TUNNEL_TOKEN
@@ -51,11 +49,6 @@ spec:
               name: cloudflared-token
               key: TUNNEL_TOKEN
 
-        volumeMounts:
-        - name: config
-          mountPath: /etc/cloudflared/config
-          readOnly: true
-
         resources:
           requests:
             cpu: 100m
@@ -63,8 +56,3 @@ spec:
           limits:
             cpu: 500m
             memory: 256Mi
-
-      volumes:
-      - name: config
-        configMap:
-          name: cloudflared-config
