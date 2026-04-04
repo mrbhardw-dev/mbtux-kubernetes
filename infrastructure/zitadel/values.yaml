@@ -51,14 +51,28 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/use-regex: "true"
   hosts:
     - host: auth.mbtux.com
       paths:
+        - path: /ui/v2/login
+          pathType: Prefix
+          service: zitadel-login
+          port: 3000
         - path: /
           pathType: Prefix
+          service: zitadel
+          port: 8080
 
 login:
   enabled: true
+  ingress:
+    enabled: true
+    className: nginx
+    hosts:
+      - paths:
+          - path: /ui/v2/login
+            pathType: Prefix
 
 resources:
   requests:
