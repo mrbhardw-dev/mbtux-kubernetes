@@ -8,7 +8,7 @@ resources:
 
 helmCharts:
   - name: outline
-    repo: https://community-charts.github.io/charts
+    repo: oci://ghcr.io/community-charts/charts/outline
     releaseName: outline
     namespace: outline
     valuesFile: values.yaml
