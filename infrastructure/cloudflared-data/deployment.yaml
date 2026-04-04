@@ -6,12 +6,6 @@ metadata:
 data:
   config.yaml: |
     tunnel: cloudflared-tunnel
-    ingress:
-      - hostname: argocd.mbtux.com
-        service: http://server.argocd.svc.cluster.local:80
-      - hostname: auth.mbtux.com
-        service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
-      - service: http_status:404
 ---
 apiVersion: apps/v1
 kind: Deployment
