@@ -1,4 +1,0 @@
-defaultNamespace: cloudflared-data
-name: cloudflared-data
-helm:
-  takeOwnership: true
