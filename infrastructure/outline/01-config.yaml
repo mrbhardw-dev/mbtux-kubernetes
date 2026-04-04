@@ -15,6 +15,7 @@ data:
   REDIS_HOST: "outline-redis"
   REDIS_PORT: "6379"
   REDIS_URL: "redis://outline-redis:6379"
+  PGSSLMODE: "disable"
   SECRET_KEY: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
   UTILS_SECRET: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
   SLACK_KEY: ""

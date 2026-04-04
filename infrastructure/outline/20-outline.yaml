@@ -138,6 +138,11 @@ spec:
             configMapKeyRef:
               name: outline-config
               key: UTILS_SECRET
+        - name: PGSSLMODE
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: PGSSLMODE
         - name: FILE_STORAGE
           valueFrom:
             configMapKeyRef:
