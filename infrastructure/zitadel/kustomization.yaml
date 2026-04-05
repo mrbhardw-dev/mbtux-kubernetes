@@ -11,8 +11,7 @@ resources:
 
 helmCharts:
   - name: zitadel
+    repo: https://charts.zitadel.com
     releaseName: zitadel
     namespace: identity
     valuesFile: values.yaml
-    includeCRDs: false
-    chart: ./charts/zitadel
