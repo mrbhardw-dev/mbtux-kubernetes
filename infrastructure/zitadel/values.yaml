@@ -1,8 +1,5 @@
 postgresql:
   enabled: true
-  commonAnnotations:
-    helm.sh/hook: pre-install
-    helm.sh/hook-weight: "-1"
   auth:
     database: zitadel
     username: zitadel
@@ -16,15 +13,12 @@ postgresql:
 
 zitadel:
   masterkeySecretName: zitadel-masterkey
-
   configmapConfig:
     ExternalDomain: auth.mbtux.com
     ExternalSecure: true
     ExternalPort: 443
-
     TLS:
       Enabled: false
-
     FirstInstance:
       Org:
         Human:
@@ -33,24 +27,7 @@ zitadel:
           Password: "Admin@2026!"
           PasswordChangeRequired: true
 
-  debug:
-    enabled: false
-
 replicaCount: 1
-
-ingress:
-  enabled: true
-  controller: nginx
-  className: nginx
-  annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
-    nginx.ingress.kubernetes.io/proxy-body-size: "0"
-  hosts:
-    - host: auth.mbtux.com
-      paths:
-        - path: /
-          pathType: Prefix
 
 login:
   enabled: false
