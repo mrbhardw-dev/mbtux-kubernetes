@@ -8,6 +8,7 @@ resources:
   - masterkey-secret.yaml
   - placeholder-secrets.yaml
   - ingress.yaml
+  - postgresql.yaml
 
 helmCharts:
   - name: zitadel
