@@ -7,10 +7,12 @@ resources:
   - namespace.yaml
   - masterkey-secret.yaml
   - placeholder-secrets.yaml
+  - ingress.yaml
 
 helmCharts:
   - name: zitadel
-    repo: https://charts.zitadel.com
     releaseName: zitadel
     namespace: identity
     valuesFile: values.yaml
+    includeCRDs: false
+    chart: ./charts/zitadel
