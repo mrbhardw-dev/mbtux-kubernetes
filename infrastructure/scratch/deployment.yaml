@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: scratch
-          image: mitll/scratch-web:latest
+          image: playniuniu/docker-scratch-gui:latest
           ports:
             - containerPort: 80
               name: http
