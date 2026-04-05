@@ -11,7 +11,6 @@ spec:
   description: Data cluster - infrastructure and application workloads
   sourceRepos:
     - https://github.com/mrbhardw-dev/mbtux-kubernetes
-    - https://charts.zitadel.com
     - https://kubernetes.github.io/ingress-nginx
     - oci://ghcr.io/sergelogvinov/charts
   destinations:
