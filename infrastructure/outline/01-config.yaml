@@ -26,3 +26,4 @@ data:
   SMTP_HOST: "smtppro.zoho.eu"
   SMTP_PORT: "587"
   SMTP_SECURE: "false"
+  SMTP_FROM_EMAIL: "mritunjay.bhardwaj@mbtux.com"
