@@ -33,11 +33,6 @@ zitadel:
           Password: "Admin@2026!"
           PasswordChangeRequired: true
 
-    # SMTP must be configured via Console UI after first login:
-    # Settings -> SMTP Settings -> Add SMTP Provider
-    # Host: smtppro.zoho.eu:587 (StartTLS)
-    # User: mritunjay.bhardwaj@mbtux.com
-
   debug:
     enabled: false
 
@@ -51,28 +46,14 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
-    nginx.ingress.kubernetes.io/use-regex: "true"
   hosts:
     - host: auth.mbtux.com
       paths:
-        - path: /ui/v2/login
-          pathType: Prefix
-          service: zitadel-login
-          port: 3000
         - path: /
           pathType: Prefix
-          service: zitadel
-          port: 8080
 
 login:
-  enabled: true
-  ingress:
-    enabled: true
-    className: nginx
-    hosts:
-      - paths:
-          - path: /ui/v2/login
-            pathType: Prefix
+  enabled: false
 
 resources:
   requests:
