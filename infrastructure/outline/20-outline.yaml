@@ -152,6 +152,46 @@ spec:
             configMapKeyRef:
               name: outline-config
               key: FILE_STORAGE_LOCAL_ROOT_DIR
+        - name: EMAIL_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: EMAIL_ENABLED
+        - name: EMAIL_FROM_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: EMAIL_FROM_NAME
+        - name: SMTP_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: SMTP_HOST
+        - name: SMTP_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: SMTP_PORT
+        - name: SMTP_SECURE
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: SMTP_SECURE
+        - name: SMTP_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: outline-secrets
+              key: smtp-username
+        - name: SMTP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: outline-secrets
+              key: smtp-password
+        - name: SMTP_FROM_ADDRESS
+          valueFrom:
+            secretKeyRef:
+              name: outline-secrets
+              key: smtp-from-address
         resources:
           requests:
             memory: "512Mi"
