@@ -26,6 +26,12 @@ zitadel:
           Email: admin@mbtux.com
           Password: "Admin@2026!"
           PasswordChangeRequired: true
+        LoginClient:
+          Machine:
+            Username: login-client
+            Name: Login Client
+          Pat:
+            ExpirationDate: "2029-12-31T00:00:00Z"
 
 replicaCount: 1
 
