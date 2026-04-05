@@ -26,13 +26,11 @@ zitadel:
           Email: admin@mbtux.com
           Password: "Admin@2026!"
           PasswordChangeRequired: true
-      LoginClient:
-        pat: ""
 
 replicaCount: 1
 
 login:
-  enabled: true
+  enabled: false
 
 resources:
   requests:
