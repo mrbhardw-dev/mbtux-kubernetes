@@ -192,6 +192,11 @@ spec:
             secretKeyRef:
               name: outline-secrets
               key: smtp-from-address
+        - name: SMTP_FROM_EMAIL
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: SMTP_FROM_EMAIL
         resources:
           requests:
             memory: "512Mi"
