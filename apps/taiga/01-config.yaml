@@ -19,3 +19,7 @@ data:
   REDIS_PORT: "6379"
   RABBITMQ_HOST: "taiga-rabbitmq"
   RABBITMQ_PORT: "5672"
+  TAIGA_BACK_HOST: "taiga-back"
+  TAIGA_FRONT_HOST: "taiga-front"
+  TAIGA_EVENTS_HOST: "taiga-events"
+  TAIGA_PROTECTED_HOST: "taiga-protected"
