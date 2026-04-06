@@ -309,30 +309,9 @@ spec:
             secretKeyRef:
               name: sure-secrets
               key: secret-key-base
-        - name: SMTP_SETTINGS_ADDRESS
-          valueFrom:
-            secretKeyRef:
-              name: sure-secrets
-              key: smtp-host
-        - name: SMTP_SETTINGS_PORT
-          valueFrom:
-            secretKeyRef:
-              name: sure-secrets
-              key: smtp-port
-        - name: SMTP_SETTINGS_USER_NAME
-          valueFrom:
-            secretKeyRef:
-              name: sure-secrets
-              key: smtp-username
-        - name: SMTP_SETTINGS_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: sure-secrets
-              key: smtp-password
-        - name: SMTP_SETTINGS_AUTHENTICATION
-          value: "plain"
-        - name: SMTP_SETTINGS_ENABLE_STARTTLS_AUTO
-          value: "true"
+        - name: RAILS_MAILER_SMTP_SETTINGS
+          value: >
+            {"address":"smtppro.zoho.eu","port":"587","user_name":"mritunjay.bhardwaj@mbtux.com","password":"7CsTsGcGbntE","authentication":"plain","enable_starttls_auto":true}
         livenessProbe:
           exec:
             command:
