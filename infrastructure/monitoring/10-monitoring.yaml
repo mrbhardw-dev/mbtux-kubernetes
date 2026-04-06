@@ -127,11 +127,11 @@ spec:
           containerPort: 9090
         resources:
           requests:
-            memory: "512Mi"
-            cpu: "250m"
+            memory: "256Mi"
+            cpu: "100m"
           limits:
-            memory: "2Gi"
-            cpu: "1000m"
+            memory: "1Gi"
+            cpu: "500m"
         volumeMounts:
         - name: config
           mountPath: /etc/prometheus
@@ -281,12 +281,11 @@ spec:
             cpu: "250m"
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
   name: node-exporter
   namespace: monitoring
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: node-exporter
@@ -295,20 +294,14 @@ spec:
       labels:
         app: node-exporter
     spec:
-      hostNetwork: true
-      hostPID: true
       containers:
       - name: node-exporter
         image: prom/node-exporter:v1.7.0
         imagePullPolicy: IfNotPresent
-        command:
-          - /bin/sh
-          - -c
-          - |
-            mount --make-rshared / || true
-            mount --make-rslave /sys || true
-            mount --make-rslave /run || true
-            node-exporter --path.procfs=/host/proc --path.sysfs=/host/sys --collector.filesystem.mount-points-exclude=^/(sys|proc|run|dev|host)(/|$)
+        args:
+          - --path.procfs=/host/proc
+          - --path.sysfs=/host/sys
+          - --collector.filesystem.mount-points-exclude=^/(sys|proc|run|dev|host)(/|$)
         ports:
         - name: http
           containerPort: 9100
@@ -326,9 +319,6 @@ spec:
         - name: sys
           mountPath: /host/sys
           readOnly: true
-        - name: root
-          mountPath: /host
-          readOnly: true
       volumes:
       - name: proc
         hostPath:
@@ -336,9 +326,6 @@ spec:
       - name: sys
         hostPath:
           path: /sys
-      - name: root
-        hostPath:
-          path: /
 ---
 apiVersion: v1
 kind: ServiceAccount
