@@ -1,0 +1,97 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: monitoring
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+      external_labels:
+        cluster: 'data-cluster'
+    
+    alerting:
+      alertmanagers:
+        - static_configs:
+            - targets: []
+    
+    rule_files: []
+    
+    scrape_configs:
+      - job_name: 'prometheus'
+        static_configs:
+          - targets: ['localhost:9090']
+      
+      - job_name: 'kube-state-metrics'
+        static_configs:
+          - targets: ['kube-state-metrics:8080']
+      
+      - job_name: 'node-exporter'
+        static_configs:
+          - targets: ['node-exporter:9100']
+      
+      - job_name: 'kubernetes-apiservers'
+        kubernetes_sd_configs:
+          - role: endpoints
+        scheme: https
+        tls_config:
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+            action: keep
+            regex: default;kubernetes;https
+      
+      - job_name: 'kubernetes-nodes'
+        kubernetes_sd_configs:
+          - role: node
+        scheme: https
+        tls_config:
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        relabel_configs:
+          - action: labelmap
+            regex: __meta_kubernetes_node_label_(.+)
+      
+      - job_name: 'kubernetes-pods'
+        kubernetes_sd_configs:
+          - role: pod
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+            action: keep
+            regex: true
+          - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+            action: replace
+            target_label: __metrics_path__
+            regex: (.+)
+          - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_pod_name, __meta_kubernetes_pod_container_name, __meta_kubernetes_pod_container_port_number]
+            action: replace
+            target_labels: [__meta_kubernetes_namespace, __meta_kubernetes_pod_name, __meta_kubernetes_pod_container_name, __meta_kubernetes_pod_container_port_number]
+            regex: (.+)
+          - source_labels: [__meta_kubernetes_service_name]
+            action: replace
+            target_label: service
+          - action: replace
+            regex: (.+)
+            replacement: /api/v1/namespaces/$__meta_kubernetes_namespace/pods/$__meta_kubernetes_pod_name/proxy
+            source_labels:
+              - __meta_kubernetes_namespace
+              - __meta_kubernetes_pod_name
+            target_label: __metrics_path__
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-config
+  namespace: monitoring
+data:
+  GF_SERVER_ROOT_URL: "https://grafana.mbtux.com"
+  GF_SERVER_SERVE_FROM_SUB_PATH: "false"
+  GF_SERVER_HTTP_PORT: "3000"
+  GF_DATABASE_TYPE: "sqlite3"
+  GF_DATABASE_PATH: "/var/lib/grafana/grafana.db"
+  GF_SECURITY_ADMIN_USER: "admin"
+  GF_SECURITY_ALLOW_SIGN_UP: "true"
+  GF_USERS_ALLOW_SIGN_UP: "true"
+  GF_INSTALL_PLUGINS: "grafana-piechart-panel"

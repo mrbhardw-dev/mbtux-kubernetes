@@ -155,6 +155,41 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
+  name: monitoring
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: monitoring
+    app.kubernetes.io/part-of: monitoring
+    cluster: data
+spec:
+  project: data-cluster
+  source:
+    repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes
+    targetRevision: main
+    path: infrastructure/monitoring
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - PruneLast=true
+      - PrunePropagationPolicy=foreground
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 5m
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
   name: scratch
   namespace: argocd
   labels:
