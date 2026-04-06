@@ -309,29 +309,29 @@ spec:
             secretKeyRef:
               name: sure-secrets
               key: secret-key-base
-        - name: ACTION_MAILER_SMTP_ADDRESS
+        - name: SMTP_SETTINGS_ADDRESS
           valueFrom:
             secretKeyRef:
               name: sure-secrets
               key: smtp-host
-        - name: ACTION_MAILER_SMTP_PORT
+        - name: SMTP_SETTINGS_PORT
           valueFrom:
             secretKeyRef:
               name: sure-secrets
               key: smtp-port
-        - name: ACTION_MAILER_SMTP_USER_NAME
+        - name: SMTP_SETTINGS_USER_NAME
           valueFrom:
             secretKeyRef:
               name: sure-secrets
               key: smtp-username
-        - name: ACTION_MAILER_SMTP_PASSWORD
+        - name: SMTP_SETTINGS_PASSWORD
           valueFrom:
             secretKeyRef:
               name: sure-secrets
               key: smtp-password
-        - name: ACTION_MAILER_SMTP_AUTHENTICATION
+        - name: SMTP_SETTINGS_AUTHENTICATION
           value: "plain"
-        - name: ACTION_MAILER_SMTP_ENABLE_STARTTLS_AUTO
+        - name: SMTP_SETTINGS_ENABLE_STARTTLS_AUTO
           value: "true"
         livenessProbe:
           exec:
