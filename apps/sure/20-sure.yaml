@@ -199,3 +199,126 @@ spec:
       - name: sure-storage
         persistentVolumeClaim:
           claimName: sure-pvc
+---
+# Sidekiq Worker Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sure-worker
+  namespace: sure
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: sure-worker
+  template:
+    metadata:
+      labels:
+        app: sure-worker
+    spec:
+      initContainers:
+      - name: wait-for-postgres
+        image: busybox:1.36
+        command: ['sh', '-c', 'until nc -z sure-postgres.sure.svc.cluster.local 5432; do echo waiting for postgres; sleep 2; done;']
+      - name: wait-for-redis
+        image: busybox:1.36
+        command: ['sh', '-c', 'until nc -z sure-redis.sure.svc.cluster.local 6379; do echo waiting for redis; sleep 2; done;']
+      containers:
+      - name: sure-worker
+        image: docker.io/surefin/sure:latest
+        imagePullPolicy: Always
+        command: ["bundle", "exec", "sidekiq"]
+        env:
+        - name: SELF_HOSTED
+          valueFrom:
+            configMapKeyRef:
+              name: sure-config
+              key: SELF_HOSTED
+        - name: ONBOARDING_STATE
+          valueFrom:
+            configMapKeyRef:
+              name: sure-config
+              key: ONBOARDING_STATE
+        - name: RAILS_ASSUME_SSL
+          valueFrom:
+            configMapKeyRef:
+              name: sure-config
+              key: RAILS_ASSUME_SSL
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: sure-config
+              key: PORT
+        - name: DATABASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: sure-config
+              key: DATABASE_URL
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: sure-config
+              key: DB_HOST
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: sure-config
+              key: DB_PORT
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: sure-config
+              key: DB_NAME
+        - name: DB_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: sure-config
+              key: DB_USERNAME
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: sure-secrets
+              key: postgres-password
+        - name: REDIS_URL
+          valueFrom:
+            configMapKeyRef:
+              name: sure-config
+              key: REDIS_URL
+        - name: EXCHANGE_RATE_PROVIDER
+          valueFrom:
+            configMapKeyRef:
+              name: sure-config
+              key: EXCHANGE_RATE_PROVIDER
+        - name: SECURITIES_PROVIDER
+          valueFrom:
+            configMapKeyRef:
+              name: sure-config
+              key: SECURITIES_PROVIDER
+        - name: APP_DOMAIN
+          valueFrom:
+            configMapKeyRef:
+              name: sure-config
+              key: APP_DOMAIN
+        livenessProbe:
+          exec:
+            command:
+            - bundle
+            - exec
+            - sidekiq
+            - status
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          exec:
+            command:
+            - bundle
+            - exec
+            - sidekiq
+            - status
+          initialDelaySeconds: 60
+          periodSeconds: 10
