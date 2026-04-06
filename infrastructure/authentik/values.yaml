@@ -9,8 +9,8 @@ postgresql:
   enabled: true
   image:
     registry: docker.io
-    repository: bitnami/postgresql
-    tag: 15
+    repository: postgres
+    tag: 15-alpine
   auth:
     username: "authentik"
     password: "authentik_db_password"
