@@ -309,7 +309,7 @@ spec:
             secretKeyRef:
               name: sure-secrets
               key: secret-key-base
-        - name: SMTP_HOST
+        - name: SMTP_ADDRESS
           valueFrom:
             secretKeyRef:
               name: sure-secrets
@@ -329,11 +329,10 @@ spec:
             secretKeyRef:
               name: sure-secrets
               key: smtp-password
-        - name: EMAIL_SENDER
-          valueFrom:
-            secretKeyRef:
-              name: sure-secrets
-              key: email-sender
+        - name: SMTP_AUTHENTICATION
+          value: "plain"
+        - name: SMTP_ENABLE_STARTTLS_AUTO
+          value: "true"
         livenessProbe:
           exec:
             command:
