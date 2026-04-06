@@ -10,6 +10,9 @@ authentik:
     name: sure_development
     user: sure_user
     password: sure_db_pass
+  redis:
+    host: sure-redis.sure.svc.cluster.local
+    port: 6379
 
 postgresql:
   enabled: false
