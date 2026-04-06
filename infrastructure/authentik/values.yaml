@@ -2,6 +2,9 @@ global:
   fullnameOverride: authentik
   domain: authentik.mbtux.com
 
+authentik:
+  secret_key: "e0a66085992a094ef36a2a7dc73f149d66d5bd4f71fe687414279f4a34b4e4b7"
+
 persistence:
   enabled: true
   size: 10Gi
