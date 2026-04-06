@@ -7,4 +7,3 @@ resources:
   - 02-secret.yaml
   - 10-database.yaml
   - 20-taiga.yaml
-  - 30-ingress.yaml
