@@ -2,9 +2,6 @@ global:
   fullnameOverride: authentik
   domain: authentik.mbtux.com
 
-ingress:
-  enabled: false
-
 persistence:
   enabled: true
   size: 10Gi
