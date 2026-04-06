@@ -4,17 +4,15 @@ global:
 
 authentik:
   secret_key: "e0a66085992a094ef36a2a7dc73f149d66d5bd4f71fe687414279f4a34b4e4b7"
+  postgresql:
+    host: sure-postgres.sure.svc.cluster.local
+    port: 5432
+    name: sure_development
+    user: sure_user
+    password: sure_db_pass
 
 postgresql:
-  enabled: true
-  image:
-    registry: docker.io
-    repository: postgres
-    tag: 15-alpine
-  auth:
-    username: "authentik"
-    password: "authentik_db_password"
-    database: "authentik"
+  enabled: false
 
 persistence:
   enabled: true
