@@ -59,7 +59,7 @@ spec:
         command: ['sh', '-c', 'until nc -z taiga-rabbitmq 5672; do echo waiting for rabbitmq; sleep 2; done;']
       containers:
       - name: taiga
-        image: taigaio/taiga:latest
+        image: docker.io/taigaio/taiga:6.5.1
         imagePullPolicy: Always
         startupProbe:
           tcpSocket:
