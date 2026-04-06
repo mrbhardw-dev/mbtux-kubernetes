@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: taiga-config
+  namespace: taiga
+data:
+  TAIGA_SITE_NAME: "Taiga"
+  TAIGA_DOMAIN: "taiga.mbtux.com"
+  TAIGA_SCHEME: "https"
+  SECRET_KEY: "taiga-secret-key-change-in-production"
+  PUBLIC_REGISTER_ENABLED: "true"
+  DEFAULT_LANGUAGE: "en"
+  DEFAULT_TIMEZONE: "UTC"
+  DB_HOST: "taiga-postgres"
+  DB_PORT: "5432"
+  DB_NAME: "taiga"
+  DB_USERNAME: "taiga_user"
+  REDIS_HOST: "taiga-redis"
+  REDIS_PORT: "6379"
+  RABBITMQ_HOST: "taiga-rabbitmq"
+  RABBITMQ_PORT: "5672"

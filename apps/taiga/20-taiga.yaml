@@ -1,0 +1,218 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: taiga
+  namespace: taiga
+  labels:
+    app: taiga
+spec:
+  type: ClusterIP
+  selector:
+    app: taiga
+  ports:
+  - port: 80
+    targetPort: 3000
+    protocol: TCP
+    name: http
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: taiga-pvc
+  namespace: taiga
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taiga
+  namespace: taiga
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: taiga
+  template:
+    metadata:
+      labels:
+        app: taiga
+    spec:
+      initContainers:
+      - name: wait-for-postgres
+        image: busybox:1.36
+        command: ['sh', '-c', 'until nc -z taiga-postgres 5432; do echo waiting for postgres; sleep 2; done;']
+      - name: wait-for-redis
+        image: busybox:1.36
+        command: ['sh', '-c', 'until nc -z taiga-redis 6379; do echo waiting for redis; sleep 2; done;']
+      - name: wait-for-rabbitmq
+        image: busybox:1.36
+        command: ['sh', '-c', 'until nc -z taiga-rabbitmq 5672; do echo waiting for rabbitmq; sleep 2; done;']
+      containers:
+      - name: taiga
+        image: taigaio/taiga:latest
+        imagePullPolicy: Always
+        startupProbe:
+          tcpSocket:
+            port: 3000
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 30
+        ports:
+        - name: http
+          containerPort: 3000
+        env:
+        - name: TAIGA_SITE_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: taiga-config
+              key: TAIGA_SITE_NAME
+        - name: TAIGA_DOMAIN
+          valueFrom:
+            configMapKeyRef:
+              name: taiga-config
+              key: TAIGA_DOMAIN
+        - name: TAIGA_SCHEME
+          valueFrom:
+            configMapKeyRef:
+              name: taiga-config
+              key: TAIGA_SCHEME
+        - name: SECRET_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: taiga-config
+              key: SECRET_KEY
+        - name: PUBLIC_REGISTER_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              name: taiga-config
+              key: PUBLIC_REGISTER_ENABLED
+        - name: DEFAULT_LANGUAGE
+          valueFrom:
+            configMapKeyRef:
+              name: taiga-config
+              key: DEFAULT_LANGUAGE
+        - name: DEFAULT_TIMEZONE
+          valueFrom:
+            configMapKeyRef:
+              name: taiga-config
+              key: DEFAULT_TIMEZONE
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: taiga-config
+              key: DB_HOST
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: taiga-config
+              key: DB_PORT
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: taiga-config
+              key: DB_NAME
+        - name: DB_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: taiga-config
+              key: DB_USERNAME
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: taiga-secrets
+              key: database-password
+        - name: REDIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: taiga-config
+              key: REDIS_HOST
+        - name: REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: taiga-config
+              key: REDIS_PORT
+        - name: RABBITMQ_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: taiga-config
+              key: RABBITMQ_HOST
+        - name: RABBITMQ_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: taiga-config
+              key: RABBITMQ_PORT
+        - name: RABBITMQ_USER
+          valueFrom:
+            secretKeyRef:
+              name: taiga-secrets
+              key: rabbitmq-username
+        - name: RABBITMQ_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: taiga-secrets
+              key: rabbitmq-password
+        - name: SMTP_HOST
+          valueFrom:
+            secretKeyRef:
+              name: taiga-secrets
+              key: smtp-host
+        - name: SMTP_PORT
+          valueFrom:
+            secretKeyRef:
+              name: taiga-secrets
+              key: smtp-port
+        - name: SMTP_USER
+          valueFrom:
+            secretKeyRef:
+              name: taiga-secrets
+              key: smtp-username
+        - name: SMTP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: taiga-secrets
+              key: smtp-password
+        - name: SMTP_TLS
+          valueFrom:
+            secretKeyRef:
+              name: taiga-secrets
+              key: smtp-tls-enabled
+        - name: SMTP_FROM
+          valueFrom:
+            secretKeyRef:
+              name: taiga-secrets
+              key: email-sender
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "2000m"
+        livenessProbe:
+          tcpSocket:
+            port: 3000
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          tcpSocket:
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        volumeMounts:
+        - name: taiga-storage
+          mountPath: /taiga-back/media
+      volumes:
+      - name: taiga-storage
+        persistentVolumeClaim:
+          claimName: taiga-pvc

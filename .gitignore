@@ -3,3 +3,4 @@
 *.private-key.*
 *
 !infrastructure/nextcloud-aio/
+!apps/

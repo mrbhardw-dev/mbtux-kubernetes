@@ -1,0 +1,134 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wekan
+  namespace: wekan
+  labels:
+    app: wekan
+spec:
+  type: ClusterIP
+  selector:
+    app: wekan
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+    name: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wekan
+  namespace: wekan
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: wekan
+  template:
+    metadata:
+      labels:
+        app: wekan
+    spec:
+      initContainers:
+      - name: wait-for-mongo
+        image: busybox:1.36
+        command: ['sh', '-c', 'until nc -z wekan-mongo 27017; do echo waiting for mongodb; sleep 2; done;']
+      containers:
+      - name: wekan
+        image: wekanteam/wekan:latest
+        imagePullPolicy: Always
+        startupProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 30
+        ports:
+        - name: http
+          containerPort: 8080
+        env:
+        - name: MONGO_URL
+          valueFrom:
+            configMapKeyRef:
+              name: wekan-config
+              key: MONGO_URL
+        - name: ROOT_URL
+          valueFrom:
+            configMapKeyRef:
+              name: wekan-config
+              key: ROOT_URL
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: wekan-config
+              key: PORT
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: wekan-config
+              key: NODE_ENV
+        - name: ADMIN_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: wekan-secrets
+              key: admin-username
+        - name: ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: wekan-secrets
+              key: admin-password
+        - name: MAIL_FROM
+          valueFrom:
+            secretKeyRef:
+              name: wekan-secrets
+              key: mail-from
+        - name: SMTP_HOST
+          valueFrom:
+            secretKeyRef:
+              name: wekan-secrets
+              key: smtp-host
+        - name: SMTP_PORT
+          valueFrom:
+            secretKeyRef:
+              name: wekan-secrets
+              key: smtp-port
+        - name: SMTP_SECURE
+          valueFrom:
+            secretKeyRef:
+              name: wekan-secrets
+              key: smtp-secure
+        - name: SMTP_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: wekan-secrets
+              key: smtp-username
+        - name: SMTP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: wekan-secrets
+              key: smtp-password
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+      restartPolicy: Always
