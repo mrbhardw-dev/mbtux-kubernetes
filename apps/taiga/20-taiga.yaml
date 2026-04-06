@@ -121,7 +121,7 @@ spec:
         command: ['sh', '-c', 'until nc -z taiga-rabbitmq 5672; do echo waiting for rabbitmq; sleep 2; done;']
       containers:
       - name: taiga-back
-        image: docker.io/taigaio/taiga-back:6.5.1
+        image: docker.io/taigaio/taiga-back:6.0.11
         imagePullPolicy: Always
         startupProbe:
           tcpSocket:
@@ -295,7 +295,7 @@ spec:
     spec:
       containers:
       - name: taiga-front
-        image: docker.io/taigaio/taiga-front:6.5.1
+        image: docker.io/taigaio/taiga-front:6.0.11
         imagePullPolicy: Always
         ports:
         - name: http
@@ -347,7 +347,7 @@ spec:
         command: ['sh', '-c', 'until nc -z taiga-rabbitmq 5672; do echo waiting for rabbitmq; sleep 2; done;']
       containers:
       - name: taiga-events
-        image: docker.io/taigaio/taiga-events:6.5.1
+        image: docker.io/taigaio/taiga-events:6.0.11
         imagePullPolicy: Always
         ports:
         - name: http
@@ -417,7 +417,7 @@ spec:
         command: ['sh', '-c', 'until nc -z taiga-rabbitmq 5672; do echo waiting for rabbitmq; sleep 2; done;']
       containers:
       - name: taiga-async
-        image: docker.io/taigaio/taiga-async:6.5.1
+        image: docker.io/taigaio/taiga-async:6.0.11
         imagePullPolicy: Always
         env:
         - name: TAIGA_SITE_NAME
@@ -535,7 +535,7 @@ spec:
     spec:
       containers:
       - name: taiga-protected
-        image: docker.io/taigaio/taiga-protected:6.5.1
+        image: docker.io/taigaio/taiga-protected:6.0.11
         imagePullPolicy: Always
         ports:
         - name: http
