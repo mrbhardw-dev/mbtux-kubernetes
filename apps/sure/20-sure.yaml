@@ -304,6 +304,11 @@ spec:
             configMapKeyRef:
               name: sure-config
               key: APP_DOMAIN
+        - name: SECRET_KEY_BASE
+          valueFrom:
+            secretKeyRef:
+              name: sure-secrets
+              key: secret-key-base
         livenessProbe:
           exec:
             command:
