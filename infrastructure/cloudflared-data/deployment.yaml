@@ -6,6 +6,40 @@ metadata:
 data:
   config.yaml: |
     tunnel: cloudflared-tunnel
+    ingress:
+      - hostname: argocd.mbtux.com
+        service: http://10.20.0.1:30080
+        originRequest:
+          noTLSVerify: true
+      - hostname: authentik.mbtux.com
+        service: http://10.20.0.1:30081
+        originRequest:
+          noTLSVerify: true
+      - hostname: outline.mbtux.com
+        service: http://10.20.0.1:30082
+        originRequest:
+          noTLSVerify: true
+      - hostname: grafana.mbtux.com
+        service: http://10.20.0.1:30083
+        originRequest:
+          noTLSVerify: true
+      - hostname: sure.mbtux.com
+        service: http://10.20.0.1:30084
+        originRequest:
+          noTLSVerify: true
+      - hostname: wekan.mbtux.com
+        service: http://10.20.0.1:30085
+        originRequest:
+          noTLSVerify: true
+      - hostname: taiga.mbtux.com
+        service: http://10.20.0.1:30086
+        originRequest:
+          noTLSVerify: true
+      - hostname: immich.mbtux.com
+        service: http://10.20.0.1:30087
+        originRequest:
+          noTLSVerify: true
+      - service: http_status:404
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -31,18 +65,19 @@ spec:
           - tunnel
           - --no-autoupdate
           - run
-          - --token
-          - $(TUNNEL_TOKEN)
+          - --config
+          - /etc/cloudflared/config/config.yaml
           - --protocol
           - quic
-
         env:
         - name: TUNNEL_TOKEN
           valueFrom:
             secretKeyRef:
               name: cloudflared-token
               key: TUNNEL_TOKEN
-
+        volumeMounts:
+        - name: config
+          mountPath: /etc/cloudflared/config
         resources:
           requests:
             cpu: 100m
@@ -50,3 +85,7 @@ spec:
           limits:
             cpu: 500m
             memory: 256Mi
+      volumes:
+      - name: config
+        configMap:
+          name: cloudflared-config
