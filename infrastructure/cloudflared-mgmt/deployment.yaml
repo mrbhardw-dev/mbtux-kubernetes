@@ -8,19 +8,21 @@ data:
     tunnel: cloudflared-mgmt
     ingress:
       - hostname: argocd.mbtux.com
-        service: http://server.argocd.svc.cluster.local:80
-      - hostname: outline.mbtux.com
-        service: http://outline.outline.svc.cluster.local:80
-      - hostname: sure.mbtux.com
-        service: http://sure.sure.svc.cluster.local:80
+        service: http://ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
       - hostname: authentik.mbtux.com
-        service: http://authentik-server.authentik.svc.cluster.local:80
+        service: http://ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
+      - hostname: outline.mbtux.com
+        service: http://ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
       - hostname: grafana.mbtux.com
-        service: http://grafana.monitoring.svc.cluster.local:3000
-      - hostname: traefik.mbtux.com
-        service: https://traefik.traefik.svc.cluster.local:443
-        originRequest:
-          noTLSVerify: true
+        service: http://ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
+      - hostname: sure.mbtux.com
+        service: http://ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
+      - hostname: wekan.mbtux.com
+        service: http://ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
+      - hostname: taiga.mbtux.com
+        service: http://ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
+      - hostname: immich.mbtux.com
+        service: http://ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
       - service: http_status:404
 ---
 apiVersion: apps/v1
