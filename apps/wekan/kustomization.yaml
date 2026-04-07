@@ -9,4 +9,3 @@ resources:
   - 02-secret.yaml
   - 10-mongodb.yaml
   - 20-wekan.yaml
-  - 30-ingress.yaml
