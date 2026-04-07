@@ -16,9 +16,6 @@ spec:
     helm:
       valueFiles:
         - values.yaml
-      parameters:
-        - name: authentik.secret_key
-          value: e0a66085992a094ef36a2a7dc73f149d66d5bd4f71fe687414279f4a34b4e4b7
   destination:
     server: https://kubernetes.default.svc
     namespace: authentik

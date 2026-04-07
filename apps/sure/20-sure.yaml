@@ -310,23 +310,23 @@ spec:
               name: sure-secrets
               key: secret-key-base
         - name: RAILS_MAILER_SMTP_SETTINGS
-          value: >
-            {"address":"smtppro.zoho.eu","port":"587","user_name":"mritunjay.bhardwaj@mbtux.com","password":"7CsTsGcGbntE","authentication":"plain","enable_starttls_auto":true}
+          valueFrom:
+            secretKeyRef:
+              name: sure-secrets
+              key: smtp-settings
         livenessProbe:
           exec:
             command:
-            - bundle
-            - exec
-            - sidekiq
-            - status
+            - sh
+            - -c
+            - "pgrep -f 'sidekiq' || exit 1"
           initialDelaySeconds: 60
           periodSeconds: 30
         readinessProbe:
           exec:
             command:
-            - bundle
-            - exec
-            - sidekiq
-            - status
+            - sh
+            - -c
+            - "pgrep -f 'sidekiq' || exit 1"
           initialDelaySeconds: 60
           periodSeconds: 10
