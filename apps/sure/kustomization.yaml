@@ -9,3 +9,4 @@ resources:
   - 02-secret.yaml
   - 10-database.yaml
   - 20-sure.yaml
+  - 30-ingress.yaml
