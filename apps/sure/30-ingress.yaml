@@ -1,21 +1,20 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
 metadata:
-  name: sure-ingress
+  name: sure-ingressroute
   namespace: sure
-  annotations:
-    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
-    nginx.ingress.kubernetes.io/use-forwarded-headers: "true"
 spec:
-  ingressClassName: nginx
-  rules:
-  - host: sure.mbtux.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: sure
-            port:
-              number: 80
+  entryPoints:
+  - websecure
+  routes:
+  - kind: Rule
+    match: Host(`sure.mbtux.com`)
+    services:
+    - name: sure
+      port: 80
+    middlewares:
+    - name: security-headers
+    - name: compress
+  tls:
+    options:
+      name: secure-default
