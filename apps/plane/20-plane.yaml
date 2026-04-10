@@ -167,7 +167,6 @@ spec:
         volumeMounts:
         - name: plane-storage
           mountPath: /var/www
-          subPath: uploads
       volumes:
       - name: plane-storage
         persistentVolumeClaim:
