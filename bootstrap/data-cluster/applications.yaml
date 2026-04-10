@@ -193,7 +193,9 @@ spec:
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes
     targetRevision: main
-    path: apps/plane
+    path: infrastructure/plane
+    kustomize:
+      buildOptions: "--enable-helm"
   destination:
     server: https://kubernetes.default.svc
     namespace: plane
