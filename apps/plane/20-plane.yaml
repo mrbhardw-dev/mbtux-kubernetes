@@ -33,6 +33,27 @@ spec:
     name: http
 ---
 apiVersion: v1
+kind: Service
+metadata:
+  name: plane-minio
+  namespace: plane
+  labels:
+    app: plane-minio
+spec:
+  type: ClusterIP
+  selector:
+    app: plane-minio
+  ports:
+  - port: 9000
+    targetPort: 9000
+    protocol: TCP
+    name: http
+  - port: 9001
+    targetPort: 9001
+    protocol: TCP
+    name: console
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: plane-pvc
