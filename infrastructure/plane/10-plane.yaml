@@ -167,9 +167,9 @@ spec:
         command: ["minio", "server", "/data", "--console-address", ":9001"]
         env:
         - name: MINIO_ROOT_USER
-          value: "plane"
+          value: "planeadmin"
         - name: MINIO_ROOT_PASSWORD
-          value: "plane"
+          value: "planeadmin123"
         volumeMounts:
         - name: minio-storage
           mountPath: /data
@@ -294,13 +294,13 @@ spec:
         - name: REDIS_URL
           value: "redis://plane-redis:6379/"
         - name: MINIO_ROOT_USER
-          value: "plane"
+          value: "planeadmin"
         - name: MINIO_ROOT_PASSWORD
-          value: "plane"
+          value: "planeadmin123"
         - name: AWS_ACCESS_KEY_ID
-          value: "plane"
+          value: "planeadmin"
         - name: AWS_SECRET_ACCESS_KEY
-          value: "plane"
+          value: "planeadmin123"
         - name: AWS_S3_BUCKET_NAME
           value: "uploads"
         - name: AWS_S3_ENDPOINT_URL
@@ -368,13 +368,13 @@ spec:
         - name: REDIS_URL
           value: "redis://plane-redis:6379/"
         - name: MINIO_ROOT_USER
-          value: "plane"
+          value: "planeadmin"
         - name: MINIO_ROOT_PASSWORD
-          value: "plane"
+          value: "planeadmin123"
         - name: AWS_ACCESS_KEY_ID
-          value: "plane"
+          value: "planeadmin"
         - name: AWS_SECRET_ACCESS_KEY
-          value: "plane"
+          value: "planeadmin123"
         - name: AWS_S3_BUCKET_NAME
           value: "uploads"
         - name: AWS_S3_ENDPOINT_URL
