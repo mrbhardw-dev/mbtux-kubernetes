@@ -76,7 +76,7 @@ spec:
         command: ['sh', '-c', 'until nc -z plane-minio 9000; do echo waiting for minio; sleep 2; done;']
       containers:
       - name: web
-        image: makeplane/plane-frontend:latest
+        image: makeplane/plane-frontend:stable
         imagePullPolicy: Always
         env:
         - name: NEXT_PUBLIC_API_BASE_URL
@@ -184,7 +184,7 @@ spec:
         command: ['sh', '-c', 'until nc -z plane-minio 9000; do echo waiting for minio; sleep 2; done;']
       containers:
       - name: api
-        image: makeplane/plane-backend:latest
+        image: makeplane/plane-backend:stable
         imagePullPolicy: Always
         startupProbe:
           tcpSocket:
@@ -391,7 +391,7 @@ spec:
         command: ['sh', '-c', 'until nc -z plane-minio 9000; do echo waiting for minio; sleep 2; done;']
       containers:
       - name: worker
-        image: makeplane/plane-backend:latest
+        image: makeplane/plane-backend:stable
         imagePullPolicy: Always
         command: ["python", "-m", "plane", "worker"]
         env:
