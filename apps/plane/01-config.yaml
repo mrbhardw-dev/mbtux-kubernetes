@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: plane-config
+  namespace: plane
+data:
+  NGINX_WORKER_PROCESSES: "auto"
+  NGINX_WORKER_CONNECTIONS: "2048"
+  WEB_URL: "https://plane.mbtux.com"
+  API_URL: "https://plane.mbtux.com/api/v1"
+  ENV: "production"
+  DEBUG: "false"
+  ENABLE_TELEMETRY: "false"
+  ENABLE_ANALYTICS: "false"
+  SECRET_KEY: "plane-secret-key-change-in-production"
+  POSTGRES_DB: "plane"
+  POSTGRES_HOST: "plane-postgres"
+  POSTGRES_PORT: "5432"
+  POSTGRES_USER: "plane_user"
+  REDIS_URL: "redis://plane-redis:6379"
+  WEB_CONCURRENCY: "4"
+  WORKERS: "4"
+  HUBSPOT_API_KEY: ""

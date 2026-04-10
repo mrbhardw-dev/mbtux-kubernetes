@@ -4,3 +4,7 @@
 *
 !infrastructure/nextcloud-aio/
 !apps/
+!apps/sure/
+!apps/wekan/
+!apps/plane/
+!bootstrap/

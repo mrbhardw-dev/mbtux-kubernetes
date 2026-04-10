@@ -68,7 +68,7 @@ spec:
       backoff:
         duration: 5s
         factor: 2
-      maxDuration: 3m
+        maxDuration: 3m
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -182,21 +182,21 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: wekan
+  name: plane
   namespace: argocd
   labels:
-    app.kubernetes.io/name: wekan
-    app.kubernetes.io/part-of: collaboration
+    app.kubernetes.io/name: plane
+    app.kubernetes.io/part-of: productivity
     cluster: data
 spec:
   project: data-cluster
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes
     targetRevision: main
-    path: apps/wekan
+    path: apps/plane
   destination:
     server: https://kubernetes.default.svc
-    namespace: wekan
+    namespace: plane
   syncPolicy:
     automated:
       prune: true
@@ -210,9 +210,9 @@ spec:
     retry:
       limit: 5
       backoff:
-        duration: 5s
+        duration: 10s
         factor: 2
-        maxDuration: 3m
+        maxDuration: 5m
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application

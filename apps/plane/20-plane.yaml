@@ -1,0 +1,475 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: plane-web
+  namespace: plane
+  labels:
+    app: plane-web
+spec:
+  type: ClusterIP
+  selector:
+    app: plane-web
+  ports:
+  - port: 80
+    targetPort: 3000
+    protocol: TCP
+    name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: plane-api
+  namespace: plane
+  labels:
+    app: plane-api
+spec:
+  type: ClusterIP
+  selector:
+    app: plane-api
+  ports:
+  - port: 8080
+    targetPort: 8000
+    protocol: TCP
+    name: http
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plane-pvc
+  namespace: plane
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plane-web
+  namespace: plane
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: plane-web
+  template:
+    metadata:
+      labels:
+        app: plane-web
+    spec:
+      initContainers:
+      - name: wait-for-postgres
+        image: busybox:1.36
+        command: ['sh', '-c', 'until nc -z plane-postgres 5432; do echo waiting for postgres; sleep 2; done;']
+      - name: wait-for-redis
+        image: busybox:1.36
+        command: ['sh', '-c', 'until nc -z plane-redis 6379; do echo waiting for redis; sleep 2; done;']
+      containers:
+      - name: web
+        image: makeplaneplane/plane-frontend:latest
+        imagePullPolicy: Always
+        startupProbe:
+          tcpSocket:
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 30
+        ports:
+        - name: http
+          containerPort: 3000
+        env:
+        - name: NGINX_WORKER_PROCESSES
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: NGINX_WORKER_PROCESSES
+        - name: NGINX_WORKER_CONNECTIONS
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: NGINX_WORKER_CONNECTIONS
+        - name: WEB_URL
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: WEB_URL
+        - name: API_URL
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: API_URL
+        - name: ENV
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: ENV
+        - name: DEBUG
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: DEBUG
+        - name: ENABLE_TELEMETRY
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: ENABLE_TELEMETRY
+        - name: ENABLE_ANALYTICS
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: ENABLE_ANALYTICS
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        volumeMounts:
+        - name: plane-storage
+          mountPath: /var/www
+          subPath: uploads
+      volumes:
+      - name: plane-storage
+        persistentVolumeClaim:
+          claimName: plane-pvc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plane-api
+  namespace: plane
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: plane-api
+  template:
+    metadata:
+      labels:
+        app: plane-api
+    spec:
+      initContainers:
+      - name: wait-for-postgres
+        image: busybox:1.36
+        command: ['sh', '-c', 'until nc -z plane-postgres 5432; do echo waiting for postgres; sleep 2; done;']
+      - name: wait-for-redis
+        image: busybox:1.36
+        command: ['sh', '-c', 'until nc -z plane-redis 6379; do echo waiting for redis; sleep 2; done;']
+      containers:
+      - name: api
+        image: makeplaneplane/plane-backend:latest
+        imagePullPolicy: Always
+        startupProbe:
+          tcpSocket:
+            port: 8000
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 30
+        ports:
+        - name: http
+          containerPort: 8000
+        env:
+        - name: WEB_URL
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: WEB_URL
+        - name: API_URL
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: API_URL
+        - name: ENV
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: ENV
+        - name: DEBUG
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: DEBUG
+        - name: ENABLE_TELEMETRY
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: ENABLE_TELEMETRY
+        - name: ENABLE_ANALYTICS
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: ENABLE_ANALYTICS
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: plane-secrets
+              key: secret-key
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: POSTGRES_DB
+        - name: POSTGRES_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: POSTGRES_HOST
+        - name: POSTGRES_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: POSTGRES_PORT
+        - name: POSTGRES_USER
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: plane-secrets
+              key: postgres-password
+        - name: REDIS_URL
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: REDIS_URL
+        - name: WEB_CONCURRENCY
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: WEB_CONCURRENCY
+        - name: WORKERS
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: WORKERS
+        - name: EMAIL_FROM
+          valueFrom:
+            secretKeyRef:
+              name: plane-secrets
+              key: email-from
+        - name: SMTP_HOST
+          valueFrom:
+            secretKeyRef:
+              name: plane-secrets
+              key: smtp-host
+        - name: SMTP_PORT
+          valueFrom:
+            secretKeyRef:
+              name: plane-secrets
+              key: smtp-port
+        - name: SMTP_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: plane-secrets
+              key: smtp-user
+        - name: SMTP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: plane-secrets
+              key: smtp-password
+        - name: HUBSPOT_API_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: HUBSPOT_API_KEY
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "2000m"
+        livenessProbe:
+          tcpSocket:
+            port: 8000
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          tcpSocket:
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        volumeMounts:
+        - name: plane-storage
+          mountPath: /var/www
+          subPath: uploads
+      volumes:
+      - name: plane-storage
+        persistentVolumeClaim:
+          claimName: plane-pvc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plane-worker
+  namespace: plane
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: plane-worker
+  template:
+    metadata:
+      labels:
+        app: plane-worker
+    spec:
+      initContainers:
+      - name: wait-for-postgres
+        image: busybox:1.36
+        command: ['sh', '-c', 'until nc -z plane-postgres 5432; do echo waiting for postgres; sleep 2; done;']
+      - name: wait-for-redis
+        image: busybox:1.36
+        command: ['sh', '-c', 'until nc -z plane-redis 6379; do echo waiting for redis; sleep 2; done;']
+      containers:
+      - name: worker
+        image: makeplaneplane/plane-backend:latest
+        imagePullPolicy: Always
+        command: ["python", "-m", "plane", "worker"]
+        env:
+        - name: WEB_URL
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: WEB_URL
+        - name: API_URL
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: API_URL
+        - name: ENV
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: ENV
+        - name: DEBUG
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: DEBUG
+        - name: ENABLE_TELEMETRY
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: ENABLE_TELEMETRY
+        - name: ENABLE_ANALYTICS
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: ENABLE_ANALYTICS
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: plane-secrets
+              key: secret-key
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: POSTGRES_DB
+        - name: POSTGRES_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: POSTGRES_HOST
+        - name: POSTGRES_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: POSTGRES_PORT
+        - name: POSTGRES_USER
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: plane-secrets
+              key: postgres-password
+        - name: REDIS_URL
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: REDIS_URL
+        - name: EMAIL_FROM
+          valueFrom:
+            secretKeyRef:
+              name: plane-secrets
+              key: email-from
+        - name: SMTP_HOST
+          valueFrom:
+            secretKeyRef:
+              name: plane-secrets
+              key: smtp-host
+        - name: SMTP_PORT
+          valueFrom:
+            secretKeyRef:
+              name: plane-secrets
+              key: smtp-port
+        - name: SMTP_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: plane-secrets
+              key: smtp-user
+        - name: SMTP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: plane-secrets
+              key: smtp-password
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "pgrep -f 'celery' || exit 1"
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "pgrep -f 'celery' || exit 1"
+          initialDelaySeconds: 30
+          periodSeconds: 10
