@@ -14,3 +14,4 @@ helmCharts:
   releaseName: authentik
   namespace: authentik
   valuesFile: values.yaml
+  includeCRDs: true
