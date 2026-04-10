@@ -361,7 +361,7 @@ spec:
       - name: worker
         image: makeplane/plane-backend:stable
         imagePullPolicy: Always
-        command: ["python", "-m", "plane", "worker"]
+        command: ["celery", "-A", "plane", "worker", "-l", "info"]
         env:
         - name: DATABASE_URL
           value: "postgresql://plane:plane@plane-pgdb:5432/plane"
