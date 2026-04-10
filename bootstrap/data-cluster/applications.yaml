@@ -93,6 +93,8 @@ spec:
           value: e0a66085992a094ef36a2a7dc73f149d66d5bd4f71fe687414279f4a34b4e4b7
         - name: authentik.password
           value: Mritunjay@123
+        - name: authentik.postgresql.password
+          value: authentik_pass
         - name: postgresql.enabled
           value: "true"
         - name: postgresql.auth.database
