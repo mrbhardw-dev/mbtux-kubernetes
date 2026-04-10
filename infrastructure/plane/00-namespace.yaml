@@ -8,23 +8,92 @@ metadata:
 apiVersion: v1
 kind: Service
 metadata:
-  name: plane-ingress
+  name: plane-web
   namespace: plane
   labels:
-    app: plane
+    app: plane-web
 spec:
   type: ClusterIP
   selector:
-    app: plane
+    app: plane-web
   ports:
   - port: 80
     targetPort: 3000
     protocol: TCP
     name: http
-  - port: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: plane-api
+  namespace: plane
+  labels:
+    app: plane-api
+spec:
+  type: ClusterIP
+  selector:
+    app: plane-api
+  ports:
+  - port: 8000
     targetPort: 8000
     protocol: TCP
-    name: api
+    name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: plane-worker
+  namespace: plane
+  labels:
+    app: plane-worker
+spec:
+  type: ClusterIP
+  selector:
+    app: plane-worker
+  ports:
+  - port: 8000
+    targetPort: 8000
+    protocol: TCP
+    name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: plane-pgdb
+  namespace: plane
+spec:
+  selector:
+    app: plane-pgdb
+  ports:
+  - port: 5432
+    targetPort: 5432
+  clusterIP: None
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: plane-redis
+  namespace: plane
+spec:
+  selector:
+    app: plane-redis
+  ports:
+  - port: 6379
+    targetPort: 6379
+  clusterIP: None
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: plane-minio
+  namespace: plane
+spec:
+  selector:
+    app: plane-minio
+  ports:
+  - port: 9000
+    targetPort: 9000
+  clusterIP: None
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -35,8 +104,6 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "100m"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   ingressClassName: nginx
   rules:
@@ -47,14 +114,14 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: plane-ingress
+            name: plane-api
             port:
-              number: 8080
+              number: 8000
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: plane-ingress
+            name: plane-web
             port:
               number: 80
   tls:

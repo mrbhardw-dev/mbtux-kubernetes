@@ -1,0 +1,390 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plane-pgdb-pvc
+  namespace: plane
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plane-redis-pvc
+  namespace: plane
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plane-minio-pvc
+  namespace: plane
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plane-uploads-pvc
+  namespace: plane
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plane-pgdb
+  namespace: plane
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plane-pgdb
+  template:
+    metadata:
+      labels:
+        app: plane-pgdb
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15-alpine
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: "plane"
+        - name: POSTGRES_USER
+          value: "plane"
+        - name: POSTGRES_PASSWORD
+          value: "plane"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+        volumeMounts:
+        - name: pgdb-storage
+          mountPath: /var/lib/postgresql/data
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - pg_isready -U plane
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - pg_isready -U plane
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: pgdb-storage
+        persistentVolumeClaim:
+          claimName: plane-pgdb-pvc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plane-redis
+  namespace: plane
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plane-redis
+  template:
+    metadata:
+      labels:
+        app: plane-redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:7-alpine
+        ports:
+        - containerPort: 6379
+        command: ["redis-server", "--appendonly", "yes"]
+        volumeMounts:
+        - name: redis-storage
+          mountPath: /data
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+        livenessProbe:
+          tcpSocket:
+            port: 6379
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: 6379
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: redis-storage
+        persistentVolumeClaim:
+          claimName: plane-redis-pvc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plane-minio
+  namespace: plane
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plane-minio
+  template:
+    metadata:
+      labels:
+        app: plane-minio
+    spec:
+      containers:
+      - name: minio
+        image: minio/minio:latest
+        ports:
+        - containerPort: 9000
+        command: ["minio", "server", "/data", "--console-address", ":9001"]
+        env:
+        - name: MINIO_ROOT_USER
+          value: "plane"
+        - name: MINIO_ROOT_PASSWORD
+          value: "plane"
+        volumeMounts:
+        - name: minio-storage
+          mountPath: /data
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+        livenessProbe:
+          tcpSocket:
+            port: 9000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: 9000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: minio-storage
+        persistentVolumeClaim:
+          claimName: plane-minio-pvc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plane-web
+  namespace: plane
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plane-web
+  template:
+    metadata:
+      labels:
+        app: plane-web
+    spec:
+      initContainers:
+      - name: wait-for-pgdb
+        image: busybox:1.36
+        command: ['sh', '-c', 'until nc -z plane-pgdb 5432; do echo waiting for pgdb; sleep 2; done;']
+      - name: wait-for-redis
+        image: busybox:1.36
+        command: ['sh', '-c', 'until nc -z plane-redis 6379; do echo waiting for redis; sleep 2; done;']
+      - name: wait-for-minio
+        image: busybox:1.36
+        command: ['sh', '-c', 'until nc -z plane-minio 9000; do echo waiting for minio; sleep 2; done;']
+      containers:
+      - name: web
+        image: makeplane/plane-frontend:stable
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NEXT_PUBLIC_API_BASE_URL
+          value: "http://plane-api:8000"
+        - name: WEB_URL
+          value: "https://plane.mbtux.com"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        volumeMounts:
+        - name: uploads-storage
+          mountPath: /var/www
+      volumes:
+      - name: uploads-storage
+        persistentVolumeClaim:
+          claimName: plane-uploads-pvc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plane-api
+  namespace: plane
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plane-api
+  template:
+    metadata:
+      labels:
+        app: plane-api
+    spec:
+      initContainers:
+      - name: wait-for-pgdb
+        image: busybox:1.36
+        command: ['sh', '-c', 'until nc -z plane-pgdb 5432; do echo waiting for pgdb; sleep 2; done;']
+      - name: wait-for-redis
+        image: busybox:1.36
+        command: ['sh', '-c', 'until nc -z plane-redis 6379; do echo waiting for redis; sleep 2; done;']
+      - name: wait-for-minio
+        image: busybox:1.36
+        command: ['sh', '-c', 'until nc -z plane-minio 9000; do echo waiting for minio; sleep 2; done;']
+      containers:
+      - name: api
+        image: makeplane/plane-backend:stable
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        env:
+        - name: WEB_URL
+          value: "https://plane.mbtux.com"
+        - name: DATABASE_URL
+          value: "postgresql://plane:plane@plane-pgdb:5432/plane"
+        - name: REDIS_URL
+          value: "redis://plane-redis:6379/"
+        - name: MINIO_ROOT_USER
+          value: "plane"
+        - name: MINIO_ROOT_PASSWORD
+          value: "plane"
+        - name: AWS_ACCESS_KEY_ID
+          value: "plane"
+        - name: AWS_SECRET_ACCESS_KEY
+          value: "plane"
+        - name: AWS_S3_BUCKET_NAME
+          value: "uploads"
+        - name: AWS_S3_ENDPOINT_URL
+          value: "http://plane-minio:9000"
+        - name: USE_MINIO
+          value: "1"
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "2000m"
+        livenessProbe:
+          tcpSocket:
+            port: 8000
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          tcpSocket:
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        volumeMounts:
+        - name: uploads-storage
+          mountPath: /var/www
+      volumes:
+      - name: uploads-storage
+        persistentVolumeClaim:
+          claimName: plane-uploads-pvc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plane-worker
+  namespace: plane
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plane-worker
+  template:
+    metadata:
+      labels:
+        app: plane-worker
+    spec:
+      initContainers:
+      - name: wait-for-pgdb
+        image: busybox:1.36
+        command: ['sh', '-c', 'until nc -z plane-pgdb 5432; do echo waiting for pgdb; sleep 2; done;']
+      - name: wait-for-redis
+        image: busybox:1.36
+        command: ['sh', '-c', 'until nc -z plane-redis 6379; do echo waiting for redis; sleep 2; done;']
+      - name: wait-for-minio
+        image: busybox:1.36
+        command: ['sh', '-c', 'until nc -z plane-minio 9000; do echo waiting for minio; sleep 2; done;']
+      containers:
+      - name: worker
+        image: makeplane/plane-backend:stable
+        imagePullPolicy: Always
+        command: ["python", "-m", "plane", "worker"]
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://plane:plane@plane-pgdb:5432/plane"
+        - name: REDIS_URL
+          value: "redis://plane-redis:6379/"
+        - name: MINIO_ROOT_USER
+          value: "plane"
+        - name: MINIO_ROOT_PASSWORD
+          value: "plane"
+        - name: AWS_ACCESS_KEY_ID
+          value: "plane"
+        - name: AWS_SECRET_ACCESS_KEY
+          value: "plane"
+        - name: AWS_S3_BUCKET_NAME
+          value: "uploads"
+        - name: AWS_S3_ENDPOINT_URL
+          value: "http://plane-minio:9000"
+        - name: USE_MINIO
+          value: "1"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
