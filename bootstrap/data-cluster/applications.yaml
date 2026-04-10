@@ -85,6 +85,26 @@ spec:
     repoURL: https://charts.goauthentik.io
     chart: authentik
     targetRevision: 2026.2.1
+    helm:
+      parameters:
+        - name: global.domain
+          value: authentik.mbtux.com
+        - name: authentik.secret_key
+          value: e0a66085992a094ef36a2a7dc73f149d66d5bd4f71fe687414279f4a34b4e4b7
+        - name: authentik.password
+          value: Mritunjay@123
+        - name: postgresql.enabled
+          value: "true"
+        - name: postgresql.auth.database
+          value: authentik_db
+        - name: postgresql.auth.username
+          value: authentik_user
+        - name: postgresql.auth.password
+          value: authentik_pass
+        - name: persistence.enabled
+          value: "true"
+        - name: persistence.size
+          value: 20Gi
   destination:
     server: https://kubernetes.default.svc
     namespace: authentik
