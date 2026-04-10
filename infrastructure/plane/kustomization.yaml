@@ -8,7 +8,7 @@ resources:
 
 helmCharts:
 - name: plane-ce
-  version: latest
+  version: 1.5.0
   repo: https://makeplane.github.io/helm-charts
   releaseName: plane
   namespace: plane
