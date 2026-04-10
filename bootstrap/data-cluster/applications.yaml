@@ -98,9 +98,9 @@ spec:
         - name: postgresql.enabled
           value: "true"
         - name: postgresql.auth.database
-          value: authentik_db
+          value: authentik
         - name: postgresql.auth.username
-          value: authentik_user
+          value: authentik
         - name: postgresql.auth.password
           value: authentik_pass
         - name: persistence.enabled
