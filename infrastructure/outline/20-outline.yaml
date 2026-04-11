@@ -197,6 +197,36 @@ spec:
             configMapKeyRef:
               name: outline-config
               key: SMTP_FROM_EMAIL
+        - name: OIDC_ISSUER_URL
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: OIDC_ISSUER_URL
+        - name: OIDC_CLIENT_ID
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: OIDC_CLIENT_ID
+        - name: OIDC_CLIENT_SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: OIDC_CLIENT_SECRET
+        - name: OIDC_DISPLAY_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: OIDC_DISPLAY_NAME
+        - name: OIDC_SCOPES
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: OIDC_SCOPES
+        - name: NODE_TLS_REJECT_UNAUTHORIZED
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: NODE_TLS_REJECT_UNAUTHORIZED
         resources:
           requests:
             memory: "512Mi"

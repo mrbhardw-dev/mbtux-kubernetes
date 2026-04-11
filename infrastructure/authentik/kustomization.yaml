@@ -6,12 +6,3 @@ namespace: authentik
 resources:
   - 00-namespace.yaml
   - 30-ingress.yaml
-
-helmCharts:
-- name: authentik
-  version: 2026.2.1
-  repo: https://charts.goauthentik.io
-  releaseName: authentik
-  namespace: authentik
-  valuesFile: values.yaml
-  includeCRDs: true

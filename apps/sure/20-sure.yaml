@@ -174,6 +174,41 @@ spec:
             secretKeyRef:
               name: sure-secrets
               key: email-sender
+        - name: AUTH_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              name: sure-auth
+              key: AUTH_ENABLED
+        - name: OIDC_PROVIDER
+          valueFrom:
+            configMapKeyRef:
+              name: sure-auth
+              key: OIDC_PROVIDER
+        - name: OIDC_ISSUER_URL
+          valueFrom:
+            configMapKeyRef:
+              name: sure-auth
+              key: OIDC_ISSUER_URL
+        - name: OIDC_CLIENT_ID
+          valueFrom:
+            configMapKeyRef:
+              name: sure-auth
+              key: OIDC_CLIENT_ID
+        - name: OIDC_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: sure-secrets
+              key: oidc-client-secret
+        - name: OIDC_REDIRECT_URI
+          valueFrom:
+            configMapKeyRef:
+              name: sure-auth
+              key: OIDC_REDIRECT_URI
+        - name: OIDC_SCOPES
+          valueFrom:
+            configMapKeyRef:
+              name: sure-auth
+              key: OIDC_SCOPES
         resources:
           requests:
             memory: "1Gi"

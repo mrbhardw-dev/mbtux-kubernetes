@@ -11,22 +11,12 @@ data:
   admin.enabled: "true"
   accounts.admin: apiKey
   kustomize.buildOptions: "--enable-helm"
-  # SSO Configuration with Authentik
-  dex.config: |
-    connectors:
-      - type: oidc
-        name: Authentik
-        config:
-          issuer: https://authentik.mbtux.com/application/o/argocd/
-          clientID: argocd
-          clientSecret: authentik_argo_secret
-          redirectURI: https://argocd.mbtux.com/auth/dex/callback
   oidc.config: |
     name: Authentik
     issuer: https://authentik.mbtux.com/application/o/argocd/
-    clientID: argocd
-    clientSecret: authentik_argo_secret
+    clientID: ak-outpost-34f6e0b7a65f42079d97a2a916e544c1
+    clientSecret: 5OB4WjmXTbVxJyNAa6NeqO2P4HEyXncm5D6jeTwKdII3Qjd5F3ygu7twXY0p
     redirectURL: https://argocd.mbtux.com/auth/oidc/callback
     scopes: openid email groups profile
     rootURL: https://argocd.mbtux.com
-    insecureCA: ""
+    skipVerifyTLS: "true"
