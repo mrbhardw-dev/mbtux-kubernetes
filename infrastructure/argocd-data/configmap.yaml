@@ -11,19 +11,15 @@ data:
   admin.enabled: "true"
   accounts.admin: apiKey
   kustomize.buildOptions: "--enable-helm"
-  server.url: http://argocd.mbtux.com
-  dex.config: |
-    connectors:
-    - type: oidc
-      id: authentik
-      name: authentik
-      config:
-        issuer: https://authentik.mbtux.com/application/o/argocd/
-        clientID: ak-outpost-34f6e0b7a65f42079d97a2a916e544c1
-        clientSecret: $dex.authentik.clientSecret
-        insecureSkipVerify: true
-        insecureEnableGroups: true
-        scopes:
-          - openid
-          - profile
-          - email
+  server.url: https://argocd.mbtux.com
+  dex.tls: "false"
+  oidc.config: |
+    name: Authentik
+    issuer: https://authentik.mbtux.com/application/o/argocd/
+    clientID: argo-cd
+    clientSecret: $oidc.authentik.clientSecret
+    requestedScopes:
+      - openid
+      - profile
+      - email
+      - groups

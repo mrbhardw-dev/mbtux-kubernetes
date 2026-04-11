@@ -52,6 +52,7 @@ spec:
             - --repo-server
             - argocd-repo-server:8081
             - --insecure
+            - --dex-server-plaintext
           ports:
             - name: http
               containerPort: 8080
@@ -62,12 +63,6 @@ spec:
               value: "true"
             - name: OIDC_TLS_SKIP_VERIFY
               value: "true"
-            - name: ARGOCD_SERVER_DEX_ENABLED
-              value: "true"
-            - name: ARGOCD_SERVER_OIDC_ENABLED
-              value: "false"
-            - name: ARGOCD_DEX_SERVER
-              value: "argocd-dex-server:5557"
           resources:
             requests:
               cpu: 100m
