@@ -9,6 +9,8 @@ resources:
   - rbac.yaml
   - secret.yaml
   - configmap.yaml
+  - dex-config.yaml
+  - dex.yaml
   - redis.yaml
   - repo-server.yaml
   - application-controller.yaml

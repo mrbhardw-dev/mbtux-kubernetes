@@ -10,10 +10,10 @@ spec:
   selector:
     app: sure
   ports:
-  - port: 80
-    targetPort: 3000
-    protocol: TCP
-    name: http
+    - name: http
+      port: 80
+      targetPort: 3000
+      protocol: TCP
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -48,194 +48,242 @@ spec:
         app: sure
     spec:
       initContainers:
-      - name: wait-for-postgres
-        image: busybox:1.36
-        command: ['sh', '-c', 'until nc -z sure-postgres 5432; do echo waiting for postgres; sleep 2; done;']
-      - name: wait-for-redis
-        image: busybox:1.36
-        command: ['sh', '-c', 'until nc -z sure-redis 6379; do echo waiting for redis; sleep 2; done;']
+        - name: wait-for-postgres
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              until nc -z sure-postgres 5432; do
+                echo "waiting for postgres";
+                sleep 2;
+              done;
+        - name: wait-for-redis
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              until nc -z sure-redis 6379; do
+                echo "waiting for redis";
+                sleep 2;
+              done;
+
       containers:
-      - name: sure
-        image: ghcr.io/we-promise/sure:latest
-        imagePullPolicy: Always
-        startupProbe:
-          tcpSocket:
-            port: 3000
-          initialDelaySeconds: 60
-          periodSeconds: 10
-          timeoutSeconds: 5
-          failureThreshold: 30
-        ports:
-        - name: http
-          containerPort: 3000
-        env:
-        - name: SELF_HOSTED
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: SELF_HOSTED
-        - name: ONBOARDING_STATE
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: ONBOARDING_STATE
-        - name: RAILS_ASSUME_SSL
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: RAILS_ASSUME_SSL
-        - name: PORT
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: PORT
-        - name: SECRET_KEY_BASE
-          valueFrom:
-            secretKeyRef:
-              name: sure-secrets
-              key: secret-key-base
-        - name: DB_HOST
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: DB_HOST
-        - name: DB_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: DB_PORT
-        - name: DB_NAME
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: DB_NAME
-        - name: DB_USERNAME
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: DB_USERNAME
-        - name: DATABASE_URL
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: DATABASE_URL
-        - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: sure-secrets
-              key: postgres-password
-        - name: REDIS_URL
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: REDIS_URL
-        - name: EXCHANGE_RATE_PROVIDER
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: EXCHANGE_RATE_PROVIDER
-        - name: SECURITIES_PROVIDER
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: SECURITIES_PROVIDER
-        - name: APP_DOMAIN
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: APP_DOMAIN
-        - name: SMTP_ADDRESS
-          valueFrom:
-            secretKeyRef:
-              name: sure-secrets
-              key: smtp-host
-        - name: SMTP_PORT
-          valueFrom:
-            secretKeyRef:
-              name: sure-secrets
-              key: smtp-port
-        - name: SMTP_TLS_ENABLED
-          valueFrom:
-            secretKeyRef:
-              name: sure-secrets
-              key: smtp-tls-enabled
-        - name: SMTP_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: sure-secrets
-              key: smtp-username
-        - name: SMTP_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: sure-secrets
-              key: smtp-password
-        - name: EMAIL_SENDER
-          valueFrom:
-            secretKeyRef:
-              name: sure-secrets
-              key: email-sender
-        - name: AUTH_ENABLED
-          valueFrom:
-            configMapKeyRef:
-              name: sure-auth
-              key: AUTH_ENABLED
-        - name: OIDC_PROVIDER
-          valueFrom:
-            configMapKeyRef:
-              name: sure-auth
-              key: OIDC_PROVIDER
-        - name: OIDC_ISSUER_URL
-          valueFrom:
-            configMapKeyRef:
-              name: sure-auth
-              key: OIDC_ISSUER_URL
-        - name: OIDC_CLIENT_ID
-          valueFrom:
-            configMapKeyRef:
-              name: sure-auth
-              key: OIDC_CLIENT_ID
-        - name: OIDC_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: sure-secrets
-              key: oidc-client-secret
-        - name: OIDC_REDIRECT_URI
-          valueFrom:
-            configMapKeyRef:
-              name: sure-auth
-              key: OIDC_REDIRECT_URI
-        - name: OIDC_SCOPES
-          valueFrom:
-            configMapKeyRef:
-              name: sure-auth
-              key: OIDC_SCOPES
-        resources:
-          requests:
-            memory: "1Gi"
-            cpu: "500m"
-          limits:
-            memory: "2Gi"
-            cpu: "2000m"
-        livenessProbe:
-          tcpSocket:
-            port: 3000
-          initialDelaySeconds: 60
-          periodSeconds: 30
-        readinessProbe:
-          tcpSocket:
-            port: 3000
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        volumeMounts:
-        - name: sure-storage
-          mountPath: /app/public
-          subPath: public
+        - name: sure
+          image: ghcr.io/we-promise/sure:latest
+          imagePullPolicy: Always
+
+          ports:
+            - name: http
+              containerPort: 3000
+
+          startupProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 30
+
+          livenessProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 60
+            periodSeconds: 30
+
+          readinessProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+
+          env:
+            # Core / platform config
+            - name: SELF_HOSTED
+              valueFrom:
+                configMapKeyRef:
+                  name: sure-config
+                  key: SELF_HOSTED
+            - name: ONBOARDING_STATE
+              valueFrom:
+                configMapKeyRef:
+                  name: sure-config
+                  key: ONBOARDING_STATE
+            - name: RAILS_ASSUME_SSL
+              valueFrom:
+                configMapKeyRef:
+                  name: sure-config
+                  key: RAILS_ASSUME_SSL
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: sure-config
+                  key: PORT
+
+            # Rails secrets
+            - name: SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: sure-secrets
+                  key: secret-key-base
+
+            # Database
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: sure-config
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: sure-config
+                  key: DB_PORT
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: sure-config
+                  key: DB_NAME
+            - name: DB_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: sure-config
+                  key: DB_USERNAME
+            - name: DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: sure-config
+                  key: DATABASE_URL
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sure-secrets
+                  key: postgres-password
+
+            # Redis
+            - name: REDIS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: sure-config
+                  key: REDIS_URL
+
+            # Providers
+            - name: EXCHANGE_RATE_PROVIDER
+              valueFrom:
+                configMapKeyRef:
+                  name: sure-config
+                  key: EXCHANGE_RATE_PROVIDER
+            - name: SECURITIES_PROVIDER
+              valueFrom:
+                configMapKeyRef:
+                  name: sure-config
+                  key: SECURITIES_PROVIDER
+
+            - name: APP_DOMAIN
+              valueFrom:
+                configMapKeyRef:
+                  name: sure-config
+                  key: APP_DOMAIN
+
+            # SMTP
+            - name: SMTP_ADDRESS
+              valueFrom:
+                secretKeyRef:
+                  name: sure-secrets
+                  key: smtp-host
+            - name: SMTP_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: sure-secrets
+                  key: smtp-port
+            - name: SMTP_TLS_ENABLED
+              valueFrom:
+                secretKeyRef:
+                  name: sure-secrets
+                  key: smtp-tls-enabled
+            - name: SMTP_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: sure-secrets
+                  key: smtp-username
+            - name: SMTP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sure-secrets
+                  key: smtp-password
+            - name: EMAIL_SENDER
+              valueFrom:
+                secretKeyRef:
+                  name: sure-secrets
+                  key: email-sender
+
+            # ✅ AUTH / OIDC (FIXED)
+            - name: AUTH_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: sure-auth
+                  key: AUTH_ENABLED
+
+            - name: OIDC_PROVIDER
+              valueFrom:
+                configMapKeyRef:
+                  name: sure-auth
+                  key: OIDC_PROVIDER
+
+            - name: OIDC_ISSUER
+              valueFrom:
+                configMapKeyRef:
+                  name: sure-auth
+                  key: OIDC_ISSUER
+
+            - name: OIDC_ISSUER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: sure-auth
+                  key: OIDC_ISSUER_URL
+
+            - name: OIDC_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: sure-auth
+                  key: OIDC_CLIENT_ID
+
+            - name: OIDC_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: sure-secrets
+                  key: OIDC_CLIENT_SECRET
+
+            - name: OIDC_REDIRECT_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: sure-auth
+                  key: OIDC_REDIRECT_URI
+
+            - name: OIDC_SCOPES
+              valueFrom:
+                configMapKeyRef:
+                  name: sure-auth
+                  key: OIDC_SCOPES
+
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "2000m"
+
+          volumeMounts:
+            - name: sure-storage
+              mountPath: /app/public
+              subPath: public
+
       volumes:
-      - name: sure-storage
-        persistentVolumeClaim:
-          claimName: sure-pvc
+        - name: sure-storage
+          persistentVolumeClaim:
+            claimName: sure-pvc
 ---
-# Sidekiq Worker Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -243,11 +291,6 @@ metadata:
   namespace: sure
 spec:
   replicas: 1
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 0
   selector:
     matchLabels:
       app: sure-worker
@@ -257,111 +300,53 @@ spec:
         app: sure-worker
     spec:
       initContainers:
-      - name: wait-for-postgres
-        image: busybox:1.36
-        command: ['sh', '-c', 'until nc -z sure-postgres.sure.svc.cluster.local 5432; do echo waiting for postgres; sleep 2; done;']
-      - name: wait-for-redis
-        image: busybox:1.36
-        command: ['sh', '-c', 'until nc -z sure-redis.sure.svc.cluster.local 6379; do echo waiting for redis; sleep 2; done;']
+        - name: wait-for-postgres
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              until nc -z sure-postgres.sure.svc.cluster.local 5432; do
+                echo "waiting for postgres";
+                sleep 2;
+              done;
+        - name: wait-for-redis
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              until nc -z sure-redis.sure.svc.cluster.local 6379; do
+                echo "waiting for redis";
+                sleep 2;
+              done;
+
       containers:
-      - name: sure-worker
-        image: ghcr.io/we-promise/sure:latest
-        imagePullPolicy: Always
-        command: ["bundle", "exec", "sidekiq"]
-        env:
-        - name: SELF_HOSTED
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: SELF_HOSTED
-        - name: ONBOARDING_STATE
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: ONBOARDING_STATE
-        - name: RAILS_ASSUME_SSL
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: RAILS_ASSUME_SSL
-        - name: PORT
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: PORT
-        - name: DATABASE_URL
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: DATABASE_URL
-        - name: DB_HOST
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: DB_HOST
-        - name: DB_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: DB_PORT
-        - name: DB_NAME
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: DB_NAME
-        - name: DB_USERNAME
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: DB_USERNAME
-        - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: sure-secrets
-              key: postgres-password
-        - name: REDIS_URL
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: REDIS_URL
-        - name: EXCHANGE_RATE_PROVIDER
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: EXCHANGE_RATE_PROVIDER
-        - name: SECURITIES_PROVIDER
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: SECURITIES_PROVIDER
-        - name: APP_DOMAIN
-          valueFrom:
-            configMapKeyRef:
-              name: sure-config
-              key: APP_DOMAIN
-        - name: SECRET_KEY_BASE
-          valueFrom:
-            secretKeyRef:
-              name: sure-secrets
-              key: secret-key-base
-        - name: RAILS_MAILER_SMTP_SETTINGS
-          valueFrom:
-            secretKeyRef:
-              name: sure-secrets
-              key: smtp-settings
-        livenessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - "pgrep -f 'sidekiq' || exit 1"
-          initialDelaySeconds: 60
-          periodSeconds: 30
-        readinessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - "pgrep -f 'sidekiq' || exit 1"
-          initialDelaySeconds: 60
-          periodSeconds: 10
+        - name: sure-worker
+          image: ghcr.io/we-promise/sure:latest
+          imagePullPolicy: Always
+          command: ["bundle", "exec", "sidekiq"]
+
+          envFrom:
+            - configMapRef:
+                name: sure-config
+            - secretRef:
+                name: sure-secrets
+
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - "pgrep -f sidekiq || exit 1"
+            initialDelaySeconds: 60
+            periodSeconds: 30
+
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - "pgrep -f sidekiq || exit 1"
+            initialDelaySeconds: 60
+            periodSeconds: 10

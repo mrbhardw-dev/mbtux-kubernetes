@@ -126,6 +126,23 @@ spec:
         duration: 10s
         factor: 2
         maxDuration: 5m
+    ignoreDifferences:
+    - group: apps
+      kind: StatefulSet
+      jsonPointers:
+      - /spec/template/metadata/managedFields
+      - /status
+    - group: v1
+      kind: ConfigMap
+      jsonPointers:
+      - /data/config.yaml
+      - /metadata/managedFields
+    - group: v1
+      kind: Secret
+      jsonPointers:
+      - /metadata/managedFields
+      - /data/postgresql-password
+      - /data/authentik-secret-key
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
