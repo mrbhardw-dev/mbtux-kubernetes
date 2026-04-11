@@ -17,5 +17,4 @@ resources:
   - server.yaml
   - projects.yaml
   - applications.yaml
-  - cluster-secret.yaml
   - 40-ingress.yaml
