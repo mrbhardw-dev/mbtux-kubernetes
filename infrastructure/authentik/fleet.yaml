@@ -1,4 +1,5 @@
 defaultNamespace: authentik
+targetCluster: local
 helm:
   releaseName: authentik
   chart: authentik
