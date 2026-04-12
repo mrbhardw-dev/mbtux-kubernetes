@@ -3,15 +3,8 @@ kind: Ingress
 metadata:
   name: authentik
   namespace: authentik
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   ingressClassName: nginx
-  tls:
-    - secretName: authentik-tls
-      hosts:
-        - authentik.mbtux.com
   rules:
     - host: authentik.mbtux.com
       http:
