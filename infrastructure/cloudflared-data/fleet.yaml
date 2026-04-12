@@ -1,0 +1,4 @@
+defaultNamespace: cloudflared-data
+kustomize:
+  dir: ./manifests
+
