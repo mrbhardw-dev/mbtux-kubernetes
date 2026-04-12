@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns-custom
+  namespace: kube-system
+  labels:
+    k8s-app: kube-dns
+data:
+  # Fix for Cloudflare Tunnel DNS - forward to Cloudflare DNS
+  argotunnel.server: |
+    argotunnel.com:53 {
+        forward . 1.1.1.1 1.0.0.1
+    }
+    v2.argotunnel.com:53 {
+        forward . 1.1.1.1 1.0.0.1
+    }

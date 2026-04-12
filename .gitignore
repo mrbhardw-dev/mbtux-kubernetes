@@ -1,9 +1,9 @@
 **/charts/
 *.pem
 *.private-key.*
-*
+
 !infrastructure/cloudflared-data/
-!infrastructure/cloudflared-mgmt/
+!management/cloudflared-mgmt/
 !infrastructure/authentik/
 !apps/sure/
 !apps/plane/
