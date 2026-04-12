@@ -5,8 +5,8 @@
 !infrastructure/cloudflared-data/
 !infrastructure/cloudflared-mgmt/
 !infrastructure/authentik/
-!infrastructure/outline/
 !apps/sure/
 !apps/plane/
+!apps/outline/
 
 
