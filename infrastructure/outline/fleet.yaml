@@ -1,6 +1,0 @@
-defaultNamespace: outline
-kustomize:
-  dir: ./manifests
-helm:
-  releaseName: outline
-  takeOwnership: true
