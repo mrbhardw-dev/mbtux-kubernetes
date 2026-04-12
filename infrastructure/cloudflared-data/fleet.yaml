@@ -1,4 +1,6 @@
 defaultNamespace: cloudflared-data
 kustomize:
   dir: ./manifests
+helm:
+  takeOwnership: true
 
