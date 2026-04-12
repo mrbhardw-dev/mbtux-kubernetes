@@ -3,27 +3,6 @@ kind: ConfigMap
 metadata:
   name: cloudflared-config
   namespace: cloudflared-mgmt
-data:
-  config.yaml: |
-    tunnel: cloudflared-mgmt
-    ingress:
-      - hostname: argocd.mbtux.com
-        service: http://ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
-      - hostname: authentik.mbtux.com
-        service: http://ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
-      - hostname: outline.mbtux.com
-        service: http://ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
-      - hostname: grafana.mbtux.com
-        service: http://ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
-      - hostname: sure.mbtux.com
-        service: http://ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
-      - hostname: wekan.mbtux.com
-        service: http://ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
-      - hostname: taiga.mbtux.com
-        service: http://ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
-      - hostname: immich.mbtux.com
-        service: http://ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
-      - service: http_status:404
 ---
 apiVersion: apps/v1
 kind: Deployment

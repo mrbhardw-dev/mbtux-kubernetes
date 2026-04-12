@@ -3,43 +3,6 @@ kind: ConfigMap
 metadata:
   name: cloudflared-config
   namespace: cloudflared-data
-data:
-  config.yaml: |
-    tunnel: cloudflared-tunnel
-    ingress:
-      - hostname: argocd.mbtux.com
-        service: http://10.20.0.1:30080
-        originRequest:
-          noTLSVerify: true
-      - hostname: authentik.mbtux.com
-        service: http://10.20.0.1:30081
-        originRequest:
-          noTLSVerify: true
-      - hostname: outline.mbtux.com
-        service: http://10.20.0.1:30082
-        originRequest:
-          noTLSVerify: true
-      - hostname: grafana.mbtux.com
-        service: http://10.20.0.1:30083
-        originRequest:
-          noTLSVerify: true
-      - hostname: sure.mbtux.com
-        service: http://10.20.0.1:30084
-        originRequest:
-          noTLSVerify: true
-      - hostname: wekan.mbtux.com
-        service: http://10.20.0.1:30085
-        originRequest:
-          noTLSVerify: true
-      - hostname: taiga.mbtux.com
-        service: http://10.20.0.1:30086
-        originRequest:
-          noTLSVerify: true
-      - hostname: immich.mbtux.com
-        service: http://10.20.0.1:30087
-        originRequest:
-          noTLSVerify: true
-      - service: http_status:404
 ---
 apiVersion: apps/v1
 kind: Deployment
