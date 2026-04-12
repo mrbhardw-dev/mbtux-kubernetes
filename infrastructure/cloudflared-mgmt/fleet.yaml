@@ -1,4 +1,6 @@
 defaultNamespace: cloudflared-mgmt
-
+kustomize:
+  dir: ./manifests
 helm:
+  releaseName: cloudflared-mgmt
   takeOwnership: true
