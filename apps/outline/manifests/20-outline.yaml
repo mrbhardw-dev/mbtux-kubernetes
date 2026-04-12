@@ -59,7 +59,7 @@ spec:
         args:
           - sh
           - -c
-          - corepack enable && yarn start
+          - npm install -g yarn@4.11.0 && yarn start
         startupProbe:
           tcpSocket:
             port: 3000
