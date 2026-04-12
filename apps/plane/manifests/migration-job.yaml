@@ -1,0 +1,61 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: plane-migrate
+  namespace: plane
+spec:
+  template:
+    metadata:
+      name: plane-migrate
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: migrate
+        image: makeplane/plane-backend:stable
+        imagePullPolicy: Always
+        command: ["python", "manage.py", "migrate"]
+        env:
+        - name: POSTGRES_HOST
+          value: "plane-pgdb"
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: POSTGRES_DB
+        - name: POSTGRES_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: POSTGRES_PORT
+        - name: POSTGRES_USER
+          value: plane
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: plane-secrets
+              key: postgres-password
+        - name: REDIS_URL
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: REDIS_URL
+        - name: WEB_URL
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: WEB_URL
+        - name: API_URL
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: API_URL
+        - name: ENV
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: ENV
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: plane-secrets
+              key: secret-key

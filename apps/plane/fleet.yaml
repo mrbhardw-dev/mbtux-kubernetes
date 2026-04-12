@@ -1,6 +1,6 @@
 defaultNamespace: plane
 kustomize:
-  dir: .
+  dir: ./manifests
 helm:
   releaseName: plane
   takeOwnership: true
