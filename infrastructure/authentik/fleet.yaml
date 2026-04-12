@@ -1,0 +1,6 @@
+defaultNamespace: authentik
+kustomize:
+  dir: .
+helm:
+  releaseName: authentik
+  takeOwnership: true
