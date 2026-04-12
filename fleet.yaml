@@ -4,3 +4,4 @@ directories:
   - infrastructure/authentik
   - infrastructure/outline
   - apps/sure
+  - apps/plane

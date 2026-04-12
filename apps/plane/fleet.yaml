@@ -1,0 +1,6 @@
+defaultNamespace: plane
+kustomize:
+  dir: .
+helm:
+  releaseName: plane
+  takeOwnership: true
