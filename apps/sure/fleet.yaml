@@ -1,0 +1,6 @@
+defaultNamespace: sure
+kustomize:
+  dir: .
+helm:
+  releaseName: sure
+  takeOwnership: true
