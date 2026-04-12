@@ -22,3 +22,19 @@ postgresql:
 persistence:
   enabled: true
   size: 20Gi
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  hosts:
+    - host: authentik.mbtux.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: authentik-tls
+      hosts:
+        - authentik.mbtux.com
