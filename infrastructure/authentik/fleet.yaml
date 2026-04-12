@@ -1,6 +1,9 @@
 defaultNamespace: authentik
-kustomize:
-  dir: .
 helm:
   releaseName: authentik
+  chart: authentik
+  repo: https://charts.goauthentik.io
+  version: "2026.2.1"
+  valuesFiles:
+    - values.yaml
   takeOwnership: true
