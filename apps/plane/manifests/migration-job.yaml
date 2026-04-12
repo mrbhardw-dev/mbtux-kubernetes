@@ -28,7 +28,7 @@ spec:
               name: plane-config
               key: POSTGRES_PORT
         - name: POSTGRES_USER
-          value: plane
+          value: plane_user
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:

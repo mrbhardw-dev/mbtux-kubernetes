@@ -10,3 +10,4 @@ resources:
   - 10-database.yaml
   - 20-plane.yaml
   - 30-ingress.yaml
+  - migration-job.yaml
