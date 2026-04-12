@@ -16,7 +16,7 @@ spec:
         command: ["python", "manage.py", "migrate"]
         env:
         - name: POSTGRES_HOST
-          value: "plane-pgdb"
+          value: "plane-postgres"
         - name: POSTGRES_DB
           valueFrom:
             configMapKeyRef:
