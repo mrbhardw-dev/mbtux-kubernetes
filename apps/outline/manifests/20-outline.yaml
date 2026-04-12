@@ -56,7 +56,10 @@ spec:
       - name: outline
         image: outlinewiki/outline:latest
         imagePullPolicy: Always
-        command: ["node", "server/index.js"]
+        args:
+          - sh
+          - -c
+          - yarn start
         startupProbe:
           tcpSocket:
             port: 3000
