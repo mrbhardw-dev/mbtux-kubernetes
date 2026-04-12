@@ -59,7 +59,7 @@ spec:
         args:
           - sh
           - -c
-          - yarn start
+          - corepack enable && yarn start
         startupProbe:
           tcpSocket:
             port: 3000
