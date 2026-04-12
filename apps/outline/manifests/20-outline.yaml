@@ -59,7 +59,7 @@ spec:
         args:
           - sh
           - -c
-          - npm install -g yarn@4.11.0 && yarn start
+          - npx yarn@4.11.0 start
         startupProbe:
           tcpSocket:
             port: 3000
