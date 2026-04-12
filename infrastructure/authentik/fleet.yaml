@@ -1,5 +1,6 @@
 defaultNamespace: authentik
-targetCluster: local
+kustomize:
+  dir: ./manifests
 helm:
   releaseName: authentik
   chart: authentik

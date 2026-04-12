@@ -2,5 +2,9 @@
 *.pem
 *.private-key.*
 *
+!infrastructure/cloudflared-data/
+!infrastructure/cloudflared-mgmt/
+!infrastructure/authentik/
+!apps/sure/
 
 
