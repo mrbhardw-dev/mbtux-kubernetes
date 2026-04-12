@@ -2,4 +2,5 @@ directories:
   - infrastructure/cloudflared-data
   - infrastructure/cloudflared-mgmt
   - infrastructure/authentik
+  - infrastructure/outline
   - apps/sure

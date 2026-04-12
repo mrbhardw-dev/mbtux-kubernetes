@@ -1,0 +1,6 @@
+defaultNamespace: outline
+kustomize:
+  dir: .
+helm:
+  releaseName: outline
+  takeOwnership: true
