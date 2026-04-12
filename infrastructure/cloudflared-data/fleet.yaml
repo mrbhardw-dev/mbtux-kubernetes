@@ -2,5 +2,6 @@ defaultNamespace: cloudflared-data
 kustomize:
   dir: ./manifests
 helm:
+  releaseName: cloudflared-data
   takeOwnership: true
 
