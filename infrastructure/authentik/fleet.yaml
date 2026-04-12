@@ -1,5 +1,4 @@
 defaultNamespace: authentik
-namespace: authentik
 helm:
   releaseName: authentik
   chart: authentik
