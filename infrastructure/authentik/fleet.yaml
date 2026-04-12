@@ -1,4 +1,5 @@
 defaultNamespace: authentik
+namespace: authentik
 helm:
   releaseName: authentik
   chart: authentik
@@ -6,4 +7,4 @@ helm:
   version: "2026.2.1"
   valuesFiles:
     - values.yaml
-  takeOwnership: true
+  force: true
