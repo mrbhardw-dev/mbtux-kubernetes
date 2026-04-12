@@ -78,6 +78,9 @@ spec:
       - name: web
         image: makeplane/plane-frontend:stable
         imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+          name: http
         env:
         - name: NEXT_PUBLIC_API_BASE_URL
           valueFrom:
