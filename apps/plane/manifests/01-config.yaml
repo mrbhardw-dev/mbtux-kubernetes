@@ -24,6 +24,7 @@ data:
   BROKER_URL: "redis://plane-redis:6379/1"
   WEB_CONCURRENCY: "4"
   WORKERS: "4"
+  GUNICORN_WORKERS: "4"
   HUBSPOT_API_KEY: ""
   MINIO_ROOT_USER: "plane"
   MINIO_ROOT_PASSWORD: "plane-minio-password"
