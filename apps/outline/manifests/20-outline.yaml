@@ -56,10 +56,6 @@ spec:
       - name: outline
         image: outlinewiki/outline:latest
         imagePullPolicy: Always
-        args:
-          - sh
-          - -c
-          - yarn --version 2>/dev/null || (npm install -g yarn && yarn start)
         startupProbe:
           tcpSocket:
             port: 3000
