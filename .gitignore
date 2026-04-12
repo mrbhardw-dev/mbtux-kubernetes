@@ -2,4 +2,5 @@
 *.pem
 *.private-key.*
 *
-#
+!infrastructure/cloudflared-data/
+!
