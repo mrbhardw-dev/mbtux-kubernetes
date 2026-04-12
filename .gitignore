@@ -2,9 +2,3 @@
 *.pem
 *.private-key.*
 *
-!infrastructure/nextcloud-aio/
-!apps/
-!apps/sure/
-!apps/wekan/
-!bootstrap/
-!infrastructure/plane/
