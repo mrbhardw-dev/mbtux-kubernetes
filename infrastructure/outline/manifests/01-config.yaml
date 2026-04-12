@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: outline-config
+  namespace: outline
+data:
+  NODE_ENV: "production"
+  FORCE_HTTPS: "true"
+  LOG_LEVEL: "info"
+  URL: "https://outline.mbtux.com"
+  DATABASE_HOST: "outline-postgres"
+  DATABASE_PORT: "5432"
+  DATABASE_NAME: "outline"
+  DATABASE_USER: "outline"
+  REDIS_HOST: "outline-redis"
+  REDIS_PORT: "6379"
+  REDIS_URL: "redis://outline-redis:6379"
+  PGSSLMODE: "disable"
+  SECRET_KEY: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+  UTILS_SECRET: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+  SLACK_KEY: ""
+  FILE_STORAGE: "local"
+  FILE_STORAGE_LOCAL_ROOT_DIR: "/data/uploads"
+  EMAIL_ENABLED: "true"
+  EMAIL_FROM_NAME: "Outline"
+  SMTP_HOST: "smtppro.zoho.eu"
+  SMTP_PORT: "587"
+  SMTP_SECURE: "false"
+  SMTP_FROM_EMAIL: "mritunjay.bhardwaj@mbtux.com"
+  OIDC_ISSUER_URL: "https://authentik.mbtux.com/application/o/outline-wiki/"
+  OIDC_CLIENT_ID: "outline"
+  OIDC_CLIENT_SECRET: "5OB4WjmXTbVxJyNAa6NeqO2P4HEyXncm5D6jeTwKdII3Qjd5F3ygu7twXY0p"
+  OIDC_DISPLAY_NAME: "Authentik"
+  OIDC_SCOPES: "openid profile email groups"
+  OIDC_CLIENT_AUTH_METHOD: "post"
+  NODE_TLS_REJECT_UNAUTHORIZED: "0"

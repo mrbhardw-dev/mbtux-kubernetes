@@ -1,0 +1,253 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: outline
+  namespace: outline
+  labels:
+    app: outline
+spec:
+  type: ClusterIP
+  selector:
+    app: outline
+  ports:
+  - port: 80
+    targetPort: 3000
+    protocol: TCP
+    name: http
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: outline-pvc
+  namespace: outline
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: outline
+  namespace: outline
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: outline
+  template:
+    metadata:
+      labels:
+        app: outline
+    spec:
+      serviceAccountName: outline
+      initContainers:
+      - name: wait-for-postgres
+        image: busybox:1.36
+        command: ['sh', '-c', 'until nc -z outline-postgres 5432; do echo waiting for postgres; sleep 2; done;']
+      containers:
+      - name: outline
+        image: outlinewiki/outline:latest
+        imagePullPolicy: Always
+        startupProbe:
+          tcpSocket:
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 30
+        ports:
+        - name: http
+          containerPort: 3000
+        env:
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: NODE_ENV
+        - name: FORCE_HTTPS
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: FORCE_HTTPS
+        - name: LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: LOG_LEVEL
+        - name: URL
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: URL
+        - name: DATABASE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: DATABASE_HOST
+        - name: DATABASE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: DATABASE_PORT
+        - name: DATABASE_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: DATABASE_NAME
+        - name: DATABASE_USER
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: DATABASE_USER
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: outline-secrets
+              key: postgres-password
+        - name: REDIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: REDIS_HOST
+        - name: REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: REDIS_PORT
+        - name: REDIS_URL
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: REDIS_URL
+        - name: SECRET_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: SECRET_KEY
+        - name: UTILS_SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: UTILS_SECRET
+        - name: PGSSLMODE
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: PGSSLMODE
+        - name: FILE_STORAGE
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: FILE_STORAGE
+        - name: FILE_STORAGE_LOCAL_ROOT_DIR
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: FILE_STORAGE_LOCAL_ROOT_DIR
+        - name: EMAIL_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: EMAIL_ENABLED
+        - name: EMAIL_FROM_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: EMAIL_FROM_NAME
+        - name: SMTP_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: SMTP_HOST
+        - name: SMTP_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: SMTP_PORT
+        - name: SMTP_SECURE
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: SMTP_SECURE
+        - name: SMTP_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: outline-secrets
+              key: smtp-username
+        - name: SMTP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: outline-secrets
+              key: smtp-password
+        - name: SMTP_FROM_ADDRESS
+          valueFrom:
+            secretKeyRef:
+              name: outline-secrets
+              key: smtp-from-address
+        - name: SMTP_FROM_EMAIL
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: SMTP_FROM_EMAIL
+        - name: OIDC_ISSUER_URL
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: OIDC_ISSUER_URL
+        - name: OIDC_CLIENT_ID
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: OIDC_CLIENT_ID
+        - name: OIDC_CLIENT_SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: OIDC_CLIENT_SECRET
+        - name: OIDC_DISPLAY_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: OIDC_DISPLAY_NAME
+        - name: OIDC_SCOPES
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: OIDC_SCOPES
+        - name: NODE_TLS_REJECT_UNAUTHORIZED
+          valueFrom:
+            configMapKeyRef:
+              name: outline-config
+              key: NODE_TLS_REJECT_UNAUTHORIZED
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        livenessProbe:
+          tcpSocket:
+            port: 3000
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          tcpSocket:
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        volumeMounts:
+        - name: outline-storage
+          mountPath: /data/uploads
+      volumes:
+      - name: outline-storage
+        persistentVolumeClaim:
+          claimName: outline-pvc
