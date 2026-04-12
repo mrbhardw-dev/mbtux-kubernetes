@@ -261,6 +261,16 @@ spec:
             configMapKeyRef:
               name: plane-config
               key: REDIS_URL
+        - name: BROKER_TYPE
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: BROKER_TYPE
+        - name: BROKER_URL
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: BROKER_URL
         - name: WEB_CONCURRENCY
           valueFrom:
             configMapKeyRef:
@@ -459,6 +469,16 @@ spec:
             configMapKeyRef:
               name: plane-config
               key: REDIS_URL
+        - name: BROKER_TYPE
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: BROKER_TYPE
+        - name: BROKER_URL
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: BROKER_URL
         - name: EMAIL_FROM
           valueFrom:
             secretKeyRef:
