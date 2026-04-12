@@ -10,7 +10,7 @@ data:
   NEXT_PUBLIC_API_BASE_URL: "https://plane.mbtux.com/api/v1"
   API_URL: "https://plane.mbtux.com/api/v1"
   ENV: "production"
-  DEBUG: "false"
+  DEBUG: "0"
   ENABLE_TELEMETRY: "false"
   ENABLE_ANALYTICS: "false"
   SECRET_KEY: "plane-secret-key-change-in-production"
