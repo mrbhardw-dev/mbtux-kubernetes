@@ -71,7 +71,7 @@ spec:
 
       containers:
         - name: sure
-          image: ghcr.io/we-promise/sure:latest
+          image: ghcr.io/we-promise/sure:stable
           imagePullPolicy: Always
 
           ports:
@@ -123,9 +123,7 @@ spec:
 
             # Rails secrets
             - name: SECRET_KEY_BASE
-              value: "56f19bdf7f6a9e94a3fc661de4ece79788e783df7d27aee763a9d4d8918a3f3847c4273281a15867d4095cac5a0c6038c8d2907c9dab9842b3abfdf8e9ca81cc"
-            - name: RAILS_MASTER_KEY
-              value: "56f19bdf7f6a9e94a3fc661de4ece79788e783df7d27aee763a9d4d8918a3f3847c4273281a15867d4095cac5a0c6038c8d2907c9dab9842b3abfdf8e9ca81cc"
+              value: "a7523c3d0ae56415046ad8abae168d71074a79534a7062258f8d1d51ac2f76d3c3bc86d86b6b0b307df30d9a6a90a2066a3fa9e67c5e6f374dbd7dd4e0778e13"
 
             # Database
             - name: DB_HOST
@@ -322,9 +320,13 @@ spec:
 
       containers:
         - name: sure-worker
-          image: ghcr.io/we-promise/sure:latest
+          image: ghcr.io/we-promise/sure:stable
           imagePullPolicy: Always
           command: ["bundle", "exec", "sidekiq"]
+
+          env:
+            - name: SECRET_KEY_BASE
+              value: "a7523c3d0ae56415046ad8abae168d71074a79534a7062258f8d1d51ac2f76d3c3bc86d86b6b0b307df30d9a6a90a2066a3fa9e67c5e6f374dbd7dd4e0778e13"
 
           envFrom:
             - configMapRef:
@@ -349,3 +351,5 @@ spec:
                 - "pgrep -f sidekiq || exit 1"
             initialDelaySeconds: 60
             periodSeconds: 10
+
+      volumes:
