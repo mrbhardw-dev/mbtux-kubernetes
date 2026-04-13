@@ -1,11 +1,9 @@
 defaultNamespace: plane
-kustomize: {}
 helm:
   releaseName: plane
-  chart:
-    repo: https://helm.plane.so/
-    name: plane-ce
-    version: 1.5.0
+  chart: plane-ce
+  repo: https://helm.plane.so/
+  version: 1.5.0
   takeOwnership: true
   values:
     planeVersion: v1.2.3
