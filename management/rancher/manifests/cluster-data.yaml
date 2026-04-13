@@ -1,7 +1,3 @@
-# Data Cluster Import Registration
-# This creates the cluster entry in Rancher. After applying, you must
-# run the import command on the data cluster to install the Rancher agent.
----
 apiVersion: provisioning.cattle.io/v1
 kind: Cluster
 metadata:
@@ -13,4 +9,8 @@ metadata:
     data: "true"
   annotations:
     description: "Data cluster for application workloads"
-spec: {}
+spec:
+  genericCloudConfig:
+    config: |
+      cloud_provider:
+        name: generic
