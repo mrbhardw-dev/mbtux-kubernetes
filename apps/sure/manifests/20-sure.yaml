@@ -71,7 +71,7 @@ spec:
 
       containers:
         - name: sure
-          image: ghcr.io/we-promise/sure:v0.6.9
+          image: ghcr.io/we-promise/sure:sha-98df0d301a2a095632bfbd93c57467daf0f252ee
           imagePullPolicy: Always
 
           ports:
