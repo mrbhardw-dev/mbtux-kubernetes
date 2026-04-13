@@ -71,7 +71,7 @@ spec:
 
       containers:
         - name: sure
-          image: ghcr.io/we-promise/sure:sha-98df0d301a2a095632bfbd93c57467daf0f252ee
+          image: ghcr.io/we-promise/sure:latest
           imagePullPolicy: Always
 
           ports:
@@ -123,10 +123,9 @@ spec:
 
             # Rails secrets
             - name: SECRET_KEY_BASE
-              valueFrom:
-                secretKeyRef:
-                  name: sure-secrets
-                  key: secret-key-base
+              value: "56f19bdf7f6a9e94a3fc661de4ece79788e783df7d27aee763a9d4d8918a3f3847c4273281a15867d4095cac5a0c6038c8d2907c9dab9842b3abfdf8e9ca81cc"
+            - name: RAILS_MASTER_KEY
+              value: "56f19bdf7f6a9e94a3fc661de4ece79788e783df7d27aee763a9d4d8918a3f3847c4273281a15867d4095cac5a0c6038c8d2907c9dab9842b3abfdf8e9ca81cc"
 
             # Database
             - name: DB_HOST
