@@ -7,11 +7,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "100m"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      proxy_set_header Upgrade $http_upgrade;
-      proxy_set_header Connection "upgrade";
 spec:
   ingressClassName: nginx
   rules:
@@ -25,26 +21,13 @@ spec:
             name: plane-web
             port:
               number: 80
-  - host: plane.mbtux.com
-    http:
-      paths:
-      - path: /api(/|$)(.*)
-        pathType: ImplementationSpecific
+      - path: /api
+        pathType: Prefix
         backend:
           service:
             name: plane-api
             port:
               number: 8080
-  - host: plane.mbtux.com
-    http:
-      paths:
-      - path: /uploads(/|$)(.*)
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: plane-web
-            port:
-              number: 80
   tls:
   - hosts:
     - plane.mbtux.com

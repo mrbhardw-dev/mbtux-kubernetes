@@ -23,7 +23,7 @@ metadata:
   labels:
     app: plane-api
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: plane-api
   ports:
@@ -73,6 +73,7 @@ spec:
       - name: api
         image: makeplane/plane-backend:stable
         imagePullPolicy: Always
+        command: ["./bin/docker-entrypoint-api.sh"]
         ports:
         - containerPort: 8000
           name: http
@@ -81,6 +82,12 @@ spec:
             name: plane-config
         - secretRef:
             name: plane-secrets
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: plane-secrets
+              key: postgres-password
         - name: CELERY_BROKER_URL
           value: "redis://plane-redis:6379/1"
         - name: CELERY_RESULT_BACKEND
@@ -91,6 +98,81 @@ spec:
           value: "uploads"
         - name: S3_ENDPOINT
           value: "http://plane-minio:9000"
+        - name: ENABLE_OAUTH
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: ENABLE_OAUTH
+        - name: ENABLE_EMAIL_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: ENABLE_EMAIL_PASSWORD
+        - name: OAUTH_CLIENT_ID
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: OAUTH_CLIENT_ID
+        - name: OAUTH_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: plane-secrets
+              key: oauth-client-secret
+        - name: OAUTH_AUTHORIZATION_ENDPOINTS
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: OAUTH_AUTHORIZATION_ENDPOINTS
+        - name: OAUTH_TOKEN_ENDPOINTS
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: OAUTH_TOKEN_ENDPOINTS
+        - name: OAUTH_USER_ENDPOINTS
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: OAUTH_USER_ENDPOINTS
+        - name: OAUTH_SCOPES
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: OAUTH_SCOPES
+        - name: OAUTH_2_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: OAUTH_2_ENABLED
+        - name: OAUTH_2_CLIENT_ID
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: OAUTH_2_CLIENT_ID
+        - name: OAUTH_2_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: plane-secrets
+              key: oauth-client-secret
+        - name: OAUTH_2_AUTHORIZATION_ENDPOINTS
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: OAUTH_2_AUTHORIZATION_ENDPOINTS
+        - name: OAUTH_2_TOKEN_ENDPOINTS
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: OAUTH_2_TOKEN_ENDPOINTS
+        - name: OAUTH_2_USER_ENDPOINTS
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: OAUTH_2_USER_ENDPOINTS
+        - name: OAUTH_2_SCOPES
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: OAUTH_2_SCOPES
         resources:
           requests:
             cpu: 500m
@@ -199,6 +281,16 @@ spec:
             configMapKeyRef:
               name: plane-config
               key: ENABLE_ANALYTICS
+        - name: ENABLE_EMAIL_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: ENABLE_EMAIL_PASSWORD
+        - name: ENABLE_SIGNUP
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: ENABLE_SIGNUP
         - name: ENABLE_OAUTH
           valueFrom:
             configMapKeyRef:
@@ -486,6 +578,41 @@ spec:
             configMapKeyRef:
               name: plane-config
               key: OAUTH_SCOPES
+        - name: OAUTH_2_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: OAUTH_2_ENABLED
+        - name: OAUTH_2_CLIENT_ID
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: OAUTH_2_CLIENT_ID
+        - name: OAUTH_2_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: plane-secrets
+              key: oauth-client-secret
+        - name: OAUTH_2_AUTHORIZATION_ENDPOINTS
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: OAUTH_2_AUTHORIZATION_ENDPOINTS
+        - name: OAUTH_2_TOKEN_ENDPOINTS
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: OAUTH_2_TOKEN_ENDPOINTS
+        - name: OAUTH_2_USER_ENDPOINTS
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: OAUTH_2_USER_ENDPOINTS
+        - name: OAUTH_2_SCOPES
+          valueFrom:
+            configMapKeyRef:
+              name: plane-config
+              key: OAUTH_2_SCOPES
         - name: SECRET_KEY
           valueFrom:
             secretKeyRef:

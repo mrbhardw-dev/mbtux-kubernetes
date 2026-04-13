@@ -8,7 +8,7 @@ data:
 
   OIDC_PROVIDER: "authentik"
   AUTH_JIT_MODE: "create_and_link"
-
+  AUTH_LOCAL_ENABLED: "false"
   OIDC_ISSUER: "https://authentik.mbtux.com/application/o/sure-finance/"
   OIDC_ISSUER_URL: "https://authentik.mbtux.com/application/o/sure-finance/"
   
