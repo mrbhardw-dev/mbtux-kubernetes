@@ -20,3 +20,4 @@ helm:
       oidc_client_secret: "plane_oauth_secret"
       oidc_issuer: "https://authentik.mbtux.com/application/o/plane/"
       oidc_callback_url: "https://plane.mbtux.com/auth/oauth/.callback"
+      enable_signup: "1"
