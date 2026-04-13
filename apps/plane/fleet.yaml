@@ -11,6 +11,7 @@ helm:
       enabled: true
       appHost: plane.mbtux.com
       ingressClass: nginx
+      ingress_annotations: {}
     env:
       web_url: "https://plane.mbtux.com"
       secret_key: "77e752ac0a0e510f1c4429617212a0081737b26d2b2cbe6d47d0b3417d35f9b8"
