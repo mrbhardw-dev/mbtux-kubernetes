@@ -127,6 +127,11 @@ spec:
                 secretKeyRef:
                   name: sure-secrets
                   key: secret-key-base
+            - name: RAILS_MASTER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: sure-secrets
+                  key: RAILS_MASTER_KEY
 
             # Database
             - name: DB_HOST
