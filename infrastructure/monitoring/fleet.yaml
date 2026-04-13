@@ -1,0 +1,6 @@
+defaultNamespace: monitoring
+kustomize:
+  dir: ./manifests
+helm:
+  releaseName: monitoring
+  takeOwnership: true

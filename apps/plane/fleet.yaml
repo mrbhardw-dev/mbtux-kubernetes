@@ -1,6 +1,0 @@
-defaultNamespace: plane
-kustomize:
-  dir: ./manifests
-helm:
-  releaseName: plane
-  takeOwnership: true
