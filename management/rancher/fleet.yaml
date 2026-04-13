@@ -1,3 +1,0 @@
-defaultNamespace: cattle-fleet-clusters
-kustomize:
-  dir: ./manifests
