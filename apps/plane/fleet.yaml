@@ -21,3 +21,8 @@ helm:
       oidc_issuer: "https://authentik.mbtux.com/application/o/plane/"
       oidc_callback_url: "https://plane.mbtux.com/auth/oauth/.callback"
       enable_signup: "1"
+      smtp_host: "smtppro.zoho.eu"
+      smtp_port: "587"
+      smtp_from_email: "mritunjay.bhardwaj@mbtux.com"
+      smtp_from_name: "Plane"
+      enable_smtp: "1"
