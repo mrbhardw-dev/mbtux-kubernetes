@@ -1,6 +1,8 @@
 controller:
   service:
     type: ClusterIP
+    clusterIP: null
+    externalTrafficPolicy: Local
   ingressClassResource:
     default: true
   admissionWebhooks:
