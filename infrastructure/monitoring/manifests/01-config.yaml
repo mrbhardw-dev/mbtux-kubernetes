@@ -46,14 +46,16 @@ data:
           - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
             action: keep
             regex: 'true'
+          - action: replace
+            source_labels: [__meta_kubernetes_pod_ip]
+            target_label: node
+          - action: replace
+            source_labels: [__meta_kubernetes_pod_name]
+            target_label: pod
       
       - job_name: 'kube-state-metrics'
         static_configs:
           - targets: ['kube-state-metrics.monitoring.svc.cluster.local:8080']
-      
-      - job_name: 'node-exporter'
-        static_configs:
-          - targets: ['node-exporter.monitoring.svc.cluster.local:9100']
 ---
 apiVersion: v1
 kind: ConfigMap

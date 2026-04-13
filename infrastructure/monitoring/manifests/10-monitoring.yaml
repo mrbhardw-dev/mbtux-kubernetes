@@ -229,6 +229,9 @@ spec:
         - name: datasources
           mountPath: /etc/grafana/provisioning/datasources
           readOnly: true
+        - name: dashboards
+          mountPath: /var/lib/grafana/dashboards
+          readOnly: true
         livenessProbe:
           httpGet:
             path: /api/health
@@ -248,6 +251,12 @@ spec:
       - name: datasources
         configMap:
           name: grafana-datasources
+      - name: dashboards
+        configMap:
+          name: grafana-dashboards
+          items:
+          - key: cluster-overview.json
+            path: cluster-overview.json
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -293,6 +302,9 @@ spec:
     metadata:
       labels:
         app: node-exporter
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9100"
     spec:
       containers:
       - name: node-exporter
