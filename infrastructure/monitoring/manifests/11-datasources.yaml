@@ -8,11 +8,19 @@ data:
     apiVersion: 1
     
     datasources:
-      - name: Prometheus
+      - name: Prometheus (data-cluster)
         type: prometheus
         access: proxy
         url: http://prometheus.monitoring.svc.cluster.local:9090
         isDefault: true
+        editable: true
+        jsonData:
+          httpMethod: POST
+          timeInterval: 30s
+      - name: Prometheus (mgmt-cluster)
+        type: prometheus
+        access: proxy
+        url: http://prometheus.mgmt.mbtux.com:30913
         editable: true
         jsonData:
           httpMethod: POST

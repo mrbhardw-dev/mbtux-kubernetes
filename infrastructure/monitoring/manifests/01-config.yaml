@@ -191,4 +191,3 @@ data:
   GF_SECURITY_ADMIN_USER: "admin"
   GF_SECURITY_ALLOW_SIGN_UP: "true"
   GF_USERS_ALLOW_SIGN_UP: "true"
-  GF_INSTALL_PLUGINS: "grafana-piechart-panel"
