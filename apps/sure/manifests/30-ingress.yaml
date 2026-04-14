@@ -1,8 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: authentik
-  namespace: authentik
+  name: sure
+  namespace: sure
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
@@ -10,16 +10,16 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - authentik.mbtux.com
-      secretName: authentik-tls
+        - sure.mbtux.com
+      secretName: sure-tls
   rules:
-    - host: authentik.mbtux.com
+    - host: sure.mbtux.com
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: authentik-server
+                name: sure
                 port:
                   number: 80

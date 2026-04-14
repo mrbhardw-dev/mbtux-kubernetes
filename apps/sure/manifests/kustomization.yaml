@@ -10,3 +10,4 @@ resources:
   - 03-auth.yaml
   - 10-database.yaml
   - 20-sure.yaml
+  - 30-ingress.yaml
