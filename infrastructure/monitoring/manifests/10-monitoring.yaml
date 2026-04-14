@@ -256,10 +256,7 @@ spec:
           name: grafana-datasources
       - name: dashboards
         configMap:
-          name: grafana-dashboards
-          items:
-          - key: cluster-overview.json
-            path: cluster-overview.json
+          name: grafana-dotdc-dashboards
       - name: dashboard-provisioning
         configMap:
           name: grafana-dashboard-providers

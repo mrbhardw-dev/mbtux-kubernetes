@@ -14,3 +14,6 @@ data:
         url: http://prometheus:9090
         isDefault: true
         editable: true
+        jsonData:
+          httpMethod: POST
+          timeInterval: 30s
