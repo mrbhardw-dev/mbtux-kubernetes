@@ -232,6 +232,9 @@ spec:
         - name: dashboards
           mountPath: /var/lib/grafana/dashboards
           readOnly: true
+        - name: dashboard-provisioning
+          mountPath: /etc/grafana/provisioning/dashboards
+          readOnly: true
         livenessProbe:
           httpGet:
             path: /api/health
@@ -257,6 +260,9 @@ spec:
           items:
           - key: cluster-overview.json
             path: cluster-overview.json
+      - name: dashboard-provisioning
+        configMap:
+          name: grafana-dashboard-providers
 ---
 apiVersion: apps/v1
 kind: Deployment
