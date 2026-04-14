@@ -1,0 +1,3 @@
+defaultNamespace: kube-system
+kustomize:
+  dir: ./manifests
