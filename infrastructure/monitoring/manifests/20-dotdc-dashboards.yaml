@@ -9,17 +9,17 @@ data:
     "id": "prometheus", "name": "Prometheus", "version": "5.0.0"}, {"type": "panel",
     "id": "timeseries", "name": "Time series", "version": ""}, {"type": "panel", "id":
     "stat", "name": "Stat", "version": ""}], "annotations": {"list": [{"builtIn":
-    1, "datasource": {"type": "datasource", "uid": "${datasource}"}, "enable": true,
-    "hide": true, "iconColor": "rgba(0, 211, 255, 1)", "name": "Annotations & Alerts",
-    "target": {"limit": 100, "matchAny": false, "tags": [], "type": "dashboard"},
-    "type": "dashboard"}, {"datasource": {"type": "datasource", "uid": "${datasource}"},
-    "enable": true, "hide": false, "iconColor": "#5c4ee5", "name": "terraform", "target":
-    {"limit": 100, "matchAny": false, "tags": ["terraform"], "type": "tags"}}, {"datasource":
-    {"type": "datasource", "uid": "${datasource}"}, "enable": true, "hide": false,
-    "iconColor": "red", "name": "oncall", "target": {"limit": 100, "matchAny": false,
-    "tags": ["oncall"], "type": "tags"}}]}, "description": "This is a modern API Server
-    dashboard for your Kubernetes cluster(s). Made for kube-prometheus-stack and take
-    advantage of the latest Grafana features. GitHub repository: https://github.com/dotdc/grafana-dashboards-kubernetes",
+    1, "datasource": {"type": "datasource", "uid": "grafana"}, "enable": true, "hide":
+    true, "iconColor": "rgba(0, 211, 255, 1)", "name": "Annotations & Alerts", "target":
+    {"limit": 100, "matchAny": false, "tags": [], "type": "dashboard"}, "type": "dashboard"},
+    {"datasource": {"type": "datasource", "uid": "grafana"}, "enable": true, "hide":
+    false, "iconColor": "#5c4ee5", "name": "terraform", "target": {"limit": 100, "matchAny":
+    false, "tags": ["terraform"], "type": "tags"}}, {"datasource": {"type": "datasource",
+    "uid": "grafana"}, "enable": true, "hide": false, "iconColor": "red", "name":
+    "oncall", "target": {"limit": 100, "matchAny": false, "tags": ["oncall"], "type":
+    "tags"}}]}, "description": "This is a modern API Server dashboard for your Kubernetes
+    cluster(s). Made for kube-prometheus-stack and take advantage of the latest Grafana
+    features. GitHub repository: https://github.com/dotdc/grafana-dashboards-kubernetes",
     "editable": true, "fiscalYearStartMonth": 0, "graphTooltip": 1, "links": [], "liveNow":
     false, "panels": [{"datasource": {"type": "prometheus", "uid": "${datasource}"},
     "fieldConfig": {"defaults": {"mappings": [{"options": {"0": {"text": "DOWN"},
@@ -243,24 +243,25 @@ data:
     job)", "refId": "PrometheusVariableQueryEditor-VariableQuery"}, "refresh": 1,
     "regex": "", "skipUrlSync": false, "sort": 1, "type": "query"}]}, "time": {"from":
     "now-1h", "to": "now"}, "timepicker": {}, "timezone": "", "title": "Kubernetes
-    / System / API Server", "uid": "${datasource}", "version": 21, "weekStart": ""}'
+    / System / API Server", "uid": "k8s-system-api-server", "version": 21, "weekStart":
+    ""}'
   k8s-views-global.json: '{"__elements": {}, "__requires": [{"type": "panel", "id":
     "bargauge", "name": "Bar gauge", "version": ""}, {"type": "grafana", "id": "grafana",
     "name": "Grafana", "version": "10.3.1"}, {"type": "datasource", "id": "prometheus",
     "name": "Prometheus", "version": "1.0.0"}, {"type": "panel", "id": "stat", "name":
     "Stat", "version": ""}, {"type": "panel", "id": "timeseries", "name": "Time series",
     "version": ""}], "annotations": {"list": [{"builtIn": 1, "datasource": {"type":
-    "datasource", "uid": "${datasource}"}, "enable": true, "hide": true, "iconColor":
-    "rgba(0, 211, 255, 1)", "name": "Annotations & Alerts", "target": {"limit": 100,
-    "matchAny": false, "tags": [], "type": "dashboard"}, "type": "dashboard"}, {"datasource":
-    {"type": "datasource", "uid": "${datasource}"}, "enable": true, "hide": false,
-    "iconColor": "#5c4ee5", "name": "terraform", "target": {"limit": 100, "matchAny":
-    false, "tags": ["terraform"], "type": "tags"}}, {"datasource": {"type": "datasource",
-    "uid": "${datasource}"}, "enable": true, "hide": false, "iconColor": "red", "name":
-    "oncall", "target": {"limit": 100, "matchAny": false, "tags": ["oncall"], "type":
-    "tags"}}]}, "description": "This is a modern ''Global View'' dashboard for your
-    Kubernetes cluster(s). Made for kube-prometheus-stack and take advantage of the
-    latest Grafana features. GitHub repository: https://github.com/dotdc/grafana-dashboards-kubernetes",
+    "datasource", "uid": "grafana"}, "enable": true, "hide": true, "iconColor": "rgba(0,
+    211, 255, 1)", "name": "Annotations & Alerts", "target": {"limit": 100, "matchAny":
+    false, "tags": [], "type": "dashboard"}, "type": "dashboard"}, {"datasource":
+    {"type": "datasource", "uid": "grafana"}, "enable": true, "hide": false, "iconColor":
+    "#5c4ee5", "name": "terraform", "target": {"limit": 100, "matchAny": false, "tags":
+    ["terraform"], "type": "tags"}}, {"datasource": {"type": "datasource", "uid":
+    "grafana"}, "enable": true, "hide": false, "iconColor": "red", "name": "oncall",
+    "target": {"limit": 100, "matchAny": false, "tags": ["oncall"], "type": "tags"}}]},
+    "description": "This is a modern ''Global View'' dashboard for your Kubernetes
+    cluster(s). Made for kube-prometheus-stack and take advantage of the latest Grafana
+    features. GitHub repository: https://github.com/dotdc/grafana-dashboards-kubernetes",
     "editable": true, "fiscalYearStartMonth": 0, "graphTooltip": 1, "links": [], "liveNow":
     false, "panels": [{"collapsed": false, "datasource": {"type": "prometheus", "uid":
     "${datasource}"}, "gridPos": {"h": 1, "w": 24, "x": 0, "y": 0}, "id": 67, "panels":
@@ -820,27 +821,27 @@ data:
     "refId": "PrometheusVariableQueryEditor-VariableQuery"}, "refresh": 1, "regex":
     "", "skipUrlSync": false, "sort": 1, "type": "query"}]}, "time": {"from": "now-1h",
     "to": "now"}, "timepicker": {}, "timezone": "", "title": "Kubernetes / Views /
-    Global", "uid": "${datasource}", "version": 45, "weekStart": ""}'
+    Global", "uid": "k8s-views-global", "version": 45, "weekStart": ""}'
   k8s-views-namespaces.json: '{"__elements": {}, "__requires": [{"type": "panel",
     "id": "gauge", "name": "Gauge", "version": ""}, {"type": "grafana", "id": "grafana",
     "name": "Grafana", "version": "10.3.1"}, {"type": "datasource", "id": "prometheus",
     "name": "Prometheus", "version": "1.0.0"}, {"type": "panel", "id": "stat", "name":
     "Stat", "version": ""}, {"type": "panel", "id": "timeseries", "name": "Time series",
     "version": ""}], "annotations": {"list": [{"builtIn": 1, "datasource": {"type":
-    "datasource", "uid": "${datasource}"}, "enable": true, "hide": true, "iconColor":
-    "rgba(0, 211, 255, 1)", "name": "Annotations & Alerts", "target": {"limit": 100,
-    "matchAny": false, "tags": [], "type": "dashboard"}, "type": "dashboard"}, {"datasource":
-    {"type": "datasource", "uid": "${datasource}"}, "enable": true, "hide": false,
-    "iconColor": "#5c4ee5", "name": "terraform", "target": {"limit": 100, "matchAny":
-    false, "tags": ["terraform"], "type": "tags"}}, {"datasource": {"type": "datasource",
-    "uid": "${datasource}"}, "enable": true, "hide": false, "iconColor": "red", "name":
-    "oncall", "target": {"limit": 100, "matchAny": false, "tags": ["oncall"], "type":
-    "tags"}}]}, "description": "This is a modern ''Namespaces View'' dashboard for
-    your Kubernetes cluster(s). Made for kube-prometheus-stack and take advantage
-    of the latest Grafana features. GitHub repository: https://github.com/dotdc/grafana-dashboards-kubernetes",
+    "datasource", "uid": "grafana"}, "enable": true, "hide": true, "iconColor": "rgba(0,
+    211, 255, 1)", "name": "Annotations & Alerts", "target": {"limit": 100, "matchAny":
+    false, "tags": [], "type": "dashboard"}, "type": "dashboard"}, {"datasource":
+    {"type": "datasource", "uid": "grafana"}, "enable": true, "hide": false, "iconColor":
+    "#5c4ee5", "name": "terraform", "target": {"limit": 100, "matchAny": false, "tags":
+    ["terraform"], "type": "tags"}}, {"datasource": {"type": "datasource", "uid":
+    "grafana"}, "enable": true, "hide": false, "iconColor": "red", "name": "oncall",
+    "target": {"limit": 100, "matchAny": false, "tags": ["oncall"], "type": "tags"}}]},
+    "description": "This is a modern ''Namespaces View'' dashboard for your Kubernetes
+    cluster(s). Made for kube-prometheus-stack and take advantage of the latest Grafana
+    features. GitHub repository: https://github.com/dotdc/grafana-dashboards-kubernetes",
     "editable": true, "fiscalYearStartMonth": 0, "graphTooltip": 1, "links": [], "liveNow":
     false, "panels": [{"collapsed": false, "datasource": {"type": "datasource", "uid":
-    "${datasource}"}, "gridPos": {"h": 1, "w": 24, "x": 0, "y": 0}, "id": 38, "panels":
+    "grafana"}, "gridPos": {"h": 1, "w": 24, "x": 0, "y": 0}, "id": 38, "panels":
     [], "title": "Overview", "type": "row"}, {"datasource": {"type": "prometheus",
     "uid": "${datasource}"}, "fieldConfig": {"defaults": {"decimals": 2, "mappings":
     [], "max": 1, "min": 0, "thresholds": {"mode": "percentage", "steps": [{"color":
@@ -951,9 +952,9 @@ data:
     "uid": "${datasource}"}, "editorMode": "code", "expr": "sum(machine_memory_bytes{cluster=\"$cluster\"})",
     "hide": false, "legendFormat": "Cluster Total", "range": true, "refId": "D"}],
     "title": "Namespace(s) RAM Usage in bytes", "type": "stat"}, {"collapsed": false,
-    "datasource": {"type": "datasource", "uid": "${datasource}"}, "gridPos": {"h":
-    1, "w": 24, "x": 0, "y": 12}, "id": 40, "panels": [], "title": "Resources", "type":
-    "row"}, {"datasource": {"type": "prometheus", "uid": "${datasource}"}, "fieldConfig":
+    "datasource": {"type": "datasource", "uid": "grafana"}, "gridPos": {"h": 1, "w":
+    24, "x": 0, "y": 12}, "id": 40, "panels": [], "title": "Resources", "type": "row"},
+    {"datasource": {"type": "prometheus", "uid": "${datasource}"}, "fieldConfig":
     {"defaults": {"color": {"mode": "palette-classic"}, "custom": {"axisBorderShow":
     false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "CPU CORES",
     "axisPlacement": "auto", "barAlignment": 0, "barWidthFactor": 0.6, "drawStyle":
@@ -1200,8 +1201,8 @@ data:
     pod=~\"${created_by}.*\", cluster=\"$cluster\"}[$__rate_interval])) by (image)",
     "interval": "", "legendFormat": "{{ image }}", "range": true, "refId": "A"}],
     "title": "Container Image Used", "type": "timeseries"}, {"collapsed": false, "datasource":
-    {"type": "datasource", "uid": "${datasource}"}, "gridPos": {"h": 1, "w": 24, "x":
-    0, "y": 72}, "id": 42, "panels": [], "title": "Kubernetes Storage", "type": "row"},
+    {"type": "datasource", "uid": "grafana"}, "gridPos": {"h": 1, "w": 24, "x": 0,
+    "y": 72}, "id": 42, "panels": [], "title": "Kubernetes Storage", "type": "row"},
     {"datasource": {"type": "prometheus", "uid": "${datasource}"}, "fieldConfig":
     {"defaults": {"color": {"mode": "palette-classic"}, "custom": {"axisBorderShow":
     false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement":
@@ -1380,8 +1381,8 @@ data:
     cluster=\"$cluster\"},created_by_name)", "refId": "PrometheusVariableQueryEditor-VariableQuery"},
     "refresh": 2, "regex": "", "skipUrlSync": false, "sort": 1, "type": "query"}]},
     "time": {"from": "now-1h", "to": "now"}, "timepicker": {}, "timezone": "", "title":
-    "Kubernetes / Views / Namespaces", "uid": "${datasource}", "version": 46, "weekStart":
-    ""}'
+    "Kubernetes / Views / Namespaces", "uid": "k8s-views-namespaces", "version": 46,
+    "weekStart": ""}'
   k8s-views-nodes.json: '{"__elements": {}, "__requires": [{"type": "panel", "id":
     "gauge", "name": "Gauge", "version": ""}, {"type": "grafana", "id": "grafana",
     "name": "Grafana", "version": "10.3.1"}, {"type": "datasource", "id": "prometheus",
@@ -1389,30 +1390,30 @@ data:
     "Stat", "version": ""}, {"type": "panel", "id": "table", "name": "Table", "version":
     ""}, {"type": "panel", "id": "timeseries", "name": "Time series", "version": ""}],
     "annotations": {"list": [{"builtIn": 1, "datasource": {"type": "datasource", "uid":
-    "${datasource}"}, "enable": true, "hide": true, "iconColor": "rgba(0, 211, 255,
-    1)", "name": "Annotations & Alerts", "target": {"limit": 100, "matchAny": false,
-    "tags": [], "type": "dashboard"}, "type": "dashboard"}, {"datasource": {"type":
-    "datasource", "uid": "${datasource}"}, "enable": true, "hide": false, "iconColor":
-    "#5c4ee5", "name": "terraform", "target": {"limit": 100, "matchAny": false, "tags":
-    ["terraform"], "type": "tags"}}, {"datasource": {"type": "datasource", "uid":
-    "${datasource}"}, "enable": true, "hide": false, "iconColor": "red", "name": "oncall",
-    "target": {"limit": 100, "matchAny": false, "tags": ["oncall"], "type": "tags"}}]},
-    "description": "This is a modern ''Nodes View'' dashboard for your Kubernetes
-    cluster(s). Made for kube-prometheus-stack and take advantage of the latest Grafana
-    features. GitHub repository: https://github.com/dotdc/grafana-dashboards-kubernetes",
-    "editable": true, "fiscalYearStartMonth": 0, "graphTooltip": 1, "links": [], "liveNow":
-    false, "panels": [{"collapsed": false, "datasource": {"type": "prometheus", "uid":
-    "${datasource}"}, "gridPos": {"h": 1, "w": 24, "x": 0, "y": 0}, "id": 40, "panels":
-    [], "title": "Overview", "type": "row"}, {"datasource": {"type": "prometheus",
-    "uid": "${datasource}"}, "fieldConfig": {"defaults": {"decimals": 2, "mappings":
-    [], "max": 1, "min": 0, "thresholds": {"mode": "percentage", "steps": [{"color":
-    "green", "value": null}, {"color": "orange", "value": 50}, {"color": "red", "value":
-    70}]}, "unit": "percentunit"}, "overrides": []}, "gridPos": {"h": 8, "w": 4, "x":
-    0, "y": 1}, "id": 7, "options": {"minVizHeight": 75, "minVizWidth": 75, "orientation":
-    "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
-    "showThresholdLabels": false, "showThresholdMarkers": true, "sizing": "auto",
-    "text": {}}, "pluginVersion": "11.2.0", "targets": [{"datasource": {"type": "prometheus",
-    "uid": "${datasource}"}, "exemplar": false, "expr": "avg(sum by (cpu) (rate(node_cpu_seconds_total{mode!~\"idle|iowait|steal\",
+    "grafana"}, "enable": true, "hide": true, "iconColor": "rgba(0, 211, 255, 1)",
+    "name": "Annotations & Alerts", "target": {"limit": 100, "matchAny": false, "tags":
+    [], "type": "dashboard"}, "type": "dashboard"}, {"datasource": {"type": "datasource",
+    "uid": "grafana"}, "enable": true, "hide": false, "iconColor": "#5c4ee5", "name":
+    "terraform", "target": {"limit": 100, "matchAny": false, "tags": ["terraform"],
+    "type": "tags"}}, {"datasource": {"type": "datasource", "uid": "grafana"}, "enable":
+    true, "hide": false, "iconColor": "red", "name": "oncall", "target": {"limit":
+    100, "matchAny": false, "tags": ["oncall"], "type": "tags"}}]}, "description":
+    "This is a modern ''Nodes View'' dashboard for your Kubernetes cluster(s). Made
+    for kube-prometheus-stack and take advantage of the latest Grafana features. GitHub
+    repository: https://github.com/dotdc/grafana-dashboards-kubernetes", "editable":
+    true, "fiscalYearStartMonth": 0, "graphTooltip": 1, "links": [], "liveNow": false,
+    "panels": [{"collapsed": false, "datasource": {"type": "prometheus", "uid": "${datasource}"},
+    "gridPos": {"h": 1, "w": 24, "x": 0, "y": 0}, "id": 40, "panels": [], "title":
+    "Overview", "type": "row"}, {"datasource": {"type": "prometheus", "uid": "${datasource}"},
+    "fieldConfig": {"defaults": {"decimals": 2, "mappings": [], "max": 1, "min": 0,
+    "thresholds": {"mode": "percentage", "steps": [{"color": "green", "value": null},
+    {"color": "orange", "value": 50}, {"color": "red", "value": 70}]}, "unit": "percentunit"},
+    "overrides": []}, "gridPos": {"h": 8, "w": 4, "x": 0, "y": 1}, "id": 7, "options":
+    {"minVizHeight": 75, "minVizWidth": 75, "orientation": "auto", "reduceOptions":
+    {"calcs": ["lastNotNull"], "fields": "", "values": false}, "showThresholdLabels":
+    false, "showThresholdMarkers": true, "sizing": "auto", "text": {}}, "pluginVersion":
+    "11.2.0", "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"},
+    "exemplar": false, "expr": "avg(sum by (cpu) (rate(node_cpu_seconds_total{mode!~\"idle|iowait|steal\",
     instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval])))", "instant":
     true, "interval": "$resolution", "legendFormat": "", "refId": "A"}], "title":
     "CPU  Usage", "type": "gauge"}, {"datasource": {"type": "prometheus", "uid": "${datasource}"},
@@ -2082,7 +2083,7 @@ data:
     cluster=\"$cluster\"}, instance)", "refId": "StandardVariableQuery"}, "refresh":
     2, "regex": "", "skipUrlSync": false, "sort": 1, "type": "query"}]}, "time": {"from":
     "now-1h", "to": "now"}, "timepicker": {}, "timezone": "", "title": "Kubernetes
-    / Views / Nodes", "uid": "${datasource}", "version": 40, "weekStart": ""}'
+    / Views / Nodes", "uid": "k8s-views-nodes", "version": 40, "weekStart": ""}'
   k8s-views-pods.json: '{"__elements": [], "__requires": [{"type": "grafana", "id":
     "grafana", "name": "Grafana", "version": "8.3.4"}, {"type": "datasource", "id":
     "prometheus", "name": "Prometheus", "version": "5.0.0"}, {"type": "panel", "id":
@@ -2090,17 +2091,17 @@ data:
     "name": "Stat", "version": ""}, {"type": "panel", "id": "gauge", "name": "Gauge",
     "version": ""}, {"type": "panel", "id": "table", "name": "Table", "version": ""}],
     "annotations": {"list": [{"builtIn": 1, "datasource": {"type": "datasource", "uid":
-    "${datasource}"}, "enable": true, "hide": true, "iconColor": "rgba(0, 211, 255,
-    1)", "name": "Annotations & Alerts", "target": {"limit": 100, "matchAny": false,
-    "tags": [], "type": "dashboard"}, "type": "dashboard"}, {"datasource": {"type":
-    "datasource", "uid": "${datasource}"}, "enable": true, "hide": false, "iconColor":
-    "#5c4ee5", "name": "terraform", "target": {"limit": 100, "matchAny": false, "tags":
-    ["terraform"], "type": "tags"}}, {"datasource": {"type": "datasource", "uid":
-    "${datasource}"}, "enable": true, "hide": false, "iconColor": "red", "name": "oncall",
-    "target": {"limit": 100, "matchAny": false, "tags": ["oncall"], "type": "tags"}}]},
-    "description": "This is a modern ''Pods View'' dashboard for your Kubernetes cluster(s).
-    Made for kube-prometheus-stack and take advantage of the latest Grafana features.
-    GitHub repository: https://github.com/dotdc/grafana-dashboards-kubernetes", "editable":
+    "grafana"}, "enable": true, "hide": true, "iconColor": "rgba(0, 211, 255, 1)",
+    "name": "Annotations & Alerts", "target": {"limit": 100, "matchAny": false, "tags":
+    [], "type": "dashboard"}, "type": "dashboard"}, {"datasource": {"type": "datasource",
+    "uid": "grafana"}, "enable": true, "hide": false, "iconColor": "#5c4ee5", "name":
+    "terraform", "target": {"limit": 100, "matchAny": false, "tags": ["terraform"],
+    "type": "tags"}}, {"datasource": {"type": "datasource", "uid": "grafana"}, "enable":
+    true, "hide": false, "iconColor": "red", "name": "oncall", "target": {"limit":
+    100, "matchAny": false, "tags": ["oncall"], "type": "tags"}}]}, "description":
+    "This is a modern ''Pods View'' dashboard for your Kubernetes cluster(s). Made
+    for kube-prometheus-stack and take advantage of the latest Grafana features. GitHub
+    repository: https://github.com/dotdc/grafana-dashboards-kubernetes", "editable":
     true, "fiscalYearStartMonth": 0, "graphTooltip": 1, "links": [], "panels": [{"collapsed":
     false, "gridPos": {"h": 1, "w": 24, "x": 0, "y": 0}, "id": 43, "panels": [], "title":
     "Information", "type": "row"}, {"datasource": {"type": "prometheus", "uid": "${datasource}"},
@@ -2637,5 +2638,5 @@ data:
     cluster=\"$cluster\"},job)", "refId": "PrometheusVariableQueryEditor-VariableQuery"},
     "refresh": 1, "regex": "", "sort": 1, "type": "query"}]}, "time": {"from": "now-1h",
     "to": "now"}, "timepicker": {}, "timezone": "", "title": "Kubernetes / Views /
-    Pods", "uid": "${datasource}", "version": 39, "weekStart": ""}'
+    Pods", "uid": "k8s-views-pods", "version": 39, "weekStart": ""}'
 

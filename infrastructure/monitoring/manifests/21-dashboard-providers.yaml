@@ -16,4 +16,3 @@ data:
         allowUiUpdates: true
         options:
           path: /var/lib/grafana/dashboards
-          foldersFromFilesStructure: true
