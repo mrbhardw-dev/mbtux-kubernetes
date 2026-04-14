@@ -1,16 +1,15 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: wildcard-mbtux-tls
+  name: outline-tls
   namespace: outline
 spec:
-  secretName: wildcard-mbtux-tls
+  secretName: outline-tls
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
   dnsNames:
-    - "*.mbtux.com"
-    - mbtux.com
+    - outline.mbtux.com
   duration: 2160h
   renewBefore: 360h
 ---
@@ -28,7 +27,7 @@ spec:
   tls:
     - hosts:
         - outline.mbtux.com
-      secretName: wildcard-mbtux-tls
+      secretName: outline-tls
   rules:
     - host: outline.mbtux.com
       http:
