@@ -296,15 +296,13 @@ spec:
       - name: node-exporter
         image: prom/node-exporter:v1.7.0
         imagePullPolicy: IfNotPresent
+        args:
+          - --path.procfs=/host/proc
+          - --path.sysfs=/host/sys
+          - --collector.filesystem.mount-points-exclude=^/(sys|proc|run|dev|host)(/|$)
         ports:
         - name: http
           containerPort: 9100
-          hostPort: 9100
-        command:
-          - /bin/node-exporter
-          - --path.procfs=/host/proc
-          - --path.sysfs=/host/sys
-          - --collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)
         resources:
           requests:
             memory: "128Mi"
