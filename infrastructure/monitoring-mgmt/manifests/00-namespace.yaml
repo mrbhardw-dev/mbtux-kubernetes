@@ -14,8 +14,10 @@ kind: ClusterRole
 metadata:
   name: monitoring
 rules:
+  - nonResourceURLs: ["/metrics"]
+    verbs: ["get"]
   - apiGroups: [""]
-    resources: ["nodes", "nodes/proxy", "services", "endpoints", "pods", "pods/log"]
+    resources: ["nodes", "nodes/proxy", "services", "endpoints", "pods", "pods/log", "persistentvolumeclaims", "persistentvolumes"]
     verbs: ["get", "list", "watch"]
   - apiGroups: [""]
     resources: ["configmaps", "secrets"]

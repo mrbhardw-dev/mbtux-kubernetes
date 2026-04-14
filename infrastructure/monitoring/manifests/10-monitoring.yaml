@@ -204,6 +204,41 @@ spec:
             configMapKeyRef:
               name: grafana-config
               key: GF_USERS_ALLOW_SIGN_UP
+        - name: GF_AUTH_GENERIC_OAUTH_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              name: grafana-config
+              key: GF_AUTH_GENERIC_OAUTH_ENABLED
+        - name: GF_AUTH_GENERIC_OAUTH_CLIENT_ID
+          valueFrom:
+            configMapKeyRef:
+              name: grafana-config
+              key: GF_AUTH_GENERIC_OAUTH_CLIENT_ID
+        - name: GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: monitoring-secrets
+              key: authentik-client-secret
+        - name: GF_AUTH_GENERIC_OAUTH_SCOPES
+          valueFrom:
+            configMapKeyRef:
+              name: grafana-config
+              key: GF_AUTH_GENERIC_OAUTH_SCOPES
+        - name: GF_AUTH_GENERIC_OAUTH_AUTH_URL
+          valueFrom:
+            configMapKeyRef:
+              name: grafana-config
+              key: GF_AUTH_GENERIC_OAUTH_AUTH_URL
+        - name: GF_AUTH_GENERIC_OAUTH_TOKEN_URL
+          valueFrom:
+            configMapKeyRef:
+              name: grafana-config
+              key: GF_AUTH_GENERIC_OAUTH_TOKEN_URL
+        - name: GF_AUTH_GENERIC_OAUTH_API_URL
+          valueFrom:
+            configMapKeyRef:
+              name: grafana-config
+              key: GF_AUTH_GENERIC_OAUTH_API_URL
         resources:
           requests:
             memory: "256Mi"
