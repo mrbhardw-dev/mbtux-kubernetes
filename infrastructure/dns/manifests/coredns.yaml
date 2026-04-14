@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns
+  namespace: kube-system
+data:
+  Corefile: |
+    .:53 {
+        errors
+        health
+        ready
+        kubernetes cluster.local in-addr.arpa ip6.arpa {
+          pods insecure
+          fallthrough in-addr.arpa ip6.arpa
+        }
+        hosts /etc/coredns/NodeHosts {
+          ttl 60
+          reload 15s
+          fallthrough
+        }
+        prometheus :9153
+        cache 30
+        loop
+        reload
+        loadbalance
+        import /etc/coredns/custom/*.override
+        forward . 8.8.8.8 1.1.1.1
+    }
+    import /etc/coredns/custom/*.server
+  NodeHosts: |
+    192.168.0.211 tuna-master-data-cluster.mbtux.com
+    192.168.0.212 mouse-worker-data-cluster.mbtux.com
+    192.168.0.213 tadpole-worker-data-cluster.mbtux.com
+    192.168.0.214 starfish-worker-data-cluster.mbtux.com
+    2a02:8086:d00:3200:be24:11ff:fe1e:e59c starfish-worker-data-cluster.mbtux.com
+    2a02:8086:d00:3200:be24:11ff:fe80:3e87 tadpole-worker-data-cluster.mbtux.com
+    2a02:8086:d00:3200:be24:11ff:fe87:b1bc tuna-master-data-cluster.mbtux.com
+    2a02:8086:d00:3200:be24:11ff:fedf:5227 mouse-worker-data-cluster.mbtux.com
