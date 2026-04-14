@@ -10,3 +10,4 @@ resources:
   - 10-postgres.yaml
   - 11-redis.yaml
   - 20-outline.yaml
+  - 30-ingress.yaml
