@@ -5,9 +5,6 @@ metadata:
   namespace: cloudflared-data
 data:
   config.yaml: |
-    tunnel: 5fc8bf9fd9d101833e550115fddab132
-    credentials-file: /etc/cloudflared/creds/credentials.json
-    
     ingress:
       - hostname: outline.mbtux.com
         service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80

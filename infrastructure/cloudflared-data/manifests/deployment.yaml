@@ -37,12 +37,11 @@ spec:
         image: cloudflare/cloudflared:2024.11.2
         args:
           - tunnel
+          - --config
+          - /etc/cloudflared/config/config.yaml
           - run
           - --token
           - $(TUNNEL_TOKEN)
-          - --config
-          - /etc/cloudflared/config/config.yaml
-          - --no-autocert
         volumeMounts:
         - name: config
           mountPath: /etc/cloudflared/config
