@@ -11,7 +11,7 @@ controller:
     enabled: true
     failurePolicy: Fail
   tls:
-    defaultCertSecret: ingress-nginx/cloudflare-origin-tls
+    defaultCertSecret: ingress-nginx/cloudflare-origin-cert
   config:
     use-forwarded-headers: "true"
     compute-full-forwarded-for: "true"
