@@ -10,8 +10,6 @@ controller:
   admissionWebhooks:
     enabled: true
     failurePolicy: Fail
-  tls:
-    defaultCertSecret: ingress-nginx/cloudflare-origin-tls
   config:
     use-forwarded-headers: "true"
     compute-full-forwarded-for: "true"
