@@ -10,35 +10,21 @@ spec:
   selector:
     matchLabels:
       app: cloudflared
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 0
   template:
     metadata:
       labels:
         app: cloudflared
     spec:
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  app: cloudflared
-              topologyKey: kubernetes.io/hostname
       containers:
       - name: cloudflared
         image: cloudflare/cloudflared:latest
         args:
-          - tunnel
-          - --config
-          - /etc/cloudflared/config/config.yaml
-          - run
-          - --token
-          - $(TUNNEL_TOKEN)
+        - tunnel
+        - --config
+        - /etc/cloudflared/config/config.yaml
+        - run
+        - --token
+        - $(TUNNEL_TOKEN)
         env:
         - name: TUNNEL_TOKEN
           valueFrom:
@@ -49,25 +35,18 @@ spec:
         - name: config
           mountPath: /etc/cloudflared/config
           readOnly: true
-        - name: certs
-          mountPath: /etc/cloudflared/certs
-          readOnly: true
         readinessProbe:
           httpGet:
             path: /ready
             port: 9090
           initialDelaySeconds: 10
           periodSeconds: 30
-          timeoutSeconds: 5
-          failureThreshold: 3
         livenessProbe:
           httpGet:
             path: /healthz
             port: 9090
           initialDelaySeconds: 30
           periodSeconds: 60
-          timeoutSeconds: 5
-          failureThreshold: 3
         resources:
           requests:
             cpu: 100m
@@ -79,7 +58,3 @@ spec:
       - name: config
         configMap:
           name: cloudflared-config
-      - name: certs
-        configMap:
-          name: cloudflared-cert
-          optional: true
