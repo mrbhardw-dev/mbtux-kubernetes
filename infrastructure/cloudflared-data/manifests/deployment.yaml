@@ -22,19 +22,16 @@ spec:
     spec:
       affinity:
         podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchLabels:
-                app: cloudflared
-            topologyKey: kubernetes.io/hostname
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 65534
-        fsGroup: 65534
-        readOnlyRootFilesystem: true
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: cloudflared
+              topologyKey: kubernetes.io/hostname
       containers:
       - name: cloudflared
-        image: cloudflare/cloudflared:2024.11.2
+        image: cloudflare/cloudflared:latest
         args:
           - tunnel
           - --config
@@ -46,19 +43,15 @@ spec:
         - name: config
           mountPath: /etc/cloudflared/config
           readOnly: true
-        - name: tmp
-          mountPath: /tmp
+        - name: certs
+          mountPath: /etc/cloudflared/certs
+          readOnly: true
         env:
         - name: TUNNEL_TOKEN
           valueFrom:
             secretKeyRef:
               name: cloudflared-token
               key: TUNNEL_TOKEN
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-            - ALL
         readinessProbe:
           httpGet:
             path: /ready
@@ -86,5 +79,7 @@ spec:
       - name: config
         configMap:
           name: cloudflared-config
-      - name: tmp
-        emptyDir: {}
+      - name: certs
+        configMap:
+          name: cloudflared-cert
+          optional: true
