@@ -33,8 +33,6 @@ data:
           tlsSkipVerify: false
       - service: http_status:404
     
-    no-autoconfig: true
-    
     logLevel: info
     transport-loglevel: warn
     

@@ -37,21 +37,18 @@ spec:
           - --config
           - /etc/cloudflared/config/config.yaml
           - run
-          - --token
-          - $(TUNNEL_TOKEN)
+          - --credentials-file
+          - /etc/cloudflared/creds/credentials.json
         volumeMounts:
         - name: config
           mountPath: /etc/cloudflared/config
           readOnly: true
+        - name: creds
+          mountPath: /etc/cloudflared/creds
+          readOnly: true
         - name: certs
           mountPath: /etc/cloudflared/certs
           readOnly: true
-        env:
-        - name: TUNNEL_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: cloudflared-token
-              key: TUNNEL_TOKEN
         readinessProbe:
           httpGet:
             path: /ready
@@ -79,6 +76,9 @@ spec:
       - name: config
         configMap:
           name: cloudflared-config
+      - name: creds
+        secret:
+          secretName: cloudflared-creds
       - name: certs
         configMap:
           name: cloudflared-cert
