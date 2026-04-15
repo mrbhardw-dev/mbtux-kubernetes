@@ -5,32 +5,18 @@ metadata:
   namespace: cloudflared-data
 data:
   config.yaml: |
+    tunnelID: 4139b149-9877-44f5-9cce-867db8680b1b
+    credentials-contents: '{"AccountTag":"5fc8bf9fd9d101833e550115fddab132","TunnelID":"4139b149-9877-44f5-9cce-867db8680b1b","TunnelSecret":"e7413c82-dc21-441b-8c12-442c85744807"}'
+    
     ingress:
       - hostname: outline.mbtux.com
-        service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
-        originRequest:
-          connectTimeout: 30s
-          tlsSkipVerify: false
+        service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx:80
       - hostname: authentik.mbtux.com
-        service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
-        originRequest:
-          connectTimeout: 30s
-          tlsSkipVerify: false
+        service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx:80
       - hostname: sure.mbtux.com
-        service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
-        originRequest:
-          connectTimeout: 30s
-          tlsSkipVerify: false
+        service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx:80
       - hostname: grafana.mbtux.com
-        service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
-        originRequest:
-          connectTimeout: 30s
-          tlsSkipVerify: false
-      - hostname: rancher.mbtux.com
-        service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
-        originRequest:
-          connectTimeout: 30s
-          tlsSkipVerify: false
+        service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx:80
       - service: http_status:404
     
     logLevel: info
