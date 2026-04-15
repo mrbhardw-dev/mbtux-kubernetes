@@ -9,6 +9,12 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
 spec:
   ingressClassName: nginx
+  tls:
+    - hosts:
+        - grafana.mbtux.com
+        - "*.mbtux.com"
+        - mbtux.com
+      secretName: cloudflare-origin-cert
   rules:
   - host: grafana.mbtux.com
     http:

@@ -11,7 +11,9 @@ spec:
   tls:
     - hosts:
         - sure.mbtux.com
-      secretName: sure-tls
+        - "*.mbtux.com"
+        - mbtux.com
+      secretName: cloudflare-origin-cert
   rules:
     - host: sure.mbtux.com
       http:
