@@ -1,0 +1,39 @@
+# Sample Ingress using cert-manager for TLS
+# This demonstrates how to configure Ingress resources to use Let's Encrypt certificates
+# 
+# TRUST MODEL:
+# - cert-manager + Let's Encrypt = Public browser-trusted certificates
+# - Vault PKI = Internal service-to-service (mTLS)
+#
+# The TLS secret will be automatically created and renewed by cert-manager
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sample-app
+  namespace: default
+  annotations:
+    # cert-manager will create/renew the TLS certificate
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    # Optional: specify issuer for this ingress only
+    # cert-manager.io/issuer: letsencrypt-prod
+    # Enable HTTP01 challenge (fallback if DNS01 fails)
+    # cert-manager.io/acme-challenge-type: http01
+    kubernetes.io/ingress.class: nginx
+spec:
+  tls:
+    - hosts:
+        - app.example.com
+        - "*.example.com"
+      secretName: example-com-tls
+  rules:
+    - host: app.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sample-app
+                port:
+                  number: 80

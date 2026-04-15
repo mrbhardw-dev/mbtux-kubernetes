@@ -20,8 +20,6 @@ spec:
         image: cloudflare/cloudflared:latest
         args:
         - tunnel
-        - --config
-        - /etc/cloudflared/config/config.yaml
         - run
         - --token
         - $(TUNNEL_TOKEN)
@@ -31,10 +29,6 @@ spec:
             secretKeyRef:
               name: cloudflared-token
               key: TUNNEL_TOKEN
-        volumeMounts:
-        - name: config
-          mountPath: /etc/cloudflared/config
-          readOnly: true
         readinessProbe:
           httpGet:
             path: /ready
@@ -54,7 +48,3 @@ spec:
           limits:
             cpu: 500m
             memory: 256Mi
-      volumes:
-      - name: config
-        configMap:
-          name: cloudflared-config
