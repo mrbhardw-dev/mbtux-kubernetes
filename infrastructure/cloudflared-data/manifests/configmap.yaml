@@ -7,11 +7,19 @@ data:
   config.yaml: |
     ingress:
       - hostname: outline.mbtux.com
-        service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
+        service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
+        originRequest:
+          caPool: /etc/cloudflared/certs/cloudflare-origin-ca.pem
       - hostname: authentik.mbtux.com
-        service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
+        service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
+        originRequest:
+          caPool: /etc/cloudflared/certs/cloudflare-origin-ca.pem
       - hostname: sure.mbtux.com
-        service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
+        service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
+        originRequest:
+          caPool: /etc/cloudflared/certs/cloudflare-origin-ca.pem
       - hostname: grafana.mbtux.com
-        service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
+        service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
+        originRequest:
+          caPool: /etc/cloudflared/certs/cloudflare-origin-ca.pem
       - service: http_status:404
