@@ -7,11 +7,17 @@ data:
   config.yaml: |
     ingress:
       - hostname: outline.mbtux.com
-        service: http://10.43.196.64:80
+        service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
+        originRequest:
+          noTLSVerify: true
       - hostname: sure.mbtux.com
-        service: http://10.43.196.64:80
+        service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
+        originRequest:
+          noTLSVerify: true
       - hostname: authentik.mbtux.com
-        service: http://10.43.196.64:80
+        service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
+        originRequest:
+          noTLSVerify: true
       - service: http_status:404
     
     logLevel: info
