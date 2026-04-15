@@ -23,6 +23,13 @@ spec:
           - run
           - --token
           - $(TUNNEL_TOKEN)
+          - --no-autocert
+          - --origin-ca-pool
+          - /etc/cloudflared/ca.crt
+        volumeMounts:
+        - name: ca-cert
+          mountPath: /etc/cloudflared
+          readOnly: true
         env:
         - name: TUNNEL_TOKEN
           valueFrom:
@@ -36,3 +43,10 @@ spec:
           limits:
             cpu: 500m
             memory: 256Mi
+      volumes:
+      - name: ca-cert
+        configMap:
+          name: cloudflared-ca
+          items:
+          - key: ca.crt
+            path: ca.crt
