@@ -1,24 +1,24 @@
 controller:
   service:
-    type: ClusterIP
-    clusterIP: null
+    type: LoadBalancer
     externalTrafficPolicy: Local
+    annotations:
+      metallb.universe.org/address-pool: production
+      betav1.metallb.io: "true"
   ingressClassResource:
     default: true
   admissionWebhooks:
-    enabled: false
-  metrics:
     enabled: true
-    serviceMonitor:
-      enabled: true
-      additionalLabels:
-        release: monitoring
+    failurePolicy: Fail
+  tls:
+    defaultCertSecret: ingress-nginx/cloudflare-origin-cert
   config:
     use-forwarded-headers: "true"
     compute-full-forwarded-for: "true"
     use-proxy-protocol: "false"
     hsts-max-age: "31536000"
     ssl-protocols: "TLSv1.2 TLSv1.3"
+    ssl-ciphers: "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384"
   resources:
     requests:
       cpu: 100m
@@ -37,11 +37,16 @@ controller:
       - ALL
     allowPrivilegeEscalation: false
   autoscaling:
-    enabled: false
+    enabled: true
     minReplicas: 2
     maxReplicas: 10
     targetCPUUtilizationPercentage: 50
-    targetMemoryUtilizationPercentage: 75
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        release: monitoring
   topologySpreadConstraints:
     - maxSkew: 1
       topologyKey: kubernetes.io/hostname
@@ -50,3 +55,7 @@ controller:
         matchLabels:
           app.kubernetes.io/name: ingress-nginx
           app.kubernetes.io/component: controller
+  serviceAccount:
+    name: ingress-nginx
+defaultBackend:
+  enabled: true
