@@ -11,9 +11,7 @@ spec:
   tls:
     - hosts:
         - outline.mbtux.com
-        - "*.mbtux.com"
-        - mbtux.com
-      secretName: cloudflare-origin-cert
+      secretName: outline-tls
   rules:
     - host: outline.mbtux.com
       http:

@@ -16,17 +16,19 @@ data:
     }
   
   # Ingress configuration for hostname-based routing
-  # Routes traffic from Cloudflare edge to NGINX Ingress via HTTPS
+  # Routes traffic from Cloudflare edge directly to backend services
   config.yaml: |
+    # Tunnel ID - identifies which tunnel to use
+    tunnel: ae1dd134-6874-446d-b665-b7a9fa81b14c
+    
+    # Ingress rules for routing to internal services
     ingress:
       - hostname: outline.mbtux.com
         service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
         originRequest:
           noTLSVerify: true
       - hostname: sure.mbtux.com
-        service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
-        originRequest:
-          noTLSVerify: true
+        service: http://sure.sure.svc.cluster.local:80
       - hostname: authentik.mbtux.com
         service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
         originRequest:
@@ -38,4 +40,9 @@ data:
       - service: http_status:404
     
     logLevel: info
-    no-autoconfig: true
+    transport-loglevel: warn
+    metrics: 0.0.0.0:9090
+    healthcheck:
+      timeout: 5s
+      interval: 30s
+      retry: 5

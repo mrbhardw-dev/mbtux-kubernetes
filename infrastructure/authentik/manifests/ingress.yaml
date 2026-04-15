@@ -11,9 +11,7 @@ spec:
   tls:
     - hosts:
         - authentik.mbtux.com
-        - "*.mbtux.com"
-        - mbtux.com
-      secretName: cloudflare-origin-cert
+      secretName: authentik-tls
   rules:
     - host: authentik.mbtux.com
       http:
