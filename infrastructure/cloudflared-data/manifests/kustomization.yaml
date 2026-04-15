@@ -4,7 +4,5 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - secret.yaml
-  - creds-secret.yaml
-  - cert-configmap.yaml
   - configmap.yaml
   - deployment.yaml
