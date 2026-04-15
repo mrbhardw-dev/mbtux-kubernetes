@@ -1,0 +1,52 @@
+global:
+  enabled: true
+  tlsDisable: false
+
+server:
+  image:
+    repository: hashicorp/vault
+    tag: "1.21.4"
+
+  replicas: 3
+
+  ha:
+    enabled: true
+    raft:
+      enabled: true
+      setNodeId: true
+      config: |
+        ui = true
+
+        listener "tcp" {
+          address         = "0.0.0.0:8200"
+          cluster_address = "0.0.0.0:8201"
+          tls_disable     = 1
+        }
+
+        storage "raft" {
+          path = "/vault/data"
+        }
+
+        api_addr     = "https://vault-pki.mbtux.com"
+        cluster_addr = "https://vault-pki-internal.vault.svc:8201"
+
+  dataStorage:
+    enabled: true
+    size: 10Gi
+    storageClass: local-path
+
+  service:
+    type: ClusterIP
+    port: 8200
+
+ui:
+  enabled: true
+  serviceType: ClusterIP
+
+resources:
+  requests:
+    cpu: "250m"
+    memory: "512Mi"
+  limits:
+    cpu: "1"
+    memory: "1Gi"

@@ -18,49 +18,24 @@ data:
   # Ingress configuration for hostname-based routing
   # Routes traffic from Cloudflare edge to NGINX Ingress via HTTPS
   config.yaml: |
-    # Tunnel ID - identifies which tunnel to use
-    tunnel: ae1dd134-6874-446d-b665-b7a9fa81b14c
-    
-    # Ingress rules for routing to internal services
     ingress:
       - hostname: outline.mbtux.com
         service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
         originRequest:
-          # OPTION A: Skip TLS verification (simpler, works with self-signed)
           noTLSVerify: true
-          
-          # OPTION B: Use CA pool for proper validation (requires CA bundle mounted)
-          # Uncomment below and mount CA ConfigMap for proper validation:
-          # caPool: /etc/cloudflared/certs/ca.crt
-          # connectTimeout: 30s
-          
       - hostname: sure.mbtux.com
         service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
         originRequest:
           noTLSVerify: true
-          
       - hostname: authentik.mbtux.com
         service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
         originRequest:
           noTLSVerify: true
-          
       - hostname: grafana.mbtux.com
         service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
         originRequest:
           noTLSVerify: true
-      
-      # Fallback for unmatched hosts
       - service: http_status:404
     
-    # Logging configuration
     logLevel: info
-    transport-loglevel: warn
-    
-    # Metrics endpoint for Prometheus
-    metrics: 0.0.0.0:9090
-    
-    # Health check configuration
-    healthcheck:
-      timeout: 5s
-      interval: 30s
-      retry: 5
+    no-autoconfig: true
