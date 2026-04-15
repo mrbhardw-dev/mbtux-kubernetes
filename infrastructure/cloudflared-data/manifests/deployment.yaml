@@ -10,14 +10,31 @@ spec:
   selector:
     matchLabels:
       app: cloudflared
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   template:
     metadata:
       labels:
         app: cloudflared
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app: cloudflared
+            topologyKey: kubernetes.io/hostname
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        fsGroup: 65534
+        readOnlyRootFilesystem: true
       containers:
       - name: cloudflared
-        image: cloudflare/cloudflared:latest
+        image: cloudflare/cloudflared:2024.11.2
         args:
           - tunnel
           - run
@@ -30,15 +47,35 @@ spec:
         - name: config
           mountPath: /etc/cloudflared/config
           readOnly: true
-        - name: certs
-          mountPath: /etc/cloudflared/certs
-          readOnly: true
+        - name: tmp
+          mountPath: /tmp
         env:
         - name: TUNNEL_TOKEN
           valueFrom:
             secretKeyRef:
               name: cloudflared-token
               key: TUNNEL_TOKEN
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 9090
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 9090
+          initialDelaySeconds: 30
+          periodSeconds: 60
+          timeoutSeconds: 5
+          failureThreshold: 3
         resources:
           requests:
             cpu: 100m
@@ -50,6 +87,5 @@ spec:
       - name: config
         configMap:
           name: cloudflared-config
-      - name: certs
-        configMap:
-          name: cloudflared-cert
+      - name: tmp
+        emptyDir: {}

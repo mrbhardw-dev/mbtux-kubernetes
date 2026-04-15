@@ -5,21 +5,43 @@ metadata:
   namespace: cloudflared-data
 data:
   config.yaml: |
+    tunnel: 5fc8bf9fd9d101833e550115fddab132
+    credentials-file: /etc/cloudflared/creds/credentials.json
+    
     ingress:
       - hostname: outline.mbtux.com
-        service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
+        service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
         originRequest:
-          caPool: /etc/cloudflared/certs/cloudflare-origin-ca.pem
+          connectTimeout: 30s
+          tlsSkipVerify: false
       - hostname: authentik.mbtux.com
-        service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
+        service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
         originRequest:
-          caPool: /etc/cloudflared/certs/cloudflare-origin-ca.pem
+          connectTimeout: 30s
+          tlsSkipVerify: false
       - hostname: sure.mbtux.com
-        service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
+        service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
         originRequest:
-          caPool: /etc/cloudflared/certs/cloudflare-origin-ca.pem
+          connectTimeout: 30s
+          tlsSkipVerify: false
       - hostname: grafana.mbtux.com
-        service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
+        service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
         originRequest:
-          caPool: /etc/cloudflared/certs/cloudflare-origin-ca.pem
+          connectTimeout: 30s
+          tlsSkipVerify: false
+      - hostname: rancher.mbtux.com
+        service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
+        originRequest:
+          connectTimeout: 30s
+          tlsSkipVerify: false
       - service: http_status:404
+    
+    logLevel: info
+    transport-loglevel: warn
+    
+    metrics: 0.0.0.0:9090
+    
+    healthcheck:
+      timeout: 5s
+      interval: 30s
+      retry: 5
