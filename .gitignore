@@ -2,6 +2,7 @@
 *.pem
 *.private-key.*
 
+
 !infrastructure/cloudflared-data/
 !management/cloudflared-mgmt/
 !infrastructure/authentik/
