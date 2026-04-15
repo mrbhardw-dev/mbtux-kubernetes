@@ -1,4 +1,5 @@
 controller:
+  replicas: 2
   service:
     type: LoadBalancer
     externalTrafficPolicy: Local
