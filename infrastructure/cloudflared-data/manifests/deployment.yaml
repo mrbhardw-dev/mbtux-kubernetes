@@ -22,6 +22,8 @@ spec:
         - tunnel
         - --config
         - /etc/cloudflared/config/config.yaml
+        - credentials-file
+        - /etc/cloudflared/config/credentials.json
         - run
         - ae1dd134-6874-446d-b665-b7a9fa81b14c
         volumeMounts:
