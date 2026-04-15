@@ -6,6 +6,14 @@ metadata:
 data:
   config.yaml: |
     ingress:
+      - hostname: outline.mbtux.com
+        service: http://10.43.196.64:80
+      - hostname: authentik.mbtux.com
+        service: http://10.43.196.64:80
+      - hostname: sure.mbtux.com
+        service: http://10.43.196.64:80
+      - hostname: grafana.mbtux.com
+        service: http://10.43.196.64:80
       - service: http_status:404
     logLevel: info
     transport-loglevel: warn
