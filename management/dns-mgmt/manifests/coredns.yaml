@@ -24,9 +24,16 @@ data:
         reload
         loadbalance
         import /etc/coredns/custom/*.override
-        forward . 8.8.8.8 1.1.1.1
+        forward . 1.1.1.1 8.8.8.8
     }
     import /etc/coredns/custom/*.server
   NodeHosts: |
     192.168.0.201 boxer-master-mgmt-cluster.mbtux.com
+    192.168.0.211 tuna-master-data-cluster.mbtux.com
+    192.168.0.212 mouse-worker-data-cluster.mbtux.com
+    192.168.0.213 tadpole-worker-data-cluster.mbtux.com
+    192.168.0.214 starfish-worker-data-cluster.mbtux.com
+    192.168.0.211 authentik.mbtux.com
+    192.168.0.211 outline.mbtux.com
+    192.168.0.211 sure.mbtux.com
     2a02:8086:d00:3200:be24:11ff:fe52:9bc0 boxer-master-mgmt-cluster.mbtux.com
