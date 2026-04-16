@@ -23,8 +23,6 @@ spec:
         - run
         - --token
         - $(TUNNEL_TOKEN)
-        - --metrics
-        - :9090
         env:
         - name: TUNNEL_TOKEN
           valueFrom:
