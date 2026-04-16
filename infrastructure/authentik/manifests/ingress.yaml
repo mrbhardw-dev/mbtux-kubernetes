@@ -3,6 +3,8 @@ kind: Ingress
 metadata:
   name: authentik
   namespace: authentik
+  labels:
+    fleet.cattle.io/managed: "true"
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"

@@ -1,6 +1,8 @@
 defaultNamespace: cloudflared-data
 kustomize:
   dir: ./manifests
+  labels:
+    fleet.cattle.io/managed: "true"
 helm:
   releaseName: cloudflared-data
   takeOwnership: true

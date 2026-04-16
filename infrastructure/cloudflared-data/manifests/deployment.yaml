@@ -5,6 +5,7 @@ metadata:
   namespace: cloudflared-data
   labels:
     app: cloudflared
+    fleet.cattle.io/managed: "true"
 spec:
   replicas: 3
   selector:

@@ -3,12 +3,19 @@ kind: Ingress
 metadata:
   name: grafana-ingress
   namespace: monitoring
+  labels:
+    fleet.cattle.io/managed: "true"
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: "100m"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - grafana.mbtux.com
+    secretName: grafana-tls
   rules:
   - host: grafana.mbtux.com
     http:
