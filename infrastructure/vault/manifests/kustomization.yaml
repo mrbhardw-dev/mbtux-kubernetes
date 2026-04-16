@@ -6,4 +6,3 @@ namespace: vault
 resources:
   - namespace.yaml
   - ingress.yaml
-  - pki-setup.yaml
