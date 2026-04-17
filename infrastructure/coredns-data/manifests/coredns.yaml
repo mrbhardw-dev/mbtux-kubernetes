@@ -24,7 +24,7 @@ data:
         reload
         loadbalance
         import /etc/coredns/custom/*.override
-        forward . 192.168.0.10 1.1.1.1 8.8.8.8
+        forward . 1.1.1.1 8.8.8.8 192.168.0.10
     }
     import /etc/coredns/custom/*.server
   NodeHosts: |
