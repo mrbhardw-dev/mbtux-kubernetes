@@ -7,8 +7,11 @@ resources:
   - 00-namespace.yaml
   - 01-config.yaml
   - 02-secret.yaml
+  - 09-rbac.yaml
   - 10-monitoring.yaml
   - 11-datasources.yaml
+  - 12-alerts.yaml
   - 20-dotdc-dashboards.yaml
   - 21-dashboard-providers.yaml
   - 30-ingress.yaml
+  - 31-ingressclass.yaml
