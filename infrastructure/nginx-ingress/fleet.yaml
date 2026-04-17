@@ -8,7 +8,6 @@ helm:
   chart: ingress-nginx
   repo: https://kubernetes.github.io/ingress-nginx
   version: 4.10.0
-  takeOwnership: true
   valuesFile: values.yaml
 target:
   clusterSelector:
