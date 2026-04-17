@@ -11,4 +11,9 @@ helm:
   takeOwnership: true
   valuesFile: values.yaml
 target:
-  clusterName: local
+  clusterSelector:
+    matchExpressions:
+    - key: provider.cattle.io
+      operator: NotIn
+      values:
+      - harvester
