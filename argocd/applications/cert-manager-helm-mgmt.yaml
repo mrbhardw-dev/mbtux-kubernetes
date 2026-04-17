@@ -1,21 +1,25 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cloudflared-data
+  name: cert-manager-helm-mgmt
   namespace: argocd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocj.io
   annotations:
     argocd.argoproj.io/sync-wave: "0"
 spec:
   project: default
   source:
-    repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
-    targetRevision: main
-    path: infrastructure/cloudflared-data/manifests
+    repoURL: https://charts.jetstack.io
+    chart: cert-manager
+    targetRevision: 1.20.2
+    helm:
+      releaseName: cert-manager
+      values: |
+        installCRDs: true
   destination:
-    name: in-cluster
-    namespace: cloudflared-data
+    name: mgmt-cluster
+    namespace: cert-manager
   syncPolicy:
     automated:
       prune: true

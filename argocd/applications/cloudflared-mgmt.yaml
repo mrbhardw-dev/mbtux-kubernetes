@@ -13,8 +13,6 @@ spec:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
     targetRevision: main
     path: management/cloudflared-mgmt/manifests
-    directory:
-      recurse: true
   destination:
     name: mgmt-cluster
     namespace: cloudflared-mgmt

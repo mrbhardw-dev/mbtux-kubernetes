@@ -13,8 +13,6 @@ spec:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
     targetRevision: main
     path: management/monitoring-mgmt/manifests
-    directory:
-      recurse: true
   destination:
     name: mgmt-cluster
     namespace: monitoring

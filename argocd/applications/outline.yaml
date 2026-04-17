@@ -13,8 +13,6 @@ spec:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
     targetRevision: main
     path: apps/outline/manifests
-    directory:
-      recurse: true
   destination:
     name: in-cluster
     namespace: outline

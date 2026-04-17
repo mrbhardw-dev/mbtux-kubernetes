@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: infra/data/authentik/ingress
+  name: authentik-ingress
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -13,8 +13,6 @@ spec:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
     targetRevision: main
     path: infrastructure/authentik/manifests
-    directory:
-      recurse: true
   destination:
     name: in-cluster
     namespace: authentik
