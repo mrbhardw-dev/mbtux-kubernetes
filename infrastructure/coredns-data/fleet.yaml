@@ -1,0 +1,6 @@
+defaultNamespace: kube-system
+kustomize:
+  dir: ./manifests
+helm:
+  releaseName: coredns
+  takeOwnership: true
