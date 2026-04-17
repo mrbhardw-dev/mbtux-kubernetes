@@ -37,4 +37,7 @@ data:
     192.168.0.211 authentik.mbtux.com
     192.168.0.211 outline.mbtux.com
     192.168.0.211 sure.mbtux.com
+    192.168.0.201 prometheus.mgmt.mbtux.com
+    192.168.0.212 prometheus.data.mbtux.com
+    192.168.0.212 grafana.mbtux.com
     2a02:8086:d00:3200:be24:11ff:fe52:9bc0 boxer-master-mgmt-cluster.mbtux.com
