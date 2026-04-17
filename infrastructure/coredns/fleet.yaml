@@ -1,3 +1,4 @@
 defaultNamespace: kube-system
 resources:
   - manifests/coredns.yaml
+  - manifests/kustomization.yaml
