@@ -10,3 +10,5 @@ helm:
   version: 4.10.0
   takeOwnership: true
   valuesFile: values.yaml
+target:
+  clusterName: local
