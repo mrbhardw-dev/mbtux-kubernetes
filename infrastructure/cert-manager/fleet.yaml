@@ -1,3 +1,6 @@
 defaultNamespace: cert-manager
 kustomize:
   dir: ./manifests
+helm:
+  releaseName: cert-manager
+  takeOwnership: true

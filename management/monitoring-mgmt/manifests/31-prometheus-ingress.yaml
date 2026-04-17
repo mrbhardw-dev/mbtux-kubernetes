@@ -3,6 +3,8 @@ kind: Ingress
 metadata:
   name: prometheus-ingress
   namespace: monitoring
+  labels:
+    fleet.cattle.io/managed: "true"
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: "100m"
 spec:
