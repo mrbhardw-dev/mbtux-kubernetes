@@ -9,7 +9,4 @@ resources:
   - 02-secret.yaml
   - 10-monitoring.yaml
   - 11-datasources.yaml
-  - 20-dotdc-dashboards.yaml
-  - 21-dashboard-providers.yaml
-  - 30-ingress.yaml
   - 31-prometheus-ingress.yaml
