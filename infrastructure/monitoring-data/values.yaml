@@ -1,0 +1,97 @@
+prometheus:
+  prometheusSpec:
+    retention: 15d
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+    externalLabels:
+      cluster: data
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+        nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+        nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+      hosts:
+        - prometheus.data.mbtux.com
+      paths:
+        - /
+      pathType: Prefix
+
+grafana:
+  enabled: true
+  admin:
+    existingSecret: monitoring-secrets
+    userKey: grafana-user
+    passwordKey: grafana-password
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+    hosts:
+      - grafana.mbtux.com
+    paths:
+      - /
+    pathType: Prefix
+  grafana.ini:
+    server:
+      root_url: "https://grafana.mbtux.com"
+      serve_from_sub_path: false
+    auth.generic_oauth:
+      enabled: true
+      client_id: "grafana"
+      scopes: "openid profile email"
+      auth_url: "https://authentik.mbtux.com/application/o/authorize/"
+      token_url: "https://authentik.mbtux.com/application/o/token/"
+      api_url: "https://authentik.mbtux.com/application/o/userinfo/"
+    users:
+      allow_sign_up: false
+  persistence:
+    enabled: false
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: Prometheus
+          type: prometheus
+          access: proxy
+          url: http://prometheus:9090
+          isDefault: true
+
+alertmanager:
+  enabled: false
+
+prometheus-node-exporter:
+  enabled: true
+
+prometheus-pushgateway:
+  enabled: false
+
+kubeStateMetrics:
+  enabled: true
+
+coreDns:
+  enabled: false
+
+kubeApiServer:
+  enabled: true
+
+kubelet:
+  enabled: true
+
+kubeControllerManager:
+  enabled: true
+
+kubeScheduler:
+  enabled: true
+
+kubeEtcd:
+  enabled: true

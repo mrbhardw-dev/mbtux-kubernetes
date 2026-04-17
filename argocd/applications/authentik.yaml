@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app/data/authentik/server
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  project: default
+  source:
+    repoURL: https://charts.goauthentik.io
+    chart: authentik
+    targetRevision: "2026.2.2"
+    helm:
+      releaseName: authentik
+      values: |
+        global:
+          fullnameOverride: authentik
+          domain: authentik.mbtux.com 
+        authentik:
+          secret_key: "e0a66085992a094ef36a2a7dc73f149d66d5bd4f71fe687414279f4a34b4e4b7"
+          password: "Mritunjay@123"
+          postgresql:
+            host: "authentik-postgresql.authentik.svc.cluster.local"
+            port: 5432
+            name: authentik_db
+            user: authentik_user
+            password: authentik_pass
+        postgresql:
+          enabled: true
+          auth:
+            database: authentik_db
+            username: authentik_user
+            password: authentik_pass
+        persistence:
+          enabled: true
+          size: 20Gi
+  destination:
+    name: in-cluster
+    namespace: authentik
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,19 @@
+global:
+  postgresql:
+    auth:
+      database: argocd
+      username: argocd
+      password: "9rmv9yB2ptdewOIvgRU5AZF24lSMeUggGahiBmy3MbI"
+    primary:
+      resources:
+        requests:
+          cpu: 250m
+          memory: 512Mi
+        limits:
+          cpu: 1000m
+          memory: 2Gi
+      persistence:
+        enabled: true
+        size: 20Gi
+      service:
+        type: ClusterIP

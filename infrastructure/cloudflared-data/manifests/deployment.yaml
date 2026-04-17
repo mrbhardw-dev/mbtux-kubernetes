@@ -20,10 +20,22 @@ spec:
       - name: cloudflared
         image: cloudflare/cloudflared:latest
         args:
-        - tunnel
-        - run
-        - --token
-        - $(TUNNEL_TOKEN)
+          - tunnel
+          - run
+          - --token
+          - $(TUNNEL_TOKEN)
+          - --ingress-rule
+          - hostname=grafana.mbtux.com originRequest.noTLSVerify=true service=http://grafana.monitoring.svc.cluster.local:3000
+          - --ingress-rule
+          - hostname=prometheus.data.mbtux.com originRequest.noTLSVerify=true service=http://prometheus.monitoring.svc.cluster.local:9090
+          - --ingress-rule
+          - hostname=authentik.mbtux.com originRequest.noTLSVerify=true service=http://authentik.authentik.svc.cluster.local:9000
+          - --ingress-rule
+          - hostname=outline.mbtux.com originRequest.noTLSVerify=true service=http://outline.outline.svc.cluster.local:3000
+          - --ingress-rule
+          - hostname=sure.mbtux.com originRequest.noTLSVerify=true service=http://sure.sure.svc.cluster.local:80
+          - --ingress-rule
+          - service=http://nginx-ingress-release-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
         env:
         - name: TUNNEL_TOKEN
           valueFrom:

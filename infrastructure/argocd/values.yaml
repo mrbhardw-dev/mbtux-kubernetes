@@ -1,0 +1,100 @@
+global:
+  domain: argocd.mbtux.com
+
+configs:
+  cm:
+    admin.enabled: "true"
+    # OIDC config will be added in Phase 3
+  params:
+    server.insecure: "false"
+    # External PostgreSQL connection
+    server.database.url: "postgresql://argocd:9rmv9yB2ptdewOIvgRU5AZF24lSMeUggGahiBmy3MbI@postgresql-argocd.postgresql-argocd.svc.cluster.local:5432/argocd?sslmode=disable"
+  secret:
+    argocd.secret: ""
+
+server:
+  replicas: 3
+  service:
+    type: ClusterIP
+
+  ingress:
+    enabled: false
+
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+
+  podDisruptionBudget:
+    enabled: true
+    maxUnavailable: 1
+
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+repoServer:
+  replicas: 2
+  resources:
+    requests:
+      cpu: 200m
+      memory: 500Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+
+applicationController:
+  replicas: 2
+  resources:
+    requests:
+      cpu: 200m
+      memory: 500Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+
+controller:
+  resources:
+    requests:
+      cpu: 200m
+      memory: 500Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+
+redis:
+  enabled: true
+  resources:
+    requests:
+      cpu: 200m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  persistence:
+    enabled: true
+    size: 8Gi
+
+# Use external PostgreSQL (deployed separately)
+postgresql:
+  enabled: false
+
+dex:
+  enabled: false
+
+ha:
+  enabled: true
+
+notifications:
+  enabled: false
+
+appFactory:
+  createDefaultNamespace: false
+
+prometheus:
+  sidecar:
+    enabled: false

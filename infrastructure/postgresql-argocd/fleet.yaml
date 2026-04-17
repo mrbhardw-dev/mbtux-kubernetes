@@ -1,0 +1,15 @@
+defaultNamespace: postgresql-argocd
+kustomize:
+  dir: ./manifests
+helm:
+  releaseName: postgresql-argocd
+  chart: postgresql
+  repo: https://charts.bitnami.com/bitnami
+  version: "18.5.24"
+  valuesFiles:
+    - values.yaml
+  force: true
+target:
+  clusterSelector:
+    matchLabels:
+      cluster: data

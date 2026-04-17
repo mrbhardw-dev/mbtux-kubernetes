@@ -7,10 +7,16 @@ data:
   config.yaml: |
     tunnel: c6a8da22-bc3d-4462-8211-875386480d9f
     ingress:
+      - hostname: rancher.mbtux.com
+        originRequest:
+          noTLSVerify: true
+        service: https://rancher.cattle-system.svc.cluster.local:443
       - hostname: prometheus.mgmt.mbtux.com
-        service: http://prometheus.monitoring.svc.cluster.local:9090
+        originRequest:
+          noTLSVerify: true
+        service: https://prometheus.monitoring.svc.cluster.local:9090
       - hostname: grafana-mgmt.mbtux.com
         originRequest:
           noTLSVerify: true
-        service: http://grafana.monitoring.svc.cluster.local:3000
+        service: https://grafana.monitoring.svc.cluster.local:3000
       - service: http_status:404
