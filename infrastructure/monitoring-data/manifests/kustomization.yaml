@@ -15,3 +15,4 @@ resources:
   - 21-dashboard-providers.yaml
   - 30-ingress.yaml
   - 31-ingressclass.yaml
+  - 32-certificates.yaml

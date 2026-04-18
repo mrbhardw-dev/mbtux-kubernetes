@@ -11,9 +11,8 @@ spec:
     kind: ClusterIssuer
     name: letsencrypt-prod
   secretName: grafana-tls
-  usages:
-    - digital signature
-    - key encipherment
+  duration: 2160h
+  renewBefore: 360h
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
@@ -28,6 +27,5 @@ spec:
     kind: ClusterIssuer
     name: letsencrypt-prod
   secretName: prometheus-data-tls
-  usages:
-    - digital signature
-    - key encipherment
+  duration: 2160h
+  renewBefore: 360h
