@@ -1,23 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager-helm-data
+  name: infra-data-cert-manager-config
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/sync-wave: "1"
 spec:
-  project: default
+  project: mbtux-kubernetes
   source:
-    repoURL: https://charts.jetstack.io
-    chart: cert-manager
-    targetRevision: 1.20.2
-    helm:
-      releaseName: cert-manager
-      values: |
-        installCRDs: true
-        # Default values are fine; can add resource limits if needed
+    repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
+    targetRevision: main
+    path: infrastructure/cert-manager/manifests
   destination:
     name: in-cluster
     namespace: cert-manager

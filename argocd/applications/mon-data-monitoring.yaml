@@ -1,20 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: monitoring-mgmt
+  name: mon-data-monitoring
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
     argocd.argoproj.io/sync-wave: "3"
 spec:
-  project: default
+  project: mbtux-kubernetes
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
     targetRevision: main
-    path: management/monitoring-mgmt/manifests
+    path: infrastructure/monitoring-data/manifests
   destination:
-    name: mgmt-cluster
+    name: data-cluster
     namespace: monitoring
   syncPolicy:
     automated:

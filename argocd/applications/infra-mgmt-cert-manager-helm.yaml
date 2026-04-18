@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager-helm-mgmt
+  name: infra-mgmt-cert-manager-helm
   namespace: argocd
   finalizers:
     - resources-finalizer.argocj.io
   annotations:
     argocd.argoproj.io/sync-wave: "0"
 spec:
-  project: default
+  project: mbtux-kubernetes
   source:
     repoURL: https://charts.jetstack.io
     chart: cert-manager

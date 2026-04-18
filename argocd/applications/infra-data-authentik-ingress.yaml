@@ -1,21 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: monitoring-data
+  name: infra-data-authentik-ingress
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "2"
 spec:
-  project: default
+  project: mbtux-kubernetes
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
     targetRevision: main
-    path: infrastructure/monitoring-data/manifests
+    path: infrastructure/authentik/manifests
   destination:
-    name: data-cluster
-    namespace: monitoring
+    name: in-cluster
+    namespace: authentik
   syncPolicy:
     automated:
       prune: true

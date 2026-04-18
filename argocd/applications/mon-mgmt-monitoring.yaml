@@ -1,21 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cloudflared-mgmt
+  name: mon-mgmt-monitoring
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/sync-wave: "3"
 spec:
-  project: default
+  project: mbtux-kubernetes
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
     targetRevision: main
-    path: management/cloudflared-mgmt/manifests
+    path: management/monitoring-mgmt/manifests
   destination:
     name: mgmt-cluster
-    namespace: cloudflared-mgmt
+    namespace: monitoring
   syncPolicy:
     automated:
       prune: true

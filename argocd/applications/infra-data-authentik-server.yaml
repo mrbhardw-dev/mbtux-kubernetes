@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: authentik-server
+  name: infra-data-authentik-server
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
     argocd.argoproj.io/sync-wave: "2"
 spec:
-  project: default
+  project: mbtux-kubernetes
   source:
     repoURL: https://charts.goauthentik.io
     chart: authentik
