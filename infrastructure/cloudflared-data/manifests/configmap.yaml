@@ -10,21 +10,21 @@ data:
       - hostname: grafana.mbtux.com
         originRequest:
           noTLSVerify: true
-         service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
+        service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
       - hostname: prometheus.data.mbtux.com
         originRequest:
           noTLSVerify: true
-         service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
+        service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
       - hostname: authentik.mbtux.com
         originRequest:
           noTLSVerify: true
-         service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
+        service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
       - hostname: outline.mbtux.com
         originRequest:
           noTLSVerify: true
-         service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
+        service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
       - hostname: sure.mbtux.com
         originRequest:
           noTLSVerify: true
-         service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
-       - service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
+        service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
+      - service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
