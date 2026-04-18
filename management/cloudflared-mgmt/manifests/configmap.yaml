@@ -7,6 +7,10 @@ data:
   config.yaml: |
     tunnel: c6a8da22-bc3d-4462-8211-875386480d9f
     ingress:
+      - hostname: headlamp.mbtux.com
+        originRequest:
+          noTLSVerify: true
+        service: http://headlamp.headlamp-system.svc.cluster.local:80
       - hostname: rancher.mbtux.com
         originRequest:
           noTLSVerify: true
