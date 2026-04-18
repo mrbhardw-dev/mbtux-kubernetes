@@ -11,3 +11,4 @@ resources:
   - 10-database.yaml
   - 20-sure.yaml
   - 30-ingress.yaml
+  - 31-certificate.yaml

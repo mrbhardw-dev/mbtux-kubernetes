@@ -25,7 +25,6 @@ data:
         service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
       - hostname: sure.mbtux.com
         originRequest:
-          noTLSVerify: true
-          connect: http
-        service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80
+          noTLSVerify: false
+        service: https://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
       - service: http://nginx-ingress-ingress-nginx-controller.ingress-nginx.svc.cluster.local:80

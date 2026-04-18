@@ -11,6 +11,10 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
 spec:
   ingressClassName: nginx
+  tls:
+    - hosts:
+        - grafana.mbtux.com
+      secretName: grafana-tls
   rules:
   - host: grafana.mbtux.com
     http:
@@ -36,6 +40,10 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
 spec:
   ingressClassName: nginx
+  tls:
+    - hosts:
+        - prometheus.data.mbtux.com
+      secretName: prometheus-data-tls
   rules:
   - host: prometheus.data.mbtux.com
     http:
