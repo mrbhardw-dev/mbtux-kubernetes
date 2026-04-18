@@ -24,9 +24,9 @@ spec:
         image: cloudflare/cloudflared:latest
         args:
           - tunnel
-          - run
           - --config
           - /etc/cloudflared/config/config.yaml
+          - run
         env:
         - name: TUNNEL_TOKEN
           valueFrom:
