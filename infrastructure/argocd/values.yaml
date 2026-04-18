@@ -4,7 +4,13 @@ global:
 configs:
   cm:
     admin.enabled: "true"
-    # OIDC config will be added in Phase 3
+    oidc.config: |
+      name: Authentik
+      issuer: https://authentik.mbtux.com/application/o/argocd/
+      clientID: argocd
+      clientSecret: $oidc.clientSecret
+      requestedScopes: ["openid", "profile", "email", "groups"]
+    # OIDC config added in Phase 3
   params:
     server.insecure: "false"
     # External PostgreSQL connection
