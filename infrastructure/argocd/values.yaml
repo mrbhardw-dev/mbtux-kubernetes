@@ -3,16 +3,23 @@ global:
 
 configs:
   cm:
+    url: "https://argocd.mbtux.com"
     admin.enabled: "true"
+    rbac.policy.csv: |
+      g, admin, role:admin
+      g, argocd-admins, role:admin
+      g, argocd-users, role:admin
+    rbac.scopes: "[groups]"
     oidc.config: |
       name: Authentik
       issuer: https://authentik.mbtux.com/application/o/argocd/
       clientID: argocd
-      clientSecret: $oidc.clientSecret
+      clientSecret: iJ7RwzWqpF6YQd2oSmaRrls0C5bToZda0V25ry4OJyg
       requestedScopes: ["openid", "profile", "email", "groups"]
     # OIDC config added in Phase 3
   params:
-    server.insecure: "false"
+    server.insecure: "true"
+    server.disableAuth: "false"
     # External PostgreSQL connection
     server.database.url: "postgresql://argocd:9rmv9yB2ptdewOIvgRU5AZF24lSMeUggGahiBmy3MbI@postgresql-argocd.postgresql-argocd.svc.cluster.local:5432/argocd?sslmode=disable"
   secret:
