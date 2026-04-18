@@ -66,7 +66,7 @@ spec:
         defaultBackend:
           enabled: true
   destination:
-    name: in-cluster
+    server: https://192.168.0.211:6443
     namespace: ingress-nginx
   syncPolicy:
     automated:

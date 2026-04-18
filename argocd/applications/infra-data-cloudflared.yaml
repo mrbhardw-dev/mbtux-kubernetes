@@ -14,7 +14,7 @@ spec:
     targetRevision: main
     path: infrastructure/cloudflared-data/manifests
   destination:
-    name: in-cluster
+    server: https://192.168.0.211:6443
     namespace: cloudflared-data
   syncPolicy:
     automated:

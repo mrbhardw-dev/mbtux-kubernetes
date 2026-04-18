@@ -38,7 +38,7 @@ spec:
           enabled: true
           size: 20Gi
   destination:
-    name: in-cluster
+    server: https://192.168.0.211:6443
     namespace: authentik
   syncPolicy:
     automated:

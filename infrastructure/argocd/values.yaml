@@ -19,7 +19,7 @@ configs:
     argocd.secret: ""
 
 server:
-  replicas: 3
+  replicas: 1
   service:
     type: ClusterIP
 
@@ -44,24 +44,24 @@ server:
       enabled: true
 
 repoServer:
-  replicas: 2
+  replicas: 1
   resources:
     requests:
-      cpu: 200m
-      memory: 500Mi
+      cpu: 100m
+      memory: 256Mi
     limits:
-      cpu: 1000m
-      memory: 1Gi
+      cpu: 500m
+      memory: 512Mi
 
 applicationController:
-  replicas: 2
+  replicas: 1
   resources:
     requests:
-      cpu: 200m
-      memory: 500Mi
+      cpu: 100m
+      memory: 256Mi
     limits:
-      cpu: 1000m
-      memory: 1Gi
+      cpu: 500m
+      memory: 512Mi
 
 controller:
   resources:

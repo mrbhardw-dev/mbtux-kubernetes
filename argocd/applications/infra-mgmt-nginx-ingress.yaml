@@ -66,7 +66,7 @@ spec:
         defaultBackend:
           enabled: true
   destination:
-    name: mgmt-cluster
+    server: https://192.168.0.201:6443
     namespace: ingress-nginx
   syncPolicy:
     automated:

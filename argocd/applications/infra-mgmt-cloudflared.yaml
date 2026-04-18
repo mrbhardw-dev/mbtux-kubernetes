@@ -14,7 +14,7 @@ spec:
     targetRevision: main
     path: management/cloudflared-mgmt/manifests
   destination:
-    name: mgmt-cluster
+    server: https://192.168.0.201:6443
     namespace: cloudflared-mgmt
   syncPolicy:
     automated:

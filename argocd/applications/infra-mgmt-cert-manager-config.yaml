@@ -14,7 +14,7 @@ spec:
     targetRevision: main
     path: infrastructure/cert-manager/manifests
   destination:
-    name: mgmt-cluster
+    server: https://192.168.0.201:6443
     namespace: cert-manager
   syncPolicy:
     automated:
