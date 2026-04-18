@@ -10,33 +10,13 @@ metadata:
 spec:
   project: mbtux-kubernetes
   source:
-    repoURL: https://charts.goauthentik.io
-    chart: authentik
-    targetRevision: "2026.2.2"
+    repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
+    targetRevision: main
+    path: infrastructure/authentik
     helm:
       releaseName: authentik
-      values: |
-        global:
-          fullnameOverride: authentik
-          domain: authentik.mbtux.com 
-        authentik:
-          secret_key: "e0a66085992a094ef36a2a7dc73f149d66d5bd4f71fe687414279f4a34b4e4b7"
-          password: "Mritunjay@123"
-          postgresql:
-            host: "authentik-postgresql.authentik.svc.cluster.local"
-            port: 5432
-            name: authentik_db
-            user: authentik_user
-            password: authentik_pass
-        postgresql:
-          enabled: true
-          auth:
-            database: authentik_db
-            username: authentik_user
-            password: authentik_pass
-        persistence:
-          enabled: true
-          size: 20Gi
+      valueFiles:
+        - values.yaml
   destination:
     server: https://192.168.0.211:6443
     namespace: authentik
