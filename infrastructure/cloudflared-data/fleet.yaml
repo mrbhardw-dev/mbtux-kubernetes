@@ -6,4 +6,5 @@ kustomize:
 helm:
   releaseName: cloudflared-data
   takeOwnership: true
+  force: true
 
