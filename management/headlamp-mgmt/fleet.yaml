@@ -1,0 +1,12 @@
+defaultNamespace: headlamp-system
+helm:
+  releaseName: headlamp
+  chart: headlamp
+  repo: https://kubernetes-sigs.github.io/headlamp/
+  version: "0.25.0"
+  valuesFiles:
+    - values.yaml
+target:
+  clusterSelector:
+    matchLabels:
+      cluster: mgmt
