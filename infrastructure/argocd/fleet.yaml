@@ -12,4 +12,4 @@ helm:
 target:
   clusterSelector:
     matchLabels:
-      cluster: data
+      cluster: mgmt

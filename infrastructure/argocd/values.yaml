@@ -20,8 +20,6 @@ configs:
   params:
     server.insecure: "true"
     server.disableAuth: "false"
-    # External PostgreSQL connection
-    server.database.url: "postgresql://argocd:9rmv9yB2ptdewOIvgRU5AZF24lSMeUggGahiBmy3MbI@postgresql-argocd.postgresql-argocd.svc.cluster.local:5432/argocd?sslmode=disable"
   secret:
     argocd.secret: ""
 
