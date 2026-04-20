@@ -8,6 +8,8 @@ spec:
   destinations:
     - server: https://192.168.0.211:6443
       namespace: "*"
+    - server: https://kubernetes.default.svc
+      namespace: "*"
   sourceRepos:
     - https://github.com/mrbhardw-dev/mbtux-kubernetes.git
   clusterResourceWhitelist:

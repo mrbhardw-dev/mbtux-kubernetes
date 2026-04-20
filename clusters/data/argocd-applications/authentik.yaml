@@ -10,7 +10,7 @@ spec:
     targetRevision: main
     path: apps/authentik
   destination:
-    server: https://192.168.0.211:6443
+    server: https://kubernetes.default.svc
     namespace: authentik
   syncPolicy:
     automated:
