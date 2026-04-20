@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
     targetRevision: main
-    path: apps/monitoring
+    path: infrastructure/monitoring-data/manifests
     helm:
       valueFiles:
         - values-mgmt.yaml

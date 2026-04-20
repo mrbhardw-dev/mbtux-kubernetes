@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
     targetRevision: main
-    path: apps/authentik
+    path: infrastructure/authentik/manifests
   destination:
     server: https://kubernetes.default.svc
     namespace: authentik

@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
     targetRevision: main
-    path: apps/outline
+    path: apps/outline/manifests
   destination:
     server: https://kubernetes.default.svc
     namespace: outline

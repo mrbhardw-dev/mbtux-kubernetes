@@ -6,21 +6,4 @@ metadata:
 data:
   config.yaml: |
     tunnel: c6a8da22-bc3d-4462-8211-875386480d9f
-    ingress:
-      - hostname: headlamp.mbtux.com
-        originRequest:
-          noTLSVerify: true
-        service: http://headlamp.headlamp-system.svc.cluster.local:80
-      - hostname: rancher.mbtux.com
-        originRequest:
-          noTLSVerify: true
-        service: https://rancher.cattle-system.svc.cluster.local:443
-      - hostname: prometheus.mgmt.mbtux.com
-        originRequest:
-          noTLSVerify: true
-        service: https://prometheus.monitoring.svc.cluster.local:9090
-      - hostname: grafana-mgmt.mbtux.com
-        originRequest:
-          noTLSVerify: true
-        service: https://grafana.monitoring.svc.cluster.local:3000
-      - service: http_status:404
+# INGRESS IS MANAGED BY THE CLOUDFLARE DASHBOARD
