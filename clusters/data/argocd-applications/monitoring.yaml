@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring
+  namespace: argocd
+spec:
+  project: data
+  source:
+    repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
+    targetRevision: main
+    path: apps/monitoring
+    helm:
+      valueFiles:
+        - values-data.yaml
+  destination:
+    server: https://192.168.0.211:6443
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

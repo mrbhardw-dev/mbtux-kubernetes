@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: data
+  namespace: argocd
+spec:
+  description: Data Cluster Applications
+  destinations:
+    - server: https://192.168.0.211:6443
+      namespace: "*"
+  sourceRepos:
+    - https://github.com/mrbhardw-dev/mbtux-kubernetes.git
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"

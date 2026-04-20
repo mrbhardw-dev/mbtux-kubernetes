@@ -1,6 +1,0 @@
-defaultNamespace: sure
-kustomize:
-  dir: ./manifests
-helm:
-  releaseName: sure
-  takeOwnership: true
