@@ -10,6 +10,9 @@ spec:
   
   sourceRepos:
     - https://github.com/mrbhardw-dev/mbtux-kubernetes.git
+    - https://kubernetes.github.io/ingress-nginx
+    - https://charts.jetstack.io
+    - https://argoproj.github.io/argo-helm
   
   destinations:
     - server: https://kubernetes.default.svc
