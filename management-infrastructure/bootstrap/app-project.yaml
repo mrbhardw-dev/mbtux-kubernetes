@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: platform
+  namespace: argocd
+  labels:
+    env: management
+spec:
+  description: Platform management project
+  
+  sourceRepos:
+    - https://github.com/mrbhardw-dev/mbtux-kubernetes.git
+  
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: '*'
+    - server: https://192.168.0.211:6443
+      namespace: '*'
+    - server: https://192.168.0.212:6443
+      namespace: '*'
+    - server: https://192.168.0.213:6443
+      namespace: '*'
+  
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  
+  roles:
+    - name: platform-admin
+      description: Platform administrator
+      groups:
+        - admins@mbtux.com

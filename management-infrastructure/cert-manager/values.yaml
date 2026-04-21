@@ -1,0 +1,55 @@
+global:
+  logging:
+    format: json
+    level: info
+
+installCRDs: true
+
+securityContext:
+  fsGroup: 1001
+  runAsUser: 1001
+  runAsNonRoot: true
+
+podLabels:
+  app: cert-manager
+
+webhook:
+  replicas: 2
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+cainjector:
+  replicas: 2
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+controller:
+  replicas: 2
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+  prometheus:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      interval: 1m
+  featureFlags:
+    additionalApiVersions: true
+
+startupapicheck:
+  enabled: true
+  timeout: 5m

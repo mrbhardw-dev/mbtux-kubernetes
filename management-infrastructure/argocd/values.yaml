@@ -1,0 +1,136 @@
+global:
+  logging:
+    format: json
+    level: info
+
+image:
+  tag: v3.0.0
+
+namespace: argocd
+
+## ---------------------------------------------------------
+## Argo CD Server
+## ---------------------------------------------------------
+server:
+  replicas: 2
+
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 70
+
+  resources:
+    requests:
+      cpu: 200m
+      memory: 256Mi
+    limits:
+      cpu: 1
+      memory: 1Gi
+
+  service:
+    type: ClusterIP
+
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    hosts:
+      - argocd.mbtux.com
+    tls:
+      - hosts:
+          - argocd.mbtux.com
+        secretName: argocd-server-tls
+
+  extraArgs:
+    - --insecure=false
+
+  metrics:
+    enabled: false
+
+## ---------------------------------------------------------
+## Controller
+## ---------------------------------------------------------
+controller:
+  replicas: 2
+
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi
+    limits:
+      cpu: 2
+      memory: 2Gi
+
+  metrics:
+    enabled: false
+
+## ---------------------------------------------------------
+## Repo Server
+## ---------------------------------------------------------
+repoServer:
+  replicas: 2
+
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 70
+
+  resources:
+    requests:
+      cpu: 300m
+      memory: 512Mi
+    limits:
+      cpu: 2
+      memory: 2Gi
+
+  metrics:
+    enabled: false
+
+## ---------------------------------------------------------
+## ApplicationSet
+## ---------------------------------------------------------
+applicationSet:
+  enabled: true
+  replicas: 2
+
+  metrics:
+    enabled: false
+
+## ---------------------------------------------------------
+## Dex (SSO-ready)
+## ---------------------------------------------------------
+dex:
+  enabled: true
+  replicas: 2
+
+## ---------------------------------------------------------
+## Notifications
+## ---------------------------------------------------------
+notifications:
+  enabled: true
+
+## ---------------------------------------------------------
+## Redis
+## ---------------------------------------------------------
+redis:
+  replicas: 2
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+
+## ---------------------------------------------------------
+## HA Configuration
+## ---------------------------------------------------------
+ha:
+  enabled: true
+  redisProxyReplicas: 2

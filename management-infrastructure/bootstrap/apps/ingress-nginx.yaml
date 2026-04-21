@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ingress-nginx
+  namespace: argocd
+  labels:
+    app: ingress-nginx
+    env: management
+spec:
+  project: platform
+  source:
+    repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
+    targetRevision: main
+    path: management-infrastructure/ingress-nginx
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ingress-nginx
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
