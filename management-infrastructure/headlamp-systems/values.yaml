@@ -27,22 +27,10 @@ headlamp:
       memory: 512Mi
 
   config:
-    baseUrl: https://headlamp.mbtux.com
     inCluster: false
-
-  extraVolumes:
-    - name: kubeconfigs
-      secret:
-        secretName: headlamp-kubeconfigs
-
-  extraVolumeMounts:
-    - name: kubeconfigs
-      mountPath: /home/headlamp/.config/Headlamp/kubeconfigs
-      readOnly: true
-
-  extraEnv:
-    - name: KUBECONFIG
-      value: /home/headlamp/.config/Headlamp/kubeconfigs/kubeconfig
+    baseUrl: https://headlamp.mbtux.com
+    kubeconfigSecrets:
+      - name: headlamp-kubeconfigs
 
 security:
   rbac:
