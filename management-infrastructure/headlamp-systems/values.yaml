@@ -1,20 +1,55 @@
+headlamp:
+  replicaCount: 1
 
-config:
-  inCluster: true
-  inClusterContextName: management
-  clusterName: management
+  service:
+    type: ClusterIP
 
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    hosts:
+      - headlamp.mbtux.com
+    tls:
+      - hosts:
+          - headlamp.mbtux.com
+        secretName: headlamp-server-tls
 
-extraVolumes:
-  - name: kubeconfigs
-    secret:
-      secretName: headlamp-kubeconfigs
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
 
-extraVolumeMounts:
-  - name: kubeconfigs
-    mountPath: /home/headlamp/.config/Headlamp/kubeconfigs
-    readOnly: true
+  config:
+    baseUrl: https://headlamp.mbtux.com
+    inCluster: false
+    clusterName: mgmt-cluster
+    oidc:
+      enabled: false
 
-extraEnv:
-  - name: KUBECONFIG
-    value: /home/headlamp/.config/Headlamp/kubeconfigs/kubeconfig
+  extraVolumes:
+    - name: kubeconfigs
+      secret:
+        secretName: headlamp-kubeconfigs
+
+  extraVolumeMounts:
+    - name: kubeconfigs
+      mountPath: /home/headlamp/.config/Headlamp/kubeconfigs
+      readOnly: true
+
+  extraEnv:
+    - name: KUBECONFIG
+      value: /home/headlamp/.config/Headlamp/kubeconfigs/kubeconfig
+
+security:
+  rbac:
+    clusterWideAccess: true
+
+prometheus:
+  enabled: false
