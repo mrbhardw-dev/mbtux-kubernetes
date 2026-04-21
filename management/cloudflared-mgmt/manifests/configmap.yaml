@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cloudflared-config
-  namespace: cloudflared-mgmt
-data:
-  config.yaml: |
-    tunnel: c6a8da22-bc3d-4462-8211-875386480d9f
-# INGRESS IS MANAGED BY THE CLOUDFLARE DASHBOARD

@@ -9,9 +9,9 @@ metadata:
 spec:
   project: platform
   source:
-    repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
-    targetRevision: main
-    path: management-infrastructure/argocd
+    repoURL: https://argoproj.github.io/argo-helm
+    chart: argo-cd
+    targetRevision: 9.5.2
     helm:
       valueFiles:
         - values.yaml

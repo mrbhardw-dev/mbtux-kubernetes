@@ -1,0 +1,12 @@
+devtron:
+  ucid: 6ggohd7fbo9bzm9p
+
+global:
+  namespace: devtroncd
+  installationType: ENTERPRISE
+
+cluster:
+  installClusterAgent: false
+  autoRegisterCluster: false
+  defaultCluster:
+    enabled: false
