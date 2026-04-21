@@ -1,0 +1,5 @@
+
+config:
+  inCluster: true
+  inClusterContextName: management-platform
+  clusterName: management-platform

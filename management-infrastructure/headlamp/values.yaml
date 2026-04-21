@@ -1,0 +1,45 @@
+headlamp:
+  replicaCount: 1
+
+  service:
+    type: ClusterIP
+
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    hosts:
+      - headlamp.mbtux.com
+    tls:
+      - hosts:
+          - headlamp.mbtux.com
+        secretName: headlamp-server-tls
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+  config:
+    baseUrl: https://headlamp.mbtux.com
+    oidc:
+      enabled: false
+    plugins:
+      - name: k8s-examples
+
+security:
+  rbac:
+    clusterWideAccess: true
+
+prometheus:
+  enabled: false
+
+kubernetes:
+  crdFiltering:
+    enabled: false
