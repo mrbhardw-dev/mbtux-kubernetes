@@ -3,3 +3,18 @@ config:
   inCluster: true
   inClusterContextName: management
   clusterName: management
+
+
+extraVolumes:
+  - name: kubeconfigs
+    secret:
+      secretName: headlamp-kubeconfigs
+
+extraVolumeMounts:
+  - name: kubeconfigs
+    mountPath: /home/headlamp/.config/Headlamp/kubeconfigs
+    readOnly: true
+
+extraEnv:
+  - name: KUBECONFIG
+    value: /home/headlamp/.config/Headlamp/kubeconfigs/kubeconfig
