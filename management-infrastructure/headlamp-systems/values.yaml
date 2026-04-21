@@ -1,9 +1,7 @@
 headlamp:
   replicaCount: 1
-
   service:
     type: ClusterIP
-
   ingress:
     enabled: true
     className: nginx
@@ -17,7 +15,6 @@ headlamp:
       - hosts:
           - headlamp.mbtux.com
         secretName: headlamp-server-tls
-
   resources:
     requests:
       cpu: 100m
@@ -25,13 +22,16 @@ headlamp:
     limits:
       cpu: 500m
       memory: 512Mi
-
   config:
     inCluster: false
     baseUrl: https://headlamp.mbtux.com
-    kubeconfigSecrets:
-      - name: headlamp-kubeconfigs
-
+  extraVolumeMounts:
+    - name: kubeconfigs
+      mountPath: /home/headlamp/.config/Headlamp/kubeconfigs
+  extraVolumes:
+    - name: kubeconfigs
+      secret:
+        secretName: headlamp-kubeconfigs
 security:
   rbac:
     clusterWideAccess: true

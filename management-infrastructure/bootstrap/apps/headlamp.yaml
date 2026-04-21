@@ -18,6 +18,11 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: headlamp
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/template/spec
   syncPolicy:
     automated:
       prune: true
