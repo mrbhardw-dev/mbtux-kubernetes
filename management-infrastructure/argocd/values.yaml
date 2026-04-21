@@ -31,9 +31,11 @@ server:
   service:
     type: ClusterIP
 
+  extraArgs:
+    - --insecure=true
+
   ingress:
-    enabled: true
-    ingressClassName: nginx
+    enabled: false
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       nginx.ingress.kubernetes.io/backend-protocol: HTTPS
@@ -46,7 +48,7 @@ server:
         secretName: argocd-server-tls
 
   extraArgs:
-    - --insecure=false
+    - --insecure=true
 
   metrics:
     enabled: false

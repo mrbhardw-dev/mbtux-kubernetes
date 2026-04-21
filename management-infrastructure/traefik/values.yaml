@@ -1,0 +1,24 @@
+ingressClass:
+  enabled: true
+  isDefaultClass: true
+  name: traefik
+
+service:
+  type: LoadBalancer
+
+providers:
+  kubernetesIngress:
+    enabled: true
+
+rbac:
+  enabled: true
+
+metrics:
+  prometheus:
+    enabled: true
+
+ports:
+  traefik:
+    port: 9000
+    expose:
+      default: true
