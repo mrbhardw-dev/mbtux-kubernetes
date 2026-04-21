@@ -29,9 +29,6 @@ headlamp:
   config:
     baseUrl: https://headlamp.mbtux.com
     inCluster: false
-    clusterName: mgmt-cluster
-    oidc:
-      enabled: false
 
   extraVolumes:
     - name: kubeconfigs
@@ -50,6 +47,3 @@ headlamp:
 security:
   rbac:
     clusterWideAccess: true
-
-prometheus:
-  enabled: false
