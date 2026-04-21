@@ -9,15 +9,15 @@ metadata:
 spec:
   project: platform
   source:
-    repoURL: https://kubernetes-sigs.github.io/headlamp
-    chart: headlamp
-    targetRevision: 0.9.0
+    repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
+    targetRevision: main
+    path: management-infrastructure/headlamp-systems
     helm:
       valueFiles:
         - values.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: headlamp
+    namespace: headlamp-systems
   syncPolicy:
     automated:
       prune: true
