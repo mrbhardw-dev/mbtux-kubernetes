@@ -22,3 +22,7 @@ ports:
     port: 9000
     expose:
       default: true
+
+dashboard:
+  enabled: true
+  domain: traefik.mbtux.com

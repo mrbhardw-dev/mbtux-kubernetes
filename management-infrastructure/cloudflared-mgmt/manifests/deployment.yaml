@@ -15,6 +15,17 @@ spec:
       labels:
         app: cloudflared
     spec:
+      dnsPolicy: ClusterFirstWithHostNet
+      dnsConfig:
+        nameservers:
+          - 8.8.8.8
+          - 8.8.4.4
+        searches:
+          - cluster.local
+          - svc.cluster.local
+        options:
+          - name: ndots
+            value: "2"
       volumes:
       - name: config
         configMap:

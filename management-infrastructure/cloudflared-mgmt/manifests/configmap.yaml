@@ -6,4 +6,4 @@ metadata:
 data:
   config.yaml: |
     tunnel: c6a8da22-bc3d-4462-8211-875386480d9f
-# INGRESS IS MANAGED BY THE CLOUDFLARE DASHBOARD
+   #Ingress is managed on cloudflare dashboard

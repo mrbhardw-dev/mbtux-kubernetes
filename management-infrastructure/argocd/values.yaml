@@ -35,20 +35,13 @@ server:
     - --insecure=true
 
   ingress:
-    enabled: false
+    enabled: true
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod
-      nginx.ingress.kubernetes.io/backend-protocol: HTTPS
-      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      kubernetes.io/ingress.class: traefik
     hosts:
       - argocd.mbtux.com
-    tls:
-      - hosts:
-          - argocd.mbtux.com
-        secretName: argocd-server-tls
-
-  extraArgs:
-    - --insecure=true
+    path: /
+    tls: []
 
   metrics:
     enabled: false
