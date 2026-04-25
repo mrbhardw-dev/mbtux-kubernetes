@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: authentik
-          image: ghcr.io/goauthentik/server:2024.10.1
+          image: ghcr.io/goauthentik/server:2024.10.5
           imagePullPolicy: IfNotPresent
           env:
             - name: AUTHENTIK_REDIS__HOST
@@ -26,21 +26,16 @@ spec:
               value: postgresql
             - name: AUTHENTIK_ERROR_REPORTING__ENABLED
               value: "false"
+            - name: AUTHENTIK_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-secret
+                  key: secretKey
           ports:
             - name: http
               containerPort: 9000
             - name: https
               containerPort: 9443
-          volumeMounts:
-            - name: authentik-config
-              mountPath: /media
-            - name: authentik-templates
-              mountPath: /templates
-      volumes:
-        - name: authentik-config
-          emptyDir: {}
-        - name: authentik-templates
-          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service

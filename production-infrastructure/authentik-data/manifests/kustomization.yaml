@@ -3,6 +3,9 @@ kind: Kustomization
 
 resources:
   - namespace.yaml
+  - secret.yaml
+  - redis.yaml
+  - postgresql.yaml
   - authentik.yaml
   - ingressroute.yaml
   - certificate.yaml
