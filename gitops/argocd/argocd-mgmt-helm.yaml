@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/part-of: mbtux-platform
     app.kubernetes.io/component: core
 spec:
-  project: mbtux-platform
+  project: default
 
   source:
     repoURL: https://argoproj.github.io/argo-helm
