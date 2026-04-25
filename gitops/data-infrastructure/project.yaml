@@ -18,13 +18,13 @@ spec:
 
   destinations:
     - namespace: cert-manager
-      server: https://kubernetes.default.svc
+      server: data-prod
     - namespace: cloudflared
-      server: https://kubernetes.default.svc
+      server: data-prod
     - namespace: monitoring
-      server: https://kubernetes.default.svc
+      server: data-prod
     - namespace: traefik
-      server: https://kubernetes.default.svc
+      server: data-prod
 
   clusterResourceWhitelist:
     - group: "*"

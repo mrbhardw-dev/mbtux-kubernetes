@@ -23,7 +23,7 @@ spec:
         installCRDs: true
 
   destination:
-    server: https://kubernetes.default.svc
+    server: data-prod
     namespace: cert-manager
 
   syncPolicy:

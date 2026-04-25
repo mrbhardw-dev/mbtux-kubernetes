@@ -62,7 +62,7 @@ spec:
           - "--entryPoints.websecure.forwardedHeaders.insecure=true"
 
   destination:
-    server: https://kubernetes.default.svc
+    server: data-prod
     namespace: traefik
 
   syncPolicy:

@@ -19,7 +19,7 @@ spec:
     path: production-infrastructure/cloudflared-data/manifests
 
   destination:
-    server: https://kubernetes.default.svc
+    server: data-prod
     namespace: cloudflared
 
   syncPolicy:

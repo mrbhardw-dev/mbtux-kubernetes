@@ -19,7 +19,7 @@ spec:
     path: production-infrastructure/monitoring-data/manifests
 
   destination:
-    server: https://kubernetes.default.svc
+    server: data-prod
     namespace: monitoring
 
   syncPolicy:
