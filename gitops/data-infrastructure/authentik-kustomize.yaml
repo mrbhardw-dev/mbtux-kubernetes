@@ -20,7 +20,7 @@ spec:
 
   destination:
     server: https://192.168.0.211:6443
-    namespace: authentik
+    namespace: cloudflared-data
 
   syncPolicy:
     automated:

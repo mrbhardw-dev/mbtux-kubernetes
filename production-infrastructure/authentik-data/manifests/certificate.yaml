@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: tls-authentik
-  namespace: authentik
+  namespace: cloudflared-data
 spec:
   secretName: tls-authentik
   issuerRef:
