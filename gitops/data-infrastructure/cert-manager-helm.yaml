@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: data-prod-cert-manager
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: data-prod-cert-manager
+    app.kubernetes.io/part-of: mbtux-platform
+    app.kubernetes.io/managed-by: argocd
+    platform.scope: data
+    platform.cluster: data-prod
+    app.kubernetes.io/component: infrastructure
+spec:
+  project: data-prod-infrastructure
+
+  source:
+    repoURL: https://charts.jetstack.io
+    chart: cert-manager
+    targetRevision: v1.20.2
+    helm:
+      releaseName: cert-manager
+      values: |
+        installCRDs: true
+
+  destination:
+    server: data-prod
+    namespace: cert-manager
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

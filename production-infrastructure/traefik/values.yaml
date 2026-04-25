@@ -1,0 +1,42 @@
+ingressClass:
+  enabled: true
+  isDefaultClass: true
+  name: traefik
+
+service:
+  type: LoadBalancer
+
+providers:
+  kubernetesIngress:
+    enabled: true
+  kubernetesCRD:
+    enabled: true
+
+rbac:
+  enabled: true
+
+metrics:
+  prometheus:
+    enabled: true
+
+ports:
+  traefik:
+    port: 9000
+    expose:
+      default: true
+  web:
+    port: 80
+  websecure:
+    port: 443
+
+api:
+  dashboard: true
+  insecure: false
+
+additionalArguments:
+  - "--providers.kubernetesingress.ingressclass=traefik"
+  - "--providers.kubernetesingress.ingressendpoint.publishedservice=traefik/traefik"
+  # ✅ Fixed: Forwarded headers needed for tls=external backends (Rancher)
+  # Without this, Rancher sees HTTP and creates redirect loops (HTTP→HTTPS→HTTP)
+  - "--entryPoints.web.forwardedHeaders.insecure=true"
+  - "--entryPoints.websecure.forwardedHeaders.insecure=true"

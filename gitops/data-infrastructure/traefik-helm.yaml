@@ -1,0 +1,71 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: data-prod-traefik
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: data-prod-traefik
+    app.kubernetes.io/part-of: mbtux-platform
+    app.kubernetes.io/managed-by: argocd
+    platform.scope: data
+    platform.cluster: data-prod
+    app.kubernetes.io/component: infrastructure
+spec:
+  project: data-prod-infrastructure
+
+  source:
+    repoURL: https://helm.traefik.io/traefik
+    chart: traefik
+    targetRevision: 39.0.8
+    helm:
+      releaseName: traefik
+      values: |
+        ingressClass:
+          enabled: true
+          isDefaultClass: true
+          name: traefik
+
+        service:
+          type: LoadBalancer
+
+        providers:
+          kubernetesIngress:
+            enabled: true
+          kubernetesCRD:
+            enabled: true
+
+        rbac:
+          enabled: true
+
+        metrics:
+          prometheus:
+            enabled: true
+
+        ports:
+          traefik:
+            port: 9000
+            expose:
+              default: true
+          web:
+            port: 80
+          websecure:
+            port: 443
+
+        api:
+          dashboard: true
+          insecure: false
+
+        additionalArguments:
+          - "--providers.kubernetesingress.ingressclass=traefik"
+          - "--providers.kubernetesingress.ingressendpoint.publishedservice=traefik/traefik"
+          - "--entryPoints.web.forwardedHeaders.insecure=true"
+          - "--entryPoints.websecure.forwardedHeaders.insecure=true"
+
+  destination:
+    server: data-prod
+    namespace: traefik
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

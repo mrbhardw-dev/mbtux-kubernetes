@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: data-prod-infrastructure
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: mbtux-platform
+    app.kubernetes.io/managed-by: argocd
+    platform.scope: data
+    platform.cluster: data-prod
+spec:
+  description: Production data infrastructure components (certificates, ingress, load balancing, monitoring)
+
+  sourceRepos:
+    - https://github.com/mrbhardw-dev/mbtux-kubernetes.git
+
+  destinations:
+    - namespace: cert-manager
+      server: data-prod
+    - namespace: cloudflared
+      server: data-prod
+    - namespace: monitoring
+      server: data-prod
+    - namespace: traefik
+      server: data-prod
+
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
