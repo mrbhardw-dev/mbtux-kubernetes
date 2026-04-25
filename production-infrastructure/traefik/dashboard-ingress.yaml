@@ -10,10 +10,10 @@ spec:
   ingressClassName: traefik
   tls:
     - hosts:
-        - traefik-mgmt.mbtux.com
+        - traefik-data.mbtux.com
       secretName: tls-traefik-dashboard
   rules:
-    - host: traefik-mgmt.mbtux.com
+    - host: traefik-data.mbtux.com
       http:
         paths:
           - path: /dashboard

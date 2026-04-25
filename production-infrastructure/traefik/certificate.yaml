@@ -9,4 +9,4 @@ spec:
     name: letsencrypt-prod
     kind: ClusterIssuer
   dnsNames:
-  - traefik-mgmt.mbtux.com
+  - traefik-data.mbtux.com
