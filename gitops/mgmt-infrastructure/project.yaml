@@ -1,10 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: infrastructure
+  name: mgmt-infrastructure
   namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: mbtux-platform
+    app.kubernetes.io/managed-by: argocd
+    platform.tier: management
 spec:
-  description: Infrastructure components (load balancers, certificates, ingress controllers)
+  description: Shared infrastructure components (certificates, ingress, load balancing, monitoring)
 
   sourceRepos:
     - https://charts.jetstack.io

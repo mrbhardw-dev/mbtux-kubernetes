@@ -1,10 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: mbtux-platform
+  name: mgmt-platform
   namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: mbtux-platform
+    app.kubernetes.io/managed-by: argocd
+    platform.tier: management
 spec:
-  description: Applications related to the mbtux platform
+  description: Management platform components (Argo CD and related platform infrastructure)
 
   sourceRepos:
     - https://github.com/mrbhardw-dev/mbtux-kubernetes.git

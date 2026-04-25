@@ -1,14 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: traefik
+  name: mgmt-infrastructure-traefik
   namespace: argocd
   labels:
-    app.kubernetes.io/name: traefik
+    app.kubernetes.io/name: mgmt-infrastructure-traefik
     app.kubernetes.io/part-of: mbtux-platform
+    app.kubernetes.io/managed-by: argocd
+    platform.tier: management
     app.kubernetes.io/component: infrastructure
 spec:
-  project: infrastructure
+  project: mgmt-infrastructure
 
   source:
     repoURL: https://helm.traefik.io/traefik
@@ -55,8 +57,6 @@ spec:
         additionalArguments:
           - "--providers.kubernetesingress.ingressclass=traefik"
           - "--providers.kubernetesingress.ingressendpoint.publishedservice=traefik/traefik"
-          # ✅ Fixed: Forwarded headers needed for tls=external backends (Rancher)
-          # Without this, Rancher sees HTTP and creates redirect loops (HTTP→HTTPS→HTTP)
           - "--entryPoints.web.forwardedHeaders.insecure=true"
           - "--entryPoints.websecure.forwardedHeaders.insecure=true"
 

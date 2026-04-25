@@ -1,14 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager
+  name: mgmt-infrastructure-cert-manager
   namespace: argocd
   labels:
-    app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/name: mgmt-infrastructure-cert-manager
     app.kubernetes.io/part-of: mbtux-platform
+    app.kubernetes.io/managed-by: argocd
+    platform.tier: management
     app.kubernetes.io/component: infrastructure
 spec:
-  project: infrastructure
+  project: mgmt-infrastructure
 
   source:
     repoURL: https://charts.jetstack.io

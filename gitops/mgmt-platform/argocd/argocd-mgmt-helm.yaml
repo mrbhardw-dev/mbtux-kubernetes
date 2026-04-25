@@ -1,14 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd
+  name: mgmt-platform-argocd
   namespace: argocd
   labels:
-    app.kubernetes.io/name: argocd
+    app.kubernetes.io/name: mgmt-platform-argocd
     app.kubernetes.io/part-of: mbtux-platform
+    app.kubernetes.io/managed-by: argocd
+    platform.tier: management
     app.kubernetes.io/component: core
 spec:
-  project: mbtux-platform
+  project: mgmt-platform
 
   source:
     repoURL: https://argoproj.github.io/argo-helm
@@ -46,7 +48,7 @@ spec:
             enabled: false
 
         controller:
-          replicas: 1
+          replicas: 2
           resources:
             requests:
               cpu: 500m
@@ -56,7 +58,7 @@ spec:
               memory: 2Gi
 
         repoServer:
-          replicas: 1
+          replicas: 2
           autoscaling:
             enabled: false
           resources:
@@ -69,7 +71,7 @@ spec:
 
         applicationSet:
           enabled: true
-          replicas: 1
+          replicas: 2
 
         dex:
           enabled: true
@@ -90,7 +92,7 @@ spec:
 
         ha:
           enabled: false
-          redisProxyReplicas: 1
+          redisProxyReplicas: 2
           redisHa:
             enabled: false
             haproxy:
