@@ -1,0 +1,33 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: authentik
+  namespace: authentik
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`auth.mbtux.com`)
+      priority: 10
+      services:
+        - name: authentik
+          port: 9000
+      middlewares:
+        - name: authentik-https-redirect
+    - kind: Rule
+      match: Host(`auth.mbtux.com`) && PathPrefix(`/outpost.goauthentik.io`)
+      priority: 11
+      services:
+        - name: authentik
+          port: 9000
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: authentik-https-redirect
+  namespace: authentik
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true

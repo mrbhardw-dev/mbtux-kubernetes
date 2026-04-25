@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authentik
+  namespace: authentik
+  labels:
+    app: authentik
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authentik
+  template:
+    metadata:
+      labels:
+        app: authentik
+    spec:
+      containers:
+        - name: authentik
+          image: ghcr.io/goauthentik/server:2024.10.1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: AUTHENTIK_REDIS__HOST
+              value: redis
+            - name: AUTHENTIK_POSTGRESQL__HOST
+              value: postgresql
+            - name: AUTHENTIK_ERROR_REPORTING__ENABLED
+              value: "false"
+          ports:
+            - name: http
+              containerPort: 9000
+            - name: https
+              containerPort: 9443
+          volumeMounts:
+            - name: authentik-config
+              mountPath: /media
+            - name: authentik-templates
+              mountPath: /templates
+      volumes:
+        - name: authentik-config
+          emptyDir: {}
+        - name: authentik-templates
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: authentik
+  namespace: authentik
+spec:
+  ports:
+    - name: http
+      port: 9000
+      targetPort: 9000
+      protocol: TCP
+    - name: https
+      port: 9443
+      targetPort: 9443
+      protocol: TCP
+  selector:
+    app: authentik
