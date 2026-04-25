@@ -10,4 +10,6 @@ resources:
   - argocd/project.yaml
   - infrastructure/cert-manager-helm.yaml
   - infrastructure/traefik-helm.yaml
+  - infrastructure/cloudflared-kustomize.yaml
+  - infrastructure/monitoring-kustomize.yaml
   - infrastructure/project.yaml
