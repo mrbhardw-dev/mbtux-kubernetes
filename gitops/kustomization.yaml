@@ -8,3 +8,6 @@ resources:
   - argocd/argocd-mgmt-infra.yaml
   - argocd/argocd-mgmt-helm.yaml
   - argocd/project.yaml
+  - infrastructure/cert-manager-helm.yaml
+  - infrastructure/traefik-helm.yaml
+  - infrastructure/project.yaml

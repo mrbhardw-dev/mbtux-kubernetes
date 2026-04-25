@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: infrastructure
+  namespace: argocd
+spec:
+  description: Infrastructure components (load balancers, certificates, ingress controllers)
+
+  sourceRepos:
+    - https://charts.jetstack.io
+    - https://helm.traefik.io/traefik
+    - https://github.com/mrbhardw-dev/mbtux-kubernetes.git
+
+  destinations:
+    - namespace: argocd
+      server: https://kubernetes.default.svc
+    - namespace: cert-manager
+      server: https://kubernetes.default.svc
+    - namespace: traefik
+      server: https://kubernetes.default.svc
+    - namespace: "*"
+      server: https://kubernetes.default.svc
+
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
