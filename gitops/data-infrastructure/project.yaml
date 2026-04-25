@@ -12,6 +12,8 @@ spec:
   description: Production data infrastructure components (certificates, ingress, load balancing, monitoring)
 
   sourceRepos:
+    - https://charts.jetstack.io
+    - https://helm.traefik.io/traefik
     - https://github.com/mrbhardw-dev/mbtux-kubernetes.git
 
   destinations:
