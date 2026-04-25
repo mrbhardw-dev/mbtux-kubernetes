@@ -28,7 +28,7 @@ spec:
         namespace: argocd
 
         server:
-          replicas: 2
+          replicas: 1
           autoscaling:
             enabled: true
             minReplicas: 2
@@ -49,7 +49,7 @@ spec:
             enabled: false
 
         controller:
-          replicas: 2
+          replicas: 1
           resources:
             requests:
               cpu: 500m
@@ -59,12 +59,9 @@ spec:
               memory: 2Gi
 
         repoServer:
-          replicas: 2
+          replicas: 1
           autoscaling:
-            enabled: true
-            minReplicas: 2
-            maxReplicas: 5
-            targetCPUUtilizationPercentage: 70
+            enabled: false
           resources:
             requests:
               cpu: 300m
@@ -75,7 +72,7 @@ spec:
 
         applicationSet:
           enabled: true
-          replicas: 2
+          replicas: 1
 
         dex:
           enabled: true
@@ -95,12 +92,12 @@ spec:
               memory: 1Gi
 
         ha:
-          enabled: true
-          redisProxyReplicas: 2
+          enabled: false
+          redisProxyReplicas: 1
           redisHa:
-            enabled: true
+            enabled: false
             haproxy:
-              enabled: true
+              enabled: false
 
   destination:
     server: https://kubernetes.default.svc
