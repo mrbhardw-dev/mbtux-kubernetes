@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: mbtux-platform
+  namespace: argocd
+spec:
+  description: Applications related to the mbtux platform
+
+  sourceRepos:
+    - https://github.com/mrbhardw-dev/mbtux-kubernetes.git
+
+  destinations:
+    - namespace: argocd
+      server: https://kubernetes.default.svc
+    - namespace: "*"
+      server: https://kubernetes.default.svc
+
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"

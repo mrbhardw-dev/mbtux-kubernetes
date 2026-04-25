@@ -10,7 +10,6 @@ spec:
   
   sourceRepos:
     - https://github.com/mrbhardw-dev/mbtux-kubernetes.git
-    - https://kubernetes.github.io/ingress-nginx
     - https://charts.jetstack.io
     - https://argoproj.github.io/argo-helm
     - https://kubernetes-sigs.github.io/headlamp

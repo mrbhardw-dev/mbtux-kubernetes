@@ -8,9 +8,6 @@ image:
 
 namespace: argocd
 
-## ---------------------------------------------------------
-## Argo CD Server
-## ---------------------------------------------------------
 server:
   replicas: 2
 
@@ -35,23 +32,10 @@ server:
     - --insecure=true
 
   ingress:
-    enabled: true
-    annotations:
-      kubernetes.io/ingress.class: traefik
-    hosts:
-      - argocd.mbtux.com
-    path: /
-    tls: []
+    enabled: false   # ✅ IMPORTANT
 
-  metrics:
-    enabled: false
-
-## ---------------------------------------------------------
-## Controller
-## ---------------------------------------------------------
 controller:
   replicas: 2
-
   resources:
     requests:
       cpu: 500m
@@ -60,21 +44,13 @@ controller:
       cpu: 2
       memory: 2Gi
 
-  metrics:
-    enabled: false
-
-## ---------------------------------------------------------
-## Repo Server
-## ---------------------------------------------------------
 repoServer:
   replicas: 2
-
   autoscaling:
     enabled: true
     minReplicas: 2
     maxReplicas: 5
     targetCPUUtilizationPercentage: 70
-
   resources:
     requests:
       cpu: 300m
@@ -83,38 +59,19 @@ repoServer:
       cpu: 2
       memory: 2Gi
 
-  metrics:
-    enabled: false
-
-## ---------------------------------------------------------
-## ApplicationSet
-## ---------------------------------------------------------
 applicationSet:
   enabled: true
   replicas: 2
 
-  metrics:
-    enabled: false
-
-## ---------------------------------------------------------
-## Dex (SSO-ready)
-## ---------------------------------------------------------
 dex:
   enabled: true
   replicas: 2
 
-## ---------------------------------------------------------
-## Notifications
-## ---------------------------------------------------------
 notifications:
   enabled: true
 
-## ---------------------------------------------------------
-## Redis
-## ---------------------------------------------------------
 redis:
   replicas: 2
-
   resources:
     requests:
       cpu: 100m
@@ -123,9 +80,10 @@ redis:
       cpu: 500m
       memory: 1Gi
 
-## ---------------------------------------------------------
-## HA Configuration
-## ---------------------------------------------------------
 ha:
   enabled: true
   redisProxyReplicas: 2
+  redisHa:
+    enabled: true
+    haproxy:
+      enabled: true

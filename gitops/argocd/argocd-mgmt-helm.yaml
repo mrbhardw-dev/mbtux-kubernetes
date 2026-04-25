@@ -1,0 +1,112 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: argocd
+    app.kubernetes.io/part-of: mbtux-platform
+    app.kubernetes.io/component: core
+spec:
+  project: mbtux-platform
+
+  source:
+    repoURL: https://argoproj.github.io/argo-helm
+    chart: argo-cd
+    targetRevision: 7.5.2
+    helm:
+      releaseName: argocd
+      values: |
+        global:
+          logging:
+            format: json
+            level: info
+
+        image:
+          tag: v3.0.0
+
+        namespace: argocd
+
+        server:
+          replicas: 2
+          autoscaling:
+            enabled: true
+            minReplicas: 2
+            maxReplicas: 5
+            targetCPUUtilizationPercentage: 70
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: 1
+              memory: 1Gi
+          service:
+            type: ClusterIP
+          extraArgs:
+            - --insecure=true
+          ingress:
+            enabled: false
+
+        controller:
+          replicas: 2
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: 2
+              memory: 2Gi
+
+        repoServer:
+          replicas: 2
+          autoscaling:
+            enabled: true
+            minReplicas: 2
+            maxReplicas: 5
+            targetCPUUtilizationPercentage: 70
+          resources:
+            requests:
+              cpu: 300m
+              memory: 512Mi
+            limits:
+              cpu: 2
+              memory: 2Gi
+
+        applicationSet:
+          enabled: true
+          replicas: 2
+
+        dex:
+          enabled: true
+          replicas: 2
+
+        notifications:
+          enabled: true
+
+        redis:
+          replicas: 2
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+
+        ha:
+          enabled: true
+          redisProxyReplicas: 2
+          redisHa:
+            enabled: true
+            haproxy:
+              enabled: true
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

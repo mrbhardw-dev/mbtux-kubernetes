@@ -6,7 +6,7 @@
 2. **kubectl configured**: The kubeconfig is properly configured to point to the management cluster
 3. **Helm 3.x installed**: Helm 3 or later is installed on the machine running these commands
 4. **Argo CD CLI installed**: The argocd CLI is available for cluster registration and verification
-5. **HTTPS endpoint**: The domain `argocd.mbtux.com` resolves to the LoadBalancer IP
+5. **HTTPS endpoint**: The domain `argocd-mgmt.mbtux.com` resolves to the LoadBalancer IP
 6. **Git repository**: The bootstrap Git repository is `https://github.com/mrbhardw-dev/mbtux-kubernetes`
 
 ## Cluster Server URLs
@@ -136,8 +136,9 @@ kubectl get secret -n argocd $(kubectl get serviceaccount argocd-cluster-manager
 ### 5.1 Register Clusters with Argo CD
 
 ```bash
-# Login to Argo CD
-argocd login argocd.mbtux.com --username admin --password <password> --grpc-web
+# Login to ArgoCD
+argocd login argocd-mgmt.mbtux.com --username admin --password <password> --grpc-web
+
 
 # Register prod-eu cluster (using kubeconfig)
 argocd cluster add <kubeconfig-context> --name prod-eu

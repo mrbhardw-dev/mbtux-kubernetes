@@ -12,11 +12,9 @@ prometheus:
       cluster: mgmt
     ingress:
       enabled: true
-      ingressClassName: nginx
+      ingressClassName: traefik
       annotations:
-        nginx.ingress.kubernetes.io/proxy-body-size: "100m"
-        nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
-        nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+        traefik.ingress.kubernetes.io/router.middlewares: traefik-traefik-headers@kubernetescrd
       hosts:
         - prometheus.mgmt.mbtux.com
       paths:

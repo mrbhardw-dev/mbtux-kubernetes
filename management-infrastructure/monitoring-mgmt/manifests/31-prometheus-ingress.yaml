@@ -6,9 +6,9 @@ metadata:
   labels:
     fleet.cattle.io/managed: "true"
   annotations:
-    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    traefik.ingress.kubernetes.io/router.middlewares: monitoring-traefik-headers@kubernetescrd
 spec:
-  ingressClassName: nginx
+  ingressClassName: traefik
   rules:
   - host: prometheus.mgmt.mbtux.com
     http:
