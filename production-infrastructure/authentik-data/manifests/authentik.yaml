@@ -24,6 +24,12 @@ spec:
               value: redis
             - name: AUTHENTIK_POSTGRESQL__HOST
               value: postgresql
+            - name: AUTHENTIK_POSTGRESQL__USER
+              value: authentik
+            - name: AUTHENTIK_POSTGRESQL__NAME
+              value: authentik
+            - name: AUTHENTIK_POSTGRESQL__PASSWORD
+              value: authentik123
             - name: AUTHENTIK_ERROR_REPORTING__ENABLED
               value: "false"
             - name: AUTHENTIK_SECRET_KEY
