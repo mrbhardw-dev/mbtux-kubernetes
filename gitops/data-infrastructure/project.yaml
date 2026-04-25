@@ -18,13 +18,13 @@ spec:
 
   destinations:
     - namespace: cert-manager
-      server: data-prod
+      server: https://192.168.0.211:6443
     - namespace: cloudflared
-      server: data-prod
+      server: https://192.168.0.211:6443
     - namespace: monitoring
-      server: data-prod
+      server: https://192.168.0.211:6443
     - namespace: traefik
-      server: data-prod
+      server: https://192.168.0.211:6443
 
   clusterResourceWhitelist:
     - group: "*"

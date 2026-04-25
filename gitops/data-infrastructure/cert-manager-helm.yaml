@@ -23,7 +23,7 @@ spec:
         installCRDs: true
 
   destination:
-    server: data-prod
+    server: https://192.168.0.211:6443
     namespace: cert-manager
 
   syncPolicy:
