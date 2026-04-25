@@ -9,3 +9,8 @@ resources:
   - mgmt-infrastructure/traefik-helm.yaml
   - mgmt-infrastructure/cloudflared-kustomize.yaml
   - mgmt-infrastructure/monitoring-kustomize.yaml
+  - data-infrastructure/project.yaml
+  - data-infrastructure/cert-manager-helm.yaml
+  - data-infrastructure/cloudflared-kustomize.yaml
+  - data-infrastructure/monitoring-kustomize.yaml
+  - data-infrastructure/traefik-helm.yaml
