@@ -25,7 +25,7 @@ spec:
             - name: POSTGRES_USER
               value: authentik
             - name: POSTGRES_PASSWORD
-              value: authentik
+              value: authentik123
           ports:
             - name: postgresql
               containerPort: 5432
