@@ -2,4 +2,12 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - mgmt-root/
+  - mgmt-root/application.yaml
+  - mgmt-platform/argocd/project.yaml
+  - mgmt-platform/argocd/argocd-mgmt-infra.yaml
+  - mgmt-platform/argocd/argocd-mgmt-helm.yaml
+  - mgmt-infrastructure/project.yaml
+  - mgmt-infrastructure/cert-manager-helm.yaml
+  - mgmt-infrastructure/traefik-helm.yaml
+  - mgmt-infrastructure/cloudflared-kustomize.yaml
+  - mgmt-infrastructure/monitoring-kustomize.yaml
