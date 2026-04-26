@@ -19,6 +19,10 @@ authentik:
 
 postgresql:
   enabled: true
+  image:
+    registry: docker.io
+    repository: library/postgres
+    tag: "17"
   auth:
     username: authentik_user
     password: authentik_pass
@@ -27,20 +31,6 @@ postgresql:
     persistence:
       enabled: true
       size: 20Gi
-    configuration: |
-      listen_addresses = '*'
-      port = '5432'
-      wal_level = 'replica'
-      fsync = 'on'
-      hot_standby = 'on'
-      log_connections = 'false'
-      log_disconnections = 'false'
-      log_hostname = 'false'
-      client_min_messages = 'error'
-      include_dir = 'conf.d'
-    pgHbaConfiguration: |
-      host     all             all             0.0.0.0/0               scram-sha-256
-      host     all             all             ::/0                    scram-sha-256
 
 server:
   replicas: 1

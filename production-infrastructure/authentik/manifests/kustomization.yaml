@@ -9,5 +9,3 @@ resources:
   - redis.yaml
   - deployment.yaml
   - ingressroute.yaml
-  - ../outpost/deployment.yaml
-  - ../outpost/secret.yaml
