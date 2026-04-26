@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mgmt-platform-infra
+  name: data-prod-traefik
   namespace: argocd
   labels:
     app.kubernetes.io/name: data-prod-traefik
