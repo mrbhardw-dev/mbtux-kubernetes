@@ -32,6 +32,8 @@ kind: Deployment
 metadata:
   name: outline
   namespace: outline
+  labels:
+    app: outline
 spec:
   replicas: 1
   strategy:
@@ -48,6 +50,7 @@ spec:
         app: outline
     spec:
       serviceAccountName: outline
+      terminationGracePeriodSeconds: 30
       initContainers:
       - name: wait-for-postgres
         image: busybox:1.36
@@ -57,7 +60,8 @@ spec:
         image: outlinewiki/outline:latest
         imagePullPolicy: Always
         startupProbe:
-          tcpSocket:
+          httpGet:
+            path: /health
             port: 3000
           initialDelaySeconds: 30
           periodSeconds: 10
@@ -197,31 +201,6 @@ spec:
             configMapKeyRef:
               name: outline-config
               key: SMTP_FROM_EMAIL
-        - name: OIDC_ISSUER_URL
-          valueFrom:
-            configMapKeyRef:
-              name: outline-config
-              key: OIDC_ISSUER_URL
-        - name: OIDC_CLIENT_ID
-          valueFrom:
-            configMapKeyRef:
-              name: outline-config
-              key: OIDC_CLIENT_ID
-        - name: OIDC_CLIENT_SECRET
-          valueFrom:
-            configMapKeyRef:
-              name: outline-config
-              key: OIDC_CLIENT_SECRET
-        - name: OIDC_DISPLAY_NAME
-          valueFrom:
-            configMapKeyRef:
-              name: outline-config
-              key: OIDC_DISPLAY_NAME
-        - name: OIDC_SCOPES
-          valueFrom:
-            configMapKeyRef:
-              name: outline-config
-              key: OIDC_SCOPES
         - name: NODE_TLS_REJECT_UNAUTHORIZED
           valueFrom:
             configMapKeyRef:
@@ -235,15 +214,21 @@ spec:
             memory: "1Gi"
             cpu: "1000m"
         livenessProbe:
-          tcpSocket:
+          httpGet:
+            path: /health
             port: 3000
           initialDelaySeconds: 60
           periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 3
         readinessProbe:
-          tcpSocket:
+          httpGet:
+            path: /health
             port: 3000
           initialDelaySeconds: 10
           periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 3
         volumeMounts:
         - name: outline-storage
           mountPath: /data/uploads

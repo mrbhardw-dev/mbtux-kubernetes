@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cloudflared-config
-  namespace: cloudflared-data
+  namespace: cloudflared
 data:
   config.yaml: |
     tunnel: ae1dd134-6874-446d-b665-b7a9fa81b14c

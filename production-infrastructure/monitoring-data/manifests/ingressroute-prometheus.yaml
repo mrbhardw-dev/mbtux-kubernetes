@@ -1,0 +1,19 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: prometheus
+  namespace: monitoring
+  labels:
+    fleet.cattle.io/managed: "true"
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`prometheus.data.mbtux.com`)
+      priority: 10
+      services:
+        - name: prometheus
+          port: 9090
+  tls:
+    secretName: prometheus-data-tls

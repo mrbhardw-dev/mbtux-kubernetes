@@ -12,6 +12,11 @@ prometheus:
       cluster: data
     ingress:
       enabled: false
+      hosts:
+        - prometheus.data.mbtux.com
+      paths:
+        - /
+      pathType: Prefix
 
 grafana:
   enabled: true
@@ -20,13 +25,17 @@ grafana:
     userKey: grafana-user
     passwordKey: grafana-password
   ingress:
-    enabled: false
-  grafana.ini:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
     server:
       root_url: "https://grafana.mbtux.com"
       serve_from_sub_path: false
     auth.generic_oauth:
-      enabled: true
+      enabled: false
       client_id: "grafana"
       scopes: "openid profile email"
       auth_url: "https://authentik.mbtux.com/application/o/authorize/"

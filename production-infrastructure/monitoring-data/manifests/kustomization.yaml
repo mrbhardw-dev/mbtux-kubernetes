@@ -13,6 +13,7 @@ resources:
   - 12-alerts.yaml
   - 20-dotdc-dashboards.yaml
   - 21-dashboard-providers.yaml
-  - 30-ingress.yaml
+  - ingressroute-grafana.yaml
+  - ingressroute-prometheus.yaml
   - 31-ingressclass.yaml
   - 32-certificates.yaml

@@ -1,12 +1,12 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: tls-authentik
-  namespace: cloudflared-data
+  name: outline
+  namespace: outline
 spec:
-  secretName: tls-authentik
+  secretName: tls-outline
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
   dnsNames:
-  - auth.mbtux.com
+  - outline.mbtux.com

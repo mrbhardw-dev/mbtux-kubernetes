@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cloudflared
-  namespace: cloudflared-data
+  namespace: cloudflared
   labels:
     app: cloudflared
     fleet.cattle.io/managed: "true"

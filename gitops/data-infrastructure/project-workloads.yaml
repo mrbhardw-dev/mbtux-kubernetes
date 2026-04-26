@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: data-prod-infrastructure
+  name: data-prod-workloads
   namespace: argocd
   labels:
     app.kubernetes.io/part-of: mbtux-platform
@@ -9,23 +9,17 @@ metadata:
     platform.scope: data
     platform.cluster: data-prod
 spec:
-  description: Production data infrastructure (certificates, ingress, CRDs)
+  description: Production data workloads (application services)
 
   sourceRepos:
-    - https://charts.jetstack.io
-    - https://helm.traefik.io/traefik
     - https://github.com/mrbhardw-dev/mbtux-kubernetes.git
 
   destinations:
-    - namespace: cert-manager
+    - namespace: authentik
       server: https://192.168.0.211:6443
-    - namespace: cloudflared
+    - namespace: outline
       server: https://192.168.0.211:6443
-    - namespace: kube-system
-      server: https://192.168.0.211:6443
-    - namespace: monitoring
-      server: https://192.168.0.211:6443
-    - namespace: traefik
+    - namespace: sure
       server: https://192.168.0.211:6443
 
   clusterResourceWhitelist:

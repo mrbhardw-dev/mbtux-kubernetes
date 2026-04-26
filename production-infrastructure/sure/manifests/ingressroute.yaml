@@ -1,0 +1,16 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: sure
+  namespace: sure
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`sure.mbtux.com`) && PathPrefix(`/`)
+      services:
+        - name: sure
+          port: 80
+  tls:
+    secretName: sure-tls

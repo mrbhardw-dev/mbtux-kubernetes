@@ -1,0 +1,20 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: outline
+  namespace: outline
+  labels:
+    app: outline
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`outline.mbtux.com`)
+      priority: 10
+      services:
+        - name: outline
+          port: 80
+          scheme: http
+  tls:
+    secretName: tls-outline

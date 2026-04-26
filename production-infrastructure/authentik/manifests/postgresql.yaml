@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgresql
-  namespace: cloudflared-data
+  namespace: authentik
   labels:
     app: postgresql
 spec:
@@ -35,7 +35,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: postgresql
-  namespace: cloudflared-data
+  namespace: authentik
 spec:
   ports:
     - name: postgresql

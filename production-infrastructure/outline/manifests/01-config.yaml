@@ -5,7 +5,7 @@ metadata:
   namespace: outline
 data:
   NODE_ENV: "production"
-  FORCE_HTTPS: "true"
+  FORCE_HTTPS: "false"
   LOG_LEVEL: "info"
   URL: "https://outline.mbtux.com"
   DATABASE_HOST: "outline-postgres"
@@ -27,10 +27,4 @@ data:
   SMTP_PORT: "587"
   SMTP_SECURE: "false"
   SMTP_FROM_EMAIL: "mritunjay.bhardwaj@mbtux.com"
-  OIDC_ISSUER_URL: "https://authentik.mbtux.com/application/o/outline-wiki/"
-  OIDC_CLIENT_ID: "outline"
-  OIDC_CLIENT_SECRET: "5OB4WjmXTbVxJyNAa6NeqO2P4HEyXncm5D6jeTwKdII3Qjd5F3ygu7twXY0p"
-  OIDC_DISPLAY_NAME: "Authentik"
-  OIDC_SCOPES: "openid profile email groups"
-  OIDC_CLIENT_AUTH_METHOD: "post"
   NODE_TLS_REJECT_UNAUTHORIZED: "0"
