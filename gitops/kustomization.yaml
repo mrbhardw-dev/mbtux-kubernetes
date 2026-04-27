@@ -16,3 +16,4 @@ resources:
   - data-infrastructure/cloudflared-kustomize.yaml
   - data-infrastructure/monitoring-kustomize.yaml
   - data-infrastructure/traefik-helm.yaml
+  - data-infrastructure/traefik-infra.yaml
