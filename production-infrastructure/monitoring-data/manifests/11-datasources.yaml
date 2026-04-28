@@ -11,20 +11,18 @@ data:
       - name: Prometheus (data-cluster)
         type: prometheus
         access: proxy
-        url: https://prometheus.data.mbtux.com
+        url: http://prometheus:9090
         isDefault: true
         editable: true
         jsonData:
-          httpMethod: POST
+          httpMethod: GET
           timeInterval: 30s
-          tlsSkipVerify: true
       - name: Prometheus (mgmt-cluster)
         type: prometheus
         access: proxy
-        url: https://prometheus.mgmt.mbtux.com
+        url: http://prometheus.monitoring:9090
         editable: true
         jsonData:
-          httpMethod: POST
+          httpMethod: GET
           timeInterval: 30s
-          tlsSkipVerify: true
 
