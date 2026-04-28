@@ -10,8 +10,8 @@ metadata:
     platform.scope: data
     platform.cluster: data-prod
     app.kubernetes.io/component: infrastructure
-spec:
-  project: data-prod-infrastructure
+  spec:
+    project: data-prod-infrastructure
 
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
