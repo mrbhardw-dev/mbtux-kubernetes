@@ -17,3 +17,4 @@ data:
   EXCHANGE_RATE_PROVIDER: "yahoo_finance"
   SECURITIES_PROVIDER: "yahoo_finance"
   APP_DOMAIN: "https://sure.mbtux.com"
+  SSL_VERIFY: "false"

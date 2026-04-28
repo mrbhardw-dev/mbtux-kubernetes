@@ -9,9 +9,12 @@ data:
   OIDC_PROVIDER: "authentik"
   AUTH_JIT_MODE: "create_and_link"
 
-  OIDC_ISSUER: "https://authentik.mbtux.com/application/o/sure-finance/"
-  OIDC_ISSUER_URL: "https://authentik.mbtux.com/application/o/sure-finance/"
+  OIDC_ISSUER: "https://authentik.mbtux.com/application/o/sure/"
+  OIDC_ISSUER_URL: "https://authentik.mbtux.com/application/o/sure/"
   
-  OIDC_CLIENT_ID: "sure-finance"
+  OIDC_CLIENT_ID: "7Snm9bv2ZpoU9dapxH6DBKYcyW5CkbpuFiYg3Fy7"
   OIDC_REDIRECT_URI: "https://sure.mbtux.com/auth/openid_connect/callback"
+  OIDC_LOGOUT_URI: "https://authentik.mbtux.com/application/o/sure/end-session/"
   OIDC_SCOPES: "openid profile email"
+  OIDC_USERNAME_CLAIM: "preferred_username"
+  OIDC_DISPLAY_NAME: "Authentik"

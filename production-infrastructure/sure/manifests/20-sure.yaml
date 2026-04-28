@@ -115,6 +115,11 @@ spec:
                 configMapKeyRef:
                   name: sure-config
                   key: RAILS_ASSUME_SSL
+            - name: SSL_VERIFY
+              valueFrom:
+                configMapKeyRef:
+                  name: sure-config
+                  key: SSL_VERIFY
             - name: PORT
               valueFrom:
                 configMapKeyRef:
@@ -262,7 +267,21 @@ spec:
                 configMapKeyRef:
                   name: sure-auth
                   key: OIDC_SCOPES
-
+            - name: OIDC_USERNAME_CLAIM
+              valueFrom:
+                configMapKeyRef:
+                  name: sure-auth
+                  key: OIDC_USERNAME_CLAIM
+            - name: OIDC_DISPLAY_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: sure-auth
+                  key: OIDC_DISPLAY_NAME
+            - name: OIDC_LOGOUT_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: sure-auth
+                  key: OIDC_LOGOUT_URI
           resources:
             requests:
               memory: "1Gi"

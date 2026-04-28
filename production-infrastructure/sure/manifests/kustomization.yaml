@@ -8,6 +8,7 @@ resources:
   - 01-config.yaml
   - 02-secret.yaml
   - 03-auth.yaml
+  - oidc-secret.yaml
   - 10-database.yaml
   - 20-sure.yaml
   - ingressroute.yaml

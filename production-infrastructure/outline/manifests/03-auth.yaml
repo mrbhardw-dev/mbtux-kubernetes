@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: outline-auth
+  namespace: outline
+data:
+  OIDC_ISSUER: "https://authentik.mbtux.com/application/o/outline/"
+  OIDC_ISSUER_URL: "https://authentik.mbtux.com/application/o/outline/"
+  OIDC_CLIENT_ID: "PoOCe0BqTr6VaBHoWVRcwLesADWeaYH7gh0JuBdp"
+  OIDC_LOGOUT_URI: "https://authentik.mbtux.com/application/o/outline/end-session/"
+  OIDC_SCOPES: "openid profile email"
+  OIDC_USERNAME_CLAIM: "preferred_username"
+  OIDC_DISPLAY_NAME: "Authentik"
+
