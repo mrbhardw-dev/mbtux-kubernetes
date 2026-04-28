@@ -28,11 +28,3 @@ data:
           timeInterval: 30s
           tlsSkipVerify: true
 
-      - name: Prometheus (mgmt-cluster)
-        type: prometheus
-        access: proxy
-        url: http://prometheus.mgmt-cluster-prometheus.monitoring.svc.cluster.local:9090
-        editable: true
-        jsonData:
-          httpMethod: POST
-          timeInterval: 30s
