@@ -10,9 +10,9 @@ resources:
   - mgmt-infrastructure/monitoring-kustomize.yaml
   - data-infrastructure/project.yaml
   - data-infrastructure/authentik-kustomize.yaml
+  - data-infrastructure/project-workloads.yaml
   - data-infrastructure/outline.yaml
   - data-infrastructure/sure.yaml
-  - data-infrastructure/project-workloads.yaml
   - data-infrastructure/cert-manager-helm.yaml
   - data-infrastructure/cloudflared-kustomize.yaml
   - data-infrastructure/monitoring-kustomize.yaml
