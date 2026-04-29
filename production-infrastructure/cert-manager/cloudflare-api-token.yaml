@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloudflare-api-token
+  namespace: cert-manager
+type: Opaque
+stringData:
+  # Cloudflare API token with Zone:DNS:Edit permissions for your domains
+  # Generate at: https://dash.cloudflare.com/profile/api-tokens
+  # Required permissions: Zone:DNS:Edit for *.mbtux.com and mbtux.com
+  api-token: "REPLACE_WITH_CLOUDFLARE_API_TOKEN"

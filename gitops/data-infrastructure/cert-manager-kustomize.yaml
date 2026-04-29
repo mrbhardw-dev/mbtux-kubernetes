@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - cert-manager-helm.yaml
+
+secretGenerator:
+  - name: cloudflare-api-token
+    namespace: cert-manager
+    type: Opaque
+    literals:
+      - api-token=REPLACE_WITH_CLOUDFLARE_API_TOKEN
