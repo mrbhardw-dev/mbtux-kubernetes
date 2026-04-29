@@ -33,7 +33,6 @@ metadata:
   name: sure
   namespace: sure
 spec:
-  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -284,11 +283,11 @@ spec:
                   key: OIDC_LOGOUT_URI
           resources:
             requests:
-              memory: "1Gi"
-              cpu: "500m"
-            limits:
               memory: "2Gi"
-              cpu: "2000m"
+              cpu: "1500m"
+            limits:
+              memory: "4Gi"
+              cpu: "3000m"
 
           volumeMounts:
             - name: sure-storage
@@ -306,7 +305,6 @@ metadata:
   name: sure-worker
   namespace: sure
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: sure-worker
