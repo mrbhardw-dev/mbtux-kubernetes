@@ -14,13 +14,15 @@ spec:
   sourceRepos:
     - https://github.com/mrbhardw-dev/mbtux-kubernetes.git
 
-  destinations:
-    - namespace: authentik
-      server: https://192.168.0.211:6443
-    - namespace: outline
-      server: https://192.168.0.211:6443
-    - namespace: sure
-      server: https://192.168.0.211:6443
+   destinations:
+     - namespace: authentik
+       server: https://192.168.0.211:6443
+     - namespace: outline
+       server: https://192.168.0.211:6443
+     - namespace: sure
+       server: https://192.168.0.211:6443
+     - namespace: coder
+       server: https://192.168.0.211:6443
 
   clusterResourceWhitelist:
     - group: "*"

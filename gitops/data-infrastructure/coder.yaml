@@ -1,25 +1,36 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: data-prod-traefik-resources
+  name: data-prod-coder
   namespace: argocd
   labels:
-    app.kubernetes.io/name: data-prod-traefik-resources
+    app.kubernetes.io/name: data-prod-coder
     app.kubernetes.io/part-of: mbtux-platform
     app.kubernetes.io/managed-by: argocd
     platform.scope: data
     platform.cluster: data-prod
-    app.kubernetes.io/component: infrastructure
+    app.kubernetes.io/component: workload
 spec:
-  project: data-prod-infrastructure
+  project: data-prod-workloads
+
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
     targetRevision: main
-    path: production-infrastructure/traefik
+    path: production-infrastructure/coder/manifests
+
   destination:
     server: https://192.168.0.211:6443
-    namespace: traefik
+    namespace: coder
+
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
