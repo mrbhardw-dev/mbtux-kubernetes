@@ -9,13 +9,13 @@ resources:
   - mgmt-infrastructure/cloudflared-kustomize.yaml
   - mgmt-infrastructure/monitoring-kustomize.yaml
   - data-infrastructure/project.yaml
-  - data-infrastructure/authentik-kustomize.yaml
+  - data-infrastructure/prod-infra-authentik-kustomize.yaml
   - data-infrastructure/project-workloads.yaml
-  - data-infrastructure/outline.yaml
-  - data-infrastructure/sure.yaml
+  - data-infrastructure/prod-apps-outline.yaml
+  - data-infrastructure/prod-apps-sure.yaml
   - data-infrastructure/coder.yaml
-  - data-infrastructure/cert-manager-kustomize.yaml
-  - data-infrastructure/cloudflared-kustomize.yaml
-  - data-infrastructure/monitoring-kustomize.yaml
-  - data-infrastructure/traefik-helm.yaml
-  - data-infrastructure/traefik-infra.yaml
+  - data-infrastructure/prod-infra-cert-manager-kustomize.yaml
+  - data-infrastructure/prod-infra-cloudflared-kustomize.yaml
+  - data-infrastructure/prod-infra-monitoring-kustomize.yaml
+  - data-infrastructure/prod-infra-traefik-helm.yaml
+  - data-infrastructure/prod-infra-traefik-infra.yaml
