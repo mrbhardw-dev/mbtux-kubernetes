@@ -46,6 +46,8 @@ spec:
       labels:
         app: sure
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: tadpole-worker-data-cluster.mbtux.com
       initContainers:
         - name: wait-for-postgres
           image: busybox:1.36
@@ -283,11 +285,11 @@ spec:
                   key: OIDC_LOGOUT_URI
           resources:
             requests:
-              memory: "2Gi"
-              cpu: "1500m"
+              memory: "1Gi"
+              cpu: "500m"
             limits:
-              memory: "4Gi"
-              cpu: "3000m"
+              memory: "2Gi"
+              cpu: "1000m"
 
           volumeMounts:
             - name: sure-storage
@@ -360,13 +362,15 @@ spec:
             initialDelaySeconds: 60
             periodSeconds: 30
 
-          readinessProbe:
-            exec:
-              command:
-                - sh
-                - -c
-                - "pgrep -f sidekiq || exit 1"
-            initialDelaySeconds: 60
-            periodSeconds: 10
-
-      volumes:
+            readinessProbe:
+              exec:
+                command:
+                  - sh
+                  - -c
+                  - "pgrep -f sidekiq || exit 1"
+              initialDelaySeconds: 60
+              periodSeconds: 10
+       volumes:
+         - name: sure-storage
+           persistentVolumeClaim:
+             claimName: sure-pvc
