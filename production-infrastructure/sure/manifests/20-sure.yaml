@@ -360,13 +360,11 @@ spec:
             initialDelaySeconds: 60
             periodSeconds: 30
 
-          readinessProbe:
-            exec:
-              command:
-                - sh
-                - -c
-                - "pgrep -f sidekiq || exit 1"
-            initialDelaySeconds: 60
-            periodSeconds: 10
-
-      volumes:
+readinessProbe:
+             exec:
+               command:
+                 - sh
+                 - -c
+                 - "pgrep -f sidekiq || exit 1"
+             initialDelaySeconds: 60
+             periodSeconds: 10
