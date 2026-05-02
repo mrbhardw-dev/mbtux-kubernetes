@@ -1,10 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: data-prod-cert-manager
+  name: prod-infra-authentik
   namespace: argocd
   labels:
-    app.kubernetes.io/name: data-prod-cert-manager
+    app.kubernetes.io/name: prod-infra-authentik
     app.kubernetes.io/part-of: mbtux-platform
     app.kubernetes.io/managed-by: argocd
     platform.scope: data
@@ -14,17 +14,13 @@ spec:
   project: data-prod-infrastructure
 
   source:
-    repoURL: https://charts.jetstack.io
-    chart: cert-manager
-    targetRevision: v1.20.2
-    helm:
-      releaseName: cert-manager
-      values: |
-        installCRDs: true
+    repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
+    targetRevision: main
+    path: production-infrastructure/authentik/manifests
 
   destination:
     server: https://192.168.0.211:6443
-    namespace: cert-manager
+    namespace: authentik
 
   syncPolicy:
     automated:
