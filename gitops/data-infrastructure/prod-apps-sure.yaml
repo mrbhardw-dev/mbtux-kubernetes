@@ -1,10 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: data-prod-sure
+  name: sure.mbtux.com
   namespace: argocd
   labels:
-    app.kubernetes.io/name: data-prod-sure
+    app.kubernetes.io/name: sure.mbtux.com
     app.kubernetes.io/part-of: mbtux-platform
     app.kubernetes.io/managed-by: argocd
     platform.scope: data
@@ -26,3 +26,33 @@ spec:
     automated:
       prune: true
       selfHeal: true
+
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /metadata/labels
+        - /metadata/annotations
+        - /spec/replicas
+        - /spec/progressDeadlineSeconds
+        - /spec/revisionHistoryLimit
+        - /spec/strategy
+        - /spec/template/spec/dnsPolicy
+        - /spec/template/spec/restartPolicy
+        - /spec/template/spec/schedulerName
+        - /spec/template/spec/securityContext
+        - /spec/template/spec/terminationGracePeriodSeconds
+        - /spec/template/spec/terminationMessagePath
+        - /spec/template/spec/terminationMessagePolicy
+        - /spec/template/spec/containers/0/livenessProbe
+        - /spec/template/spec/containers/0/resources
+        - /spec/template/spec/containers/0/terminationMessagePath
+        - /spec/template/spec/containers/0/terminationMessagePolicy
+        - /spec/template/spec/initContainers/0/imagePullPolicy
+        - /spec/template/spec/initContainers/0/resources
+        - /spec/template/spec/initContainers/0/terminationMessagePath
+        - /spec/template/spec/initContainers/0/terminationMessagePolicy
+        - /spec/template/spec/initContainers/1/imagePullPolicy
+        - /spec/template/spec/initContainers/1/resources
+        - /spec/template/spec/initContainers/1/terminationMessagePath
+        - /spec/template/spec/initContainers/1/terminationMessagePolicy

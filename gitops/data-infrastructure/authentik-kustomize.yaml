@@ -1,10 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: data-prod-authentik
+  name: authentik.mbtux.com
   namespace: argocd
   labels:
-    app.kubernetes.io/name: data-prod-authentik
+    app.kubernetes.io/name: authentik.mbtux.com
     app.kubernetes.io/part-of: mbtux-platform
     app.kubernetes.io/managed-by: argocd
     platform.scope: data
@@ -19,7 +19,7 @@ spec:
     path: production-infrastructure/authentik/manifests
 
   destination:
-    server: https://192.168.0.211:6443
+    server: https://kubernetes.default.svc
     namespace: authentik
 
   syncPolicy:
