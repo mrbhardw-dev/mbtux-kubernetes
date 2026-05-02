@@ -31,11 +31,9 @@ spec:
               value: 0.0.0.0:9443
             - name: AUTHENTIK_ERROR_REPORTING__ENABLED
               value: "false"
-            - name: AUTHENTIK_SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: authentik-secret
-                  key: secretKey
+          envFrom:
+            - secretRef:
+                name: authentik
           ports:
             - name: http
               containerPort: 9000
