@@ -19,10 +19,26 @@ spec:
     path: production-infrastructure/sure/manifests
 
   destination:
-    server: https://192.168.0.211:6443
+    server: https://kubernetes.default.svc
     namespace: sure
 
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas
+        - /spec/progressDeadlineSeconds
+        - /spec/revisionHistoryLimit
+        - /spec/strategy
+        - /spec/template/spec/dnsPolicy
+        - /spec/template/spec/terminationMessagePath
+        - /spec/template/spec/terminationMessagePolicy
+        - /spec/template/spec/containers/0/livenessProbe
+        - /spec/template/spec/containers/0/resources
+        - /spec/template/spec/initContainers/0/resources
+        - /spec/template/spec/initContainers/1/resources
