@@ -1,21 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - mgmt-platform/argocd/argocd-mgmt-helm.yaml
-  - mgmt-platform/argocd/argocd-mgmt-infra.yaml
-  - mgmt-infrastructure/cert-manager-kustomize.yaml
-  - mgmt-infrastructure/traefik-helm.yaml
-  - mgmt-infrastructure/traefik-infra.yaml
-  - mgmt-infrastructure/cloudflared-kustomize.yaml
-  - mgmt-infrastructure/monitoring-kustomize.yaml
-  - data-infrastructure/project.yaml
-  - data-infrastructure/prod-infra-authentik-kustomize.yaml
-  - data-infrastructure/project-workloads.yaml
-  - data-infrastructure/prod-apps-outline.yaml
-  - data-infrastructure/prod-apps-sure.yaml
-  - data-infrastructure/coder.yaml
-  - data-infrastructure/prod-infra-cert-manager-kustomize.yaml
-  - data-infrastructure/prod-infra-cloudflared-kustomize.yaml
-  - data-infrastructure/prod-infra-monitoring-kustomize.yaml
-  - data-infrastructure/prod-infra-traefik-helm.yaml
-  - data-infrastructure/prod-infra-traefik-infra.yaml
+  # Root applications manage all child applications
+  - root-app-mgmt-platform.yaml
+  - root-app-data-infrastructure.yaml
+  - root-app-data-workloads.yaml
