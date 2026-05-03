@@ -16,13 +16,13 @@ spec:
 
    destinations:
      - namespace: authentik
-       server: https://192.168.0.211:6443
+       server: https://api.data-prod-cluster.mbtux.com:6443
      - namespace: outline
-       server: https://192.168.0.211:6443
+       server: https://api.data-prod-cluster.mbtux.com:6443
      - namespace: sure
-       server: https://192.168.0.211:6443
+       server: https://api.data-prod-cluster.mbtux.com:6443
      - namespace: coder
-       server: https://192.168.0.211:6443
+       server: https://api.data-prod-cluster.mbtux.com:6443
 
   clusterResourceWhitelist:
     - group: "*"

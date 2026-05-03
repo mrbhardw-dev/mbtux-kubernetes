@@ -62,10 +62,9 @@ spec:
           - "--entryPoints.websecure.forwardedHeaders.insecure=true"
 
   destination:
-    server: https://192.168.0.211:6443
+    server: https://api.data-prod-cluster.mbtux.com:6443
     namespace: traefik
 
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+    # Manual sync - only sync on explicit GitHub push
+    automated: {}

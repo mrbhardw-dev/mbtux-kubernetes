@@ -18,17 +18,17 @@ spec:
 
   destinations:
     - namespace: authentik
-      server: https://192.168.0.211:6443
+      server: https://api.data-prod-cluster.mbtux.com:6443
     - namespace: cert-manager
-      server: https://192.168.0.211:6443
+      server: https://api.data-prod-cluster.mbtux.com:6443
     - namespace: cloudflared
-      server: https://192.168.0.211:6443
+      server: https://api.data-prod-cluster.mbtux.com:6443
     - namespace: kube-system
-      server: https://192.168.0.211:6443
+      server: https://api.data-prod-cluster.mbtux.com:6443
     - namespace: monitoring
-      server: https://192.168.0.211:6443
+      server: https://api.data-prod-cluster.mbtux.com:6443
     - namespace: traefik
-      server: https://192.168.0.211:6443
+      server: https://api.data-prod-cluster.mbtux.com:6443
 
   clusterResourceWhitelist:
     - group: "*"

@@ -23,9 +23,8 @@ spec:
     namespace: sure
 
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+    # Manual sync - only sync on explicit GitHub push
+    automated: {}
 
   ignoreDifferences:
     - group: apps
