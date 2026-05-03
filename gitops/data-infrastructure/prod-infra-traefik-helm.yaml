@@ -1,10 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: data-prod-traefik
+  name: prod-infra-traefik
   namespace: argocd
   labels:
-    app.kubernetes.io/name: data-prod-traefik
+    app.kubernetes.io/name: prod-infra-traefik
     app.kubernetes.io/part-of: mbtux-platform
     app.kubernetes.io/managed-by: argocd
     platform.scope: data

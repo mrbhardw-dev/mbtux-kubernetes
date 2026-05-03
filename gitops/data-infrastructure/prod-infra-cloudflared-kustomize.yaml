@@ -1,10 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: data-prod-infrastructure
+  name: prod-infra-cloudflared
   namespace: argocd
   labels:
-    app.kubernetes.io/name: data-prod-infrastructure
+    app.kubernetes.io/name: prod-infra-cloudflared
     app.kubernetes.io/part-of: mbtux-platform
     app.kubernetes.io/managed-by: argocd
     platform.scope: data

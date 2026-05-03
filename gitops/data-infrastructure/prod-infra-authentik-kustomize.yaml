@@ -1,10 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: prod-infra-authentik
+  name: authentik.mbtux.com
   namespace: argocd
   labels:
-    app.kubernetes.io/name: prod-infra-authentik
+    app.kubernetes.io/name: authentik.mbtux.com
     app.kubernetes.io/part-of: mbtux-platform
     app.kubernetes.io/managed-by: argocd
     platform.scope: data

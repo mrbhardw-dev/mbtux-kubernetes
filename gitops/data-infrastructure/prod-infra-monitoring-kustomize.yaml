@@ -1,10 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: data-prod-monitoring
+  name: prod-infra-monitoring
   namespace: argocd
   labels:
-    app.kubernetes.io/name: data-prod-monitoring
+    app.kubernetes.io/name: prod-infra-monitoring
     app.kubernetes.io/part-of: mbtux-platform
     app.kubernetes.io/managed-by: argocd
     platform.scope: data
