@@ -1,17 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mgmt-infrastructure-traefik
+  name: traefik-management-helm
   namespace: argocd
   labels:
-    app.kubernetes.io/name: mgmt-infrastructure-traefik
+    app.kubernetes.io/name: traefik-management-helm
     app.kubernetes.io/part-of: mbtux-platform
     app.kubernetes.io/managed-by: argocd
     platform.tier: management
     app.kubernetes.io/component: infrastructure
 spec:
   project: mgmt-infrastructure
-
   source:
     repoURL: https://helm.traefik.io/traefik
     chart: traefik
@@ -23,23 +22,23 @@ spec:
           enabled: true
           isDefaultClass: true
           name: traefik
-
+        
         service:
           type: LoadBalancer
-
+        
         providers:
           kubernetesIngress:
             enabled: true
           kubernetesCRD:
             enabled: true
-
+        
         rbac:
           enabled: true
-
+        
         metrics:
           prometheus:
             enabled: true
-
+        
         ports:
           traefik:
             port: 9000
@@ -49,21 +48,21 @@ spec:
             port: 80
           websecure:
             port: 443
-
+        
         api:
           dashboard: true
           insecure: false
-
+        
         additionalArguments:
           - "--providers.kubernetesingress.ingressclass=traefik"
           - "--providers.kubernetesingress.ingressendpoint.publishedservice=traefik/traefik"
           - "--entryPoints.web.forwardedHeaders.insecure=true"
           - "--entryPoints.websecure.forwardedHeaders.insecure=true"
-
+  
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik
-
+  
   syncPolicy:
     # Manual sync - only sync on explicit GitHub push
     automated: {}

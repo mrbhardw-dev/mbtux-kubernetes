@@ -22,6 +22,5 @@ spec:
     namespace: cloudflared
 
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+    # Manual sync - only sync on explicit GitHub push
+    automated: {}

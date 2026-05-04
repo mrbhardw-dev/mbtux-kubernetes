@@ -1,17 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mgmt-platform-argocd
+  name: argocd-management-helm
   namespace: argocd
   labels:
-    app.kubernetes.io/name: mgmt-platform-argocd
+    app.kubernetes.io/name: argocd-management-helm
     app.kubernetes.io/part-of: mbtux-platform
     app.kubernetes.io/managed-by: argocd
     platform.tier: management
     app.kubernetes.io/component: core
 spec:
   project: mgmt-platform
-
   source:
     repoURL: https://argoproj.github.io/argo-helm
     chart: argo-cd
@@ -23,12 +22,12 @@ spec:
           logging:
             format: json
             level: info
-
+        
         image:
           tag: v3.0.0
-
+        
         namespace: argocd
-
+        
         server:
           replicas: 2
           autoscaling:
@@ -46,7 +45,7 @@ spec:
             - --insecure=true
           ingress:
             enabled: false
-
+        
         controller:
           replicas: 2
           resources:
@@ -56,7 +55,7 @@ spec:
             limits:
               cpu: 2
               memory: 2Gi
-
+        
         repoServer:
           replicas: 2
           autoscaling:
@@ -68,18 +67,18 @@ spec:
             limits:
               cpu: 2
               memory: 2Gi
-
+        
         applicationSet:
           enabled: true
           replicas: 2
-
+        
         dex:
           enabled: true
           replicas: 2
-
+        
         notifications:
           enabled: true
-
+        
         redis:
           replicas: 2
           resources:
@@ -89,7 +88,7 @@ spec:
             limits:
               cpu: 500m
               memory: 1Gi
-
+        
         ha:
           enabled: false
           redisProxyReplicas: 2
@@ -97,11 +96,9 @@ spec:
             enabled: false
             haproxy:
               enabled: false
-
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
-
   syncPolicy:
     # Manual sync - only sync on explicit GitHub push
     automated: {}

@@ -1,26 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mgmt-infrastructure-monitoring
+  name: traefik-mgmt.mbtux.com
   namespace: argocd
   labels:
-    app.kubernetes.io/name: mgmt-infrastructure-monitoring
+    app.kubernetes.io/name: traefik-mgmt.mbtux.com
     app.kubernetes.io/part-of: mbtux-platform
     app.kubernetes.io/managed-by: argocd
     platform.tier: management
     app.kubernetes.io/component: infrastructure
 spec:
   project: mgmt-infrastructure
-
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
     targetRevision: main
-    path: management-infrastructure/monitoring-mgmt/manifests
-
+    path: management-infrastructure/traefik
   destination:
     server: https://kubernetes.default.svc
-    namespace: monitoring
-
+    namespace: traefik
   syncPolicy:
     # Manual sync - only sync on explicit GitHub push
     automated: {}

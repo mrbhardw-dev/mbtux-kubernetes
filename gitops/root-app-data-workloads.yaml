@@ -1,26 +1,31 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mgmt-platform-infra
+  name: root-data-prod-workloads
   namespace: argocd
   labels:
-    app.kubernetes.io/name: mgmt-platform-infra
+    app.kubernetes.io/name: root-data-prod-workloads
     app.kubernetes.io/part-of: mbtux-platform
     app.kubernetes.io/managed-by: argocd
-    platform.tier: management
-    app.kubernetes.io/component: infrastructure
+    platform.scope: data
+    platform.cluster: data-prod
+    app.kubernetes.io/component: root
 spec:
-  project: mgmt-platform
+  project: default
 
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
     targetRevision: main
-    path: management-infrastructure/argocd
+    path: gitops/data-infrastructure
+    directory:
+      include: 'prod-apps-*.yaml'
 
   destination:
-    server: https://kubernetes.default.svc
+    server: https://192.168.0.211:6443
     namespace: argocd
 
   syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
     # Manual sync - only sync on explicit GitHub push
     automated: {}

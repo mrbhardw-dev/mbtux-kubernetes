@@ -1,26 +1,28 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mgmt-infrastructure-monitoring
+  name: root-mgmt-platform
   namespace: argocd
   labels:
-    app.kubernetes.io/name: mgmt-infrastructure-monitoring
+    app.kubernetes.io/name: root-mgmt-platform
     app.kubernetes.io/part-of: mbtux-platform
     app.kubernetes.io/managed-by: argocd
     platform.tier: management
-    app.kubernetes.io/component: infrastructure
+    app.kubernetes.io/component: root
 spec:
-  project: mgmt-infrastructure
+  project: default
 
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
     targetRevision: main
-    path: management-infrastructure/monitoring-mgmt/manifests
+    path: gitops/mgmt-platform
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: monitoring
+    namespace: argocd
 
   syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
     # Manual sync - only sync on explicit GitHub push
     automated: {}

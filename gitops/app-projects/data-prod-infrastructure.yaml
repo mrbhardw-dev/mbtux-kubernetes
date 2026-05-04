@@ -3,12 +3,32 @@ kind: AppProject
 metadata:
   name: data-prod-infrastructure
   namespace: argocd
+  labels:
+    app.kubernetes.io/managed-by: argocd
+    app.kubernetes.io/part-of: mbtux-platform
+    argocd.argoproj.io/instance: mgmt-root
+    platform.cluster: data-prod
+    platform.scope: data
 spec:
+  description: Production data infrastructure (certificates, ingress, CRDs)
+  sourceRepos:
+    - https://github.com/mrbhardw-dev/mbtux-kubernetes.git
+    - https://charts.jetstack.io
+    - https://helm.traefik.io/traefik
+    - https://charts.goauthentik.io
+  destinations:
+    - namespace: authentik
+      server: https://192.168.0.211:6443
+    - namespace: cert-manager
+      server: https://192.168.0.211:6443
+    - namespace: cloudflared
+      server: https://192.168.0.211:6443
+    - namespace: kube-system
+      server: https://192.168.0.211:6443
+    - namespace: monitoring
+      server: https://192.168.0.211:6443
+    - namespace: traefik
+      server: https://192.168.0.211:6443
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'
-  destinations:
-    - namespace: '*'
-      server: '*'
-  sourceRepos:
-    - https://github.com/mrbhardw-dev/mbtux-kubernetes.git

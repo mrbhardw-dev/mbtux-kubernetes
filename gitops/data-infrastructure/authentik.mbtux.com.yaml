@@ -1,26 +1,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mgmt-infrastructure-monitoring
+  name: authentik.mbtux.com
   namespace: argocd
   labels:
-    app.kubernetes.io/name: mgmt-infrastructure-monitoring
+    app.kubernetes.io/name: authentik.mbtux.com
     app.kubernetes.io/part-of: mbtux-platform
     app.kubernetes.io/managed-by: argocd
-    platform.tier: management
+    platform.scope: data
+    platform.cluster: data-prod
     app.kubernetes.io/component: infrastructure
 spec:
-  project: mgmt-infrastructure
-
+  project: data-prod-infrastructure
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
     targetRevision: main
-    path: management-infrastructure/monitoring-mgmt/manifests
-
+    path: production-infrastructure/authentik/manifests
   destination:
-    server: https://kubernetes.default.svc
-    namespace: monitoring
-
+    server: https://192.168.0.211:6443
+    namespace: authentik
   syncPolicy:
     # Manual sync - only sync on explicit GitHub push
     automated: {}
