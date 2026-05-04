@@ -281,13 +281,13 @@ spec:
                 configMapKeyRef:
                   name: sure-auth
                   key: OIDC_LOGOUT_URI
-          resources:
-            requests:
-              memory: "2Gi"
-              cpu: "1500m"
-            limits:
-              memory: "4Gi"
-              cpu: "3000m"
+           resources:
+             requests:
+               memory: "1Gi"
+               cpu: "1500m"
+             limits:
+               memory: "2Gi"
+               cpu: "3000m"
 
           volumeMounts:
             - name: sure-storage
