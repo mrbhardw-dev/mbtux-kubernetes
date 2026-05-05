@@ -21,6 +21,7 @@ This repository contains the complete GitOps configuration for the mbtux platfor
 - `sure.mbtux.com` → Service: sure (in `sure` namespace)
 - `outline.mbtux.com` → Service: outline (in `outline` namespace)
 - `authentik.mbtux.com` → Service: authentik (in `authentik` namespace)
+- `coder.mbtux.com` → Service: coder (in `coder` namespace)
 
 ### AppProjects
 - `data-prod-infrastructure` - Infrastructure components (authentik, traefik, etc.)
