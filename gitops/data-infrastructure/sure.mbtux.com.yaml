@@ -16,9 +16,9 @@ spec:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
     targetRevision: main
     path: production-infrastructure/sure/manifests
-  destination:
-    server: https://192.168.0.211:6443
-    namespace: sure
+   destination:
+     server: https://kubernetes.default.svc
+     namespace: sure
   syncPolicy:
     # Manual sync - only sync on explicit GitHub push
     automated: {}

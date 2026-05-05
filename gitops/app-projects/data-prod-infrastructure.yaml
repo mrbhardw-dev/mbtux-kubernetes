@@ -18,17 +18,17 @@ spec:
     - https://charts.goauthentik.io
   destinations:
     - namespace: authentik
-      server: https://192.168.0.211:6443
+      server: https://kubernetes.default.svc
     - namespace: cert-manager
-      server: https://192.168.0.211:6443
+      server: https://kubernetes.default.svc
     - namespace: cloudflared
-      server: https://192.168.0.211:6443
+      server: https://kubernetes.default.svc
     - namespace: kube-system
-      server: https://192.168.0.211:6443
+      server: https://kubernetes.default.svc
     - namespace: monitoring
-      server: https://192.168.0.211:6443
+      server: https://kubernetes.default.svc
     - namespace: traefik
-      server: https://192.168.0.211:6443
+      server: https://kubernetes.default.svc
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'

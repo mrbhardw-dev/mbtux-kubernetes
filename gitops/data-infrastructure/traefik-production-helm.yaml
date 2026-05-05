@@ -60,9 +60,9 @@ spec:
           - "--entryPoints.web.forwardedHeaders.insecure=true"
           - "--entryPoints.websecure.forwardedHeaders.insecure=true"
   
-  destination:
-    server: https://192.168.0.211:6443
-    namespace: traefik
+   destination:
+     server: https://kubernetes.default.svc
+     namespace: traefik
   
   syncPolicy:
     # Manual sync - only sync on explicit GitHub push

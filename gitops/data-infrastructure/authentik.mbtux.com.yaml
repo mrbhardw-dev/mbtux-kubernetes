@@ -16,9 +16,9 @@ spec:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
     targetRevision: main
     path: production-infrastructure/authentik/manifests
-  destination:
-    server: https://192.168.0.211:6443
-    namespace: authentik
+   destination:
+     server: https://kubernetes.default.svc
+     namespace: authentik
   syncPolicy:
     # Manual sync - only sync on explicit GitHub push
     automated: {}

@@ -20,9 +20,9 @@ spec:
     directory:
       include: 'prod-apps-*.yaml'
 
-  destination:
-    server: https://192.168.0.211:6443
-    namespace: argocd
+   destination:
+     server: https://kubernetes.default.svc
+     namespace: argocd
 
   syncPolicy:
     syncOptions:
