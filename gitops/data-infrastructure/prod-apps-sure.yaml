@@ -19,7 +19,7 @@ spec:
     path: production-infrastructure/sure/manifests
 
   destination:
-    server: https://kubernetes.default.svc
+    server: https://192.168.0.211:6443
     namespace: sure
 
   syncPolicy:
@@ -55,3 +55,7 @@ spec:
         - /spec/template/spec/initContainers/1/resources
         - /spec/template/spec/initContainers/1/terminationMessagePath
         - /spec/template/spec/initContainers/1/terminationMessagePolicy
+    - group: autoscaling
+      kind: HorizontalPodAutoscaler
+      jsonPointers:
+        - /spec/replicas
