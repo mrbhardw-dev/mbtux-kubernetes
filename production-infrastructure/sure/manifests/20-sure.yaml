@@ -218,7 +218,7 @@ spec:
                   name: sure-secrets
                   key: email-sender
 
-            # ✅ AUTH / OIDC (FIXED)
+            # AUTH / OIDC
             - name: AUTH_ENABLED
               valueFrom:
                 configMapKeyRef:
@@ -266,28 +266,32 @@ spec:
                 configMapKeyRef:
                   name: sure-auth
                   key: OIDC_SCOPES
+
             - name: OIDC_USERNAME_CLAIM
               valueFrom:
                 configMapKeyRef:
                   name: sure-auth
                   key: OIDC_USERNAME_CLAIM
+
             - name: OIDC_DISPLAY_NAME
               valueFrom:
                 configMapKeyRef:
                   name: sure-auth
                   key: OIDC_DISPLAY_NAME
+
             - name: OIDC_LOGOUT_URI
               valueFrom:
                 configMapKeyRef:
                   name: sure-auth
                   key: OIDC_LOGOUT_URI
-           resources:
-             requests:
-               memory: "1Gi"
-               cpu: "1500m"
-             limits:
-               memory: "2Gi"
-               cpu: "3000m"
+
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "1500m"
+            limits:
+              memory: "2Gi"
+              cpu: "3000m"
 
           volumeMounts:
             - name: sure-storage
