@@ -19,9 +19,9 @@ spec:
     path: production-infrastructure/monitoring-data/manifests
 
   destination:
-    server: https://192.168.0.211:6443
+    server: https://kubernetes.default.svc
     namespace: monitoring
 
   syncPolicy:
     # Manual sync - only sync on explicit GitHub push
-    automated: {}
+    automated: null
