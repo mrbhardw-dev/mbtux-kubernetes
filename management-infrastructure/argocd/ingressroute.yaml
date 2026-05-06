@@ -7,21 +7,11 @@ spec:
   entryPoints:
     - websecure
   routes:
-    # Standard HTTP route for Argo CD UI
     - kind: Rule
       match: Host(`argocd-mgmt.mbtux.com`)
       priority: 10
       services:
         - name: argocd-server
           port: 80
-
-    # gRPC route for API and CLI
-    - kind: Rule
-      match: Host(`argocd-mgmt.mbtux.com`) && Header(`Content-Type`, `application/grpc`)
-      priority: 11
-      services:
-        - name: argocd-server
-          port: 80
-          scheme: h2c
   tls:
     secretName: tls-argocd-server

@@ -30,22 +30,10 @@ spec:
         namespace: argocd
 
         server:
-          replicas: 2
-          autoscaling:
-            enabled: false
-          resources:
-            requests:
-              cpu: 200m
-              memory: 256Mi
-            limits:
-              cpu: 1
-              memory: 1Gi
-          service:
-            type: ClusterIP
           extraArgs:
             - --insecure=true
-          ingress:
-            enabled: false
+          config:
+            url: https://argocd-mgmt.mbtux.com
 
         controller:
           replicas: 2
@@ -74,8 +62,7 @@ spec:
           replicas: 2
 
         dex:
-          enabled: true
-          replicas: 2
+          enabled: false
 
         notifications:
           enabled: true
