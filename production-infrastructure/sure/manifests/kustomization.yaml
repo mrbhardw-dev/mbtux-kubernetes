@@ -11,5 +11,8 @@ resources:
   - oidc-secret.yaml
   - 10-database.yaml
   - 20-sure.yaml
+  - 40-hpa.yaml
+  - 41-pdb.yaml
+  - 42-hpa-worker.yaml
   - ingressroute.yaml
   - 31-certificate.yaml
