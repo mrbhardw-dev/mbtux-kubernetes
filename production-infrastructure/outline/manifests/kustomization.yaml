@@ -13,4 +13,5 @@ resources:
   - 11-redis.yaml
   - certificate.yaml
   - 20-outline.yaml
+  - 25-hpa.yaml
   - ingressroute.yaml

@@ -6,4 +6,7 @@ metadata:
 data:
   config.yaml: |
     tunnel: c6a8da22-bc3d-4462-8211-875386480d9f
+    # Ingress rules for routing
+    # Traffic is routed from Cloudflare dashboard tunnel config
+    # This config is managed via Cloudflare Dashboard
 

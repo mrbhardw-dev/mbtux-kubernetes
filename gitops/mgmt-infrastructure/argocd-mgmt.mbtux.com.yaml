@@ -18,6 +18,6 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
-  syncPolicy:
-    # Manual sync - only sync on explicit GitHub push
-    automated: {}
+syncPolicy:
+  # Manual sync - only sync on explicit GitHub push
+  automated: null

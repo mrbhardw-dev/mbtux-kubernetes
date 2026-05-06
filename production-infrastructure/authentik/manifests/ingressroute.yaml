@@ -15,24 +15,13 @@ metadata:
   namespace: authentik
 spec:
   entryPoints:
-    - web
     - websecure
   routes:
-    - kind: Rule
-      match: Host(`authentik.mbtux.com`) && PathPrefix(`/outpost.goauthentik.io`)
-      priority: 11
-      services:
-        - name: authentik
-          port: 9000
-      middlewares:
-        - name: authentik-https-redirect
     - kind: Rule
       match: Host(`authentik.mbtux.com`)
       priority: 10
       services:
         - name: authentik
           port: 9000
-      middlewares:
-        - name: authentik-https-redirect
   tls:
     secretName: tls-authentik

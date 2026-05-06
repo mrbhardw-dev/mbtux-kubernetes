@@ -66,4 +66,4 @@ spec:
 
   syncPolicy:
     # Manual sync - only sync on explicit GitHub push
-    automated: {}
+    automated: null

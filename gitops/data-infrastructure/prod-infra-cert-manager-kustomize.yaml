@@ -29,7 +29,7 @@ spec:
           - 9.9.9.9:53
 
   destination:
-    server: https://192.168.0.211:6443
+    server: https://kubernetes.default.svc
     namespace: cert-manager
 
   syncPolicy:
