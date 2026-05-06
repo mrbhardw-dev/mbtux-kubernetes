@@ -34,6 +34,17 @@ spec:
             - --insecure=true
           config:
             url: https://argocd-mgmt.mbtux.com
+            # OIDC SSO via Authentik
+            # Register redirect URI in Authentik: https://argocd-mgmt.mbtux.com/auth/callback
+            oidc.config: |
+              name: authentik
+              clientID: $argocd-oidc-secret:client-id
+              clientSecret: $argocd-oidc-secret:client-secret
+              issuer: https://authentik.mbtux.com/application/o/argocd/
+              scopes:
+                - openid
+                - profile
+                - email
 
         controller:
           replicas: 2
