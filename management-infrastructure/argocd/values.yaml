@@ -58,6 +58,25 @@ repoServer:
     limits:
       cpu: 2
       memory: 2Gi
+  env:
+    - name: HELM_CACHE_HOME
+      value: /tmp/helm/cache
+    - name: HELM_CONFIG_HOME
+      value: /tmp/helm/config
+    - name: HELM_DATA_HOME
+      value: /tmp/helm/data
+    - name: HTTP_PROXY
+      value: ""
+    - name: HTTPS_PROXY
+      value: ""
+    - name: NO_PROXY
+      value: "localhost,127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+  dnsPolicy: ClusterFirst
+  dnsConfig:
+    nameservers:
+      - 8.8.8.8
+      - 8.8.4.4
+      - 1.1.1.1
 
 applicationSet:
   enabled: true
