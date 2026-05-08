@@ -67,6 +67,7 @@ spec:
             limits:
               cpu: 2
               memory: 2Gi
+          timeout: 180s
           env:
             - name: HELM_CACHE_HOME
               value: /tmp/helm/cache
@@ -78,8 +79,14 @@ spec:
               value: ""
             - name: HTTPS_PROXY
               value: ""
+            - name: http_proxy
+              value: ""
+            - name: https_proxy
+              value: ""
             - name: NO_PROXY
-              value: "localhost,127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+              value: "*"
+            - name: no_proxy
+              value: "*"
           dnsPolicy: ClusterFirst
           dnsConfig:
             nameservers:
