@@ -1,6 +1,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  # AppProjects define permissions and source repositories
+  - app-projects/mgmt-platform.yaml
+  - app-projects/data-prod-infrastructure.yaml
+  - app-projects/data-prod-workloads.yaml
   # Root applications manage all child applications
   - root-app-mgmt-platform.yaml
   - root-app-data-infrastructure.yaml
