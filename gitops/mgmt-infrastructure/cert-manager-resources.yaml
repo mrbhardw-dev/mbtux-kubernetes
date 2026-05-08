@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mgmt-infrastructure-cert-manager-resources
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: mgmt-infrastructure-cert-manager-resources
+    app.kubernetes.io/part-of: mbtux-platform
+    app.kubernetes.io/managed-by: argocd
+    platform.tier: management
+    app.kubernetes.io/component: infrastructure
+spec:
+  project: mgmt-infrastructure
+
+  source:
+    repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
+    targetRevision: main
+    path: management-infrastructure/cert-manager
+    directory:
+      include: cluster-issuer.yaml
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cert-manager
+
+  syncPolicy:
+    automated: null
+    syncOptions:
+      - CreateNamespace=true

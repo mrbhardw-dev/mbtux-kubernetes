@@ -7,5 +7,6 @@ resources:
   - app-projects/data-prod-workloads.yaml
   # Root applications manage all child applications
   - root-app-mgmt-platform.yaml
+  - root-app-mgmt-infrastructure.yaml
   - root-app-data-infrastructure.yaml
   - root-app-data-workloads.yaml

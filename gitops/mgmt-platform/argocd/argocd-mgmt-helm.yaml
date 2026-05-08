@@ -1,10 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mgmt-platform-argocd
+  name: argocd-management-helm
   namespace: argocd
   labels:
-    app.kubernetes.io/name: mgmt-platform-argocd
+    app.kubernetes.io/name: argocd-management-helm
     app.kubernetes.io/part-of: mbtux-platform
     app.kubernetes.io/managed-by: argocd
     platform.tier: management
@@ -25,7 +25,7 @@ spec:
             level: info
 
         image:
-          tag: v3.0.0
+          tag: v3.3.9
 
         namespace: argocd
 
@@ -129,3 +129,24 @@ spec:
   syncPolicy:
     # Manual sync - only sync on explicit GitHub push
     automated: null
+    syncOptions:
+      - RespectIgnoreDifferences=true
+
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/selector
+        - /spec/template/metadata/labels/app.kubernetes.io~1instance
+    - group: apps
+      kind: StatefulSet
+      jsonPointers:
+        - /spec/selector
+        - /spec/serviceName
+        - /spec/template/metadata/labels/app.kubernetes.io~1instance
+    - group: ""
+      kind: Service
+      jsonPointers:
+        - /spec/selector/app.kubernetes.io~1instance
+        - /spec/ports/0/targetPort
+        - /spec/ports/1/targetPort
