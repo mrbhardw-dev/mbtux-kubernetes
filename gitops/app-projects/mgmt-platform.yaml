@@ -12,3 +12,4 @@ spec:
       server: '*'
   sourceRepos:
     - https://argoproj.github.io/argo-helm
+    - https://github.com/mrbhardw-dev/mbtux-kubernetes.git

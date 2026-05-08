@@ -11,7 +11,7 @@ metadata:
     platform.cluster: data-prod
     app.kubernetes.io/component: root
 spec:
-  project: default
+  project: data-prod-infrastructure
 
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git

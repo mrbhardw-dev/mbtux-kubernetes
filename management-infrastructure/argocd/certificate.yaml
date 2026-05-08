@@ -9,4 +9,4 @@ spec:
     name: letsencrypt-prod
     kind: ClusterIssuer
   dnsNames:
-  - argocd-mgmt.mbtux.com
+    - argocd-mgmt.mbtux.com

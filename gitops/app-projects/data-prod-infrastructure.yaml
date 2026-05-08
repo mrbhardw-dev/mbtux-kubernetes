@@ -17,22 +17,8 @@ spec:
     - https://helm.traefik.io/traefik
     - https://charts.goauthentik.io
   destinations:
-    - namespace: authentik
-      server: https://kubernetes.default.svc
-    - namespace: cert-manager
-      server: https://kubernetes.default.svc
-    - namespace: cloudflared
-      server: https://kubernetes.default.svc
-    - namespace: kube-system
-      server: https://kubernetes.default.svc
-    - namespace: monitoring
-      server: https://kubernetes.default.svc
-    - namespace: traefik
-      server: https://192.168.0.211:6443
-    - namespace: sure
-      server: https://192.168.0.211:6443
-    - namespace: outline
-      server: https://192.168.0.211:6443
+    - namespace: '*'
+      server: '*'
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'
