@@ -1,29 +1,28 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mgmt-infrastructure-cert-manager-resources
+  name: prod-infra-cloudflared
   namespace: argocd
   labels:
-    app.kubernetes.io/name: mgmt-infrastructure-cert-manager-resources
+    app.kubernetes.io/name: prod-infra-cloudflared
     app.kubernetes.io/part-of: mbtux-platform
     app.kubernetes.io/managed-by: argocd
-    platform.tier: management
+    platform.scope: data
+    platform.cluster: data-prod
     app.kubernetes.io/component: infrastructure
 spec:
-  project: mgmt-infrastructure
+  project: data-prod-infrastructure
 
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
     targetRevision: main
-    path: clusters/mgmt/cert-manager
-    directory:
-      include: cluster-issuer.yaml
+    path: clusters/data-prod/cloudflared/manifests
 
   destination:
-    server: https://kubernetes.default.svc
-    namespace: cert-manager
+    server: https://192.168.0.211:6443
+    namespace: cloudflared
 
   syncPolicy:
-    automated: null
     syncOptions:
       - CreateNamespace=true
+    automated: null

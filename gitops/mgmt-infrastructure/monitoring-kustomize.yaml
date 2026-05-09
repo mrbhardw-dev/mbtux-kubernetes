@@ -15,7 +15,7 @@ spec:
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
     targetRevision: main
-    path: management-infrastructure/monitoring-mgmt/manifests
+    path: clusters/mgmt/monitoring/manifests
 
   destination:
     server: https://kubernetes.default.svc

@@ -20,7 +20,7 @@ spec:
       source:
         repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
         targetRevision: main
-        path: management-infrastructure/bootstrap/apps
+        path: clusters/mgmt/bootstrap/apps
       destination:
         server: '{{server}}'
         namespace: argocd

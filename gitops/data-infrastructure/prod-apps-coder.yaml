@@ -1,29 +1,28 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: prod-infra-monitoring
+  name: coder.mbtux.com
   namespace: argocd
   labels:
-    app.kubernetes.io/name: prod-infra-monitoring
+    app.kubernetes.io/name: coder.mbtux.com
     app.kubernetes.io/part-of: mbtux-platform
     app.kubernetes.io/managed-by: argocd
     platform.scope: data
     platform.cluster: data-prod
-    app.kubernetes.io/component: infrastructure
+    app.kubernetes.io/component: workload
 spec:
-  project: data-prod-infrastructure
+  project: data-prod-workloads
 
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
     targetRevision: main
-    path: clusters/data-prod/monitoring-data/manifests
+    path: clusters/data-prod/coder/manifests
 
   destination:
     server: https://192.168.0.211:6443
-    namespace: monitoring
+    namespace: coder
 
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
-    # Manual sync - only sync on explicit GitHub push
     automated: null

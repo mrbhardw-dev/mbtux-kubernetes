@@ -1,76 +1,78 @@
 # mbtux-kubernetes
 
-GitOps configuration for the mbtux platform using ArgoCD on a management cluster to manage multiple application clusters.
+GitOps configuration for the mbtux platform using ArgoCD on a management cluster to manage the data-prod workload cluster.
 
 ## Architecture
 
 ### Clusters
-- **Management Cluster**: Runs ArgoCD and platform services
-- **Data Cluster (data-prod)**: Production workload cluster hosting sure, outline, authentik, coder
+- **Management Cluster** (`192.168.0.201`): Runs ArgoCD, Traefik, cert-manager, Cloudflare tunnel
+- **Data Cluster (data-prod)** (`192.168.0.211`): Production workloads (authentik, sure, outline, coder)
 
 ### Directory Structure
 ```
-gitops/
-├── app-projects/          # ArgoCD AppProject definitions
-├── data-infrastructure/   # Data cluster Applications
-│   ├── prod-infra-*.yaml  # Infrastructure (traefik, monitoring, cert-manager)
-│   └── prod-apps-*.yaml   # Workload applications
-├── mgmt-infrastructure/   # Management cluster Applications
-└── root-app-*.yaml        # Root Applications managing child apps
+clusters/
+├── mgmt/                   # Management cluster manifests
+│   ├── argocd/             # ArgoCD infrastructure
+│   ├── traefik/            # Traefik ingress controller
+│   ├── cloudflared/        # Cloudflare tunnel (mgmt services)
+│   ├── cert-manager/       # Let's Encrypt certificates
+│   └── monitoring/         # Prometheus + Grafana
+└── data-prod/              # Data cluster manifests
+    ├── authentik/          # OIDC provider
+    ├── sure/               # Sure application
+    ├── outline/            # Outline wiki
+    ├── coder/              # Coder development platform
+    ├── traefik/            # Traefik ingress controller
+    ├── cloudflared/        # Cloudflare tunnel (*.mbtux.com)
+    ├── cert-manager/       # Let's Encrypt certificates
+    └── monitoring/         # Prometheus + Grafana
 
-production-infrastructure/
-├── sure/manifests/        # Sure application (Kustomize)
-├── outline/manifests/     # Outline application
-├── authentik/manifests/   # Authentik IDP
-└── coder/manifests/       # Coder development platform
+gitops/                     # ArgoCD App-of-Apps definitions
+├── app-projects/           # RBAC permissions
+├── mgmt-platform/          # ArgoCD self-management
+├── mgmt-infrastructure/    # Mgmt cluster apps
+├── data-infrastructure/    # Data cluster apps
+└── root-app-*.yaml         # Bootstrap applications
 ```
 
 ## Applications
 
-| Domain | Service | Namespace |
-|--------|---------|-----------|
-| sure.mbtux.com | Sure | sure |
-| outline.mbtux.com | Outline | outline |
-| authentik.mbtux.com | Authentik | authentik |
-| coder.mbtux.com | Coder | coder |
+| Domain | Service | Namespace | Cluster |
+|--------|---------|-----------|---------|
+| argocd-mgmt.mbtux.com | ArgoCD | argocd | mgmt |
+| traefik-mgmt.mbtux.com | Traefik Dashboard | traefik | mgmt |
+| prometheus.mgmt.mbtux.com | Prometheus | monitoring | mgmt |
+| authentik.mbtux.com | Authentik | authentik | data-prod |
+| sure.mbtux.com | Sure | sure | data-prod |
+| outline.mbtux.com | Outline | outline | data-prod |
+| coder.mbtux.com | Coder | coder | data-prod |
+
+## OIDC SSO
+
+All services authenticate via Authentik at `https://authentik.mbtux.com`:
+- ArgoCD uses Authentik as OIDC provider (no Dex)
+- Other services use Authentik's OIDC or Traefik forward auth
+
+## Cloudflare Tunnels
+
+Two tunnels manage external access:
+- **Mgmt tunnel**: Routes `*.mgmt.mbtux.com` to mgmt cluster
+- **Data tunnel**: Routes `*.mbtux.com` to data cluster
 
 ## Setup
 
 1. Install ArgoCD on management cluster
-2. Configure cluster secrets in `management-infrastructure/clusters/manifests/`
-3. Apply root applications: `kubectl apply -f gitops/kustomization.yaml`
+2. Register data cluster in ArgoCD (cluster secret)
+3. Configure Cloudflare tunnels in Zero Trust dashboard
+4. Apply root applications: `kubectl apply -f gitops/kustomization.yaml`
 
 ## Secrets Management
 
-**Critical**: Replace placeholder secrets before deploying:
+Replace placeholder secrets before deploying:
 
-1. `production-infrastructure/authentik/manifests/secret.yaml`:
-   - Generate secure `AUTHENTIK_SECRET_KEY` (min 50 chars)
-   ```bash
-   head -c 50 /dev/urandom | base64
-   ```
-
-2. `production-infrastructure/authentik/manifests/postgresql.yaml`:
-   - Update `POSTGRES_PASSWORD` from `authentik123` to secure password
-
-3. `production-infrastructure/sure/manifests/02-secret.yaml`:
-   - Update `postgres-password` and `smtp-password` from defaults
-   - `SECRET_KEY_BASE` now loaded from this secret
-
-4. `production-infrastructure/outline/manifests/02-secret.yaml`:
-   - Update `postgres-password`, `smtp-password`, and `oidc-client-secret`
-
-5. `production-infrastructure/coder/manifests/02-secret.yaml`:
-   - Update `postgres-password` and OIDC client credentials
-
-## Known Issues Fixed
-
-1. **authentik**: Secret name mismatch (`authentik-secret` → `authentik`)
-2. **authentik**: Missing database connection env vars in deployment
-3. **authentik**: PostgreSQL/Redis missing PVCs and health probes
-4. **authentik**: Outpost deployment not included in kustomization
-5. **authentik**: Missing liveness/readiness probes in deployment
-6. **authentik**: IngressRoute had redundant middleware configuration
-7. **sure**: HPA/PDB not included in kustomization
-8. **sure**: `SECRET_KEY_BASE` hardcoded - now loaded from secret
-9. **outline**: HPA/PDB combined in single file, now included in kustomization
+1. `clusters/data-prod/authentik/manifests/secret.yaml`: Generate `AUTHENTIK_SECRET_KEY`
+2. `clusters/data-prod/sure/manifests/02-secret.yaml`: Update postgres/smtp passwords
+3. `clusters/data-prod/outline/manifests/02-secret.yaml`: Update passwords
+4. `clusters/data-prod/coder/manifests/02-secret.yaml`: Update passwords
+5. `clusters/mgmt/cert-manager/cloudflare-api-token.yaml`: Add real API token
+6. `clusters/data-prod/cert-manager/cloudflare-api-token.yaml`: Add real API token

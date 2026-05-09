@@ -16,10 +16,10 @@ spec:
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
     targetRevision: main
-    path: production-infrastructure/sure/manifests
+    path: clusters/data-prod/sure/manifests
 
   destination:
-    server: https://kubernetes.default.svc
+    server: https://192.168.0.211:6443
     namespace: sure
 
   syncPolicy:

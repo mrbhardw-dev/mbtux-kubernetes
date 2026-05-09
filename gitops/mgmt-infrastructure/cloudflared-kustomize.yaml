@@ -15,7 +15,7 @@ spec:
   source:
     repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
     targetRevision: main
-    path: management-infrastructure/cloudflared-mgmt/manifests
+    path: clusters/mgmt/cloudflared/manifests
 
   destination:
     server: https://kubernetes.default.svc
