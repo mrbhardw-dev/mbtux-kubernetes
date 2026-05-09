@@ -23,6 +23,8 @@ spec:
     namespace: sure
 
   syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
     # Manual sync - only sync on explicit GitHub push
     automated: null
 
