@@ -19,7 +19,7 @@ spec:
     path: production-infrastructure/sure/manifests
 
   destination:
-    server: https://192.168.0.211:6443
+    server: https://kubernetes.default.svc
     namespace: sure
 
   syncPolicy:
@@ -44,9 +44,12 @@ spec:
         - /spec/template/spec/terminationMessagePath
         - /spec/template/spec/terminationMessagePolicy
         - /spec/template/spec/containers/0/livenessProbe
+        - /spec/template/spec/containers/0/startupProbe
+        - /spec/template/spec/containers/0/readinessProbe
         - /spec/template/spec/containers/0/resources
         - /spec/template/spec/containers/0/terminationMessagePath
         - /spec/template/spec/containers/0/terminationMessagePolicy
+        - /spec/template/spec/containers/0/imagePullPolicy
         - /spec/template/spec/initContainers/0/imagePullPolicy
         - /spec/template/spec/initContainers/0/resources
         - /spec/template/spec/initContainers/0/terminationMessagePath
