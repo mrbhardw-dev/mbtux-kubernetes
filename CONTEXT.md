@@ -143,3 +143,35 @@ The management cluster's ArgoCD manages the data cluster via:
 - sure-worker: HPA managed (min 2, max 5), extensive `ignoreDifferences` in the Application
 - cloudflared on data cluster uses 3 replicas, mgmt cluster uses 1 replica
 - ArgoCD has `dex.enabled: false` — uses raw OIDC with Authentik directly
+
+## ArgoCD RBAC
+
+Configured in `gitops/mgmt-platform/argocd/argocd-mgmt-helm.yaml` under `server.rbacConfig`:
+- `policy.default: role:admin` — all authenticated OIDC users get admin access
+- OIDC user: `mritunjay.bhardwaj@mbtux.com`
+- OIDC groups in Authentik: `authentik Admins`, `authentik Read-only`, `argocd-admins`, `argocd-developers`, `argocd-users`
+- Issuer: `https://authentik.mbtux.com/application/o/argocd/`
+
+## Session Context (2026-05-09)
+
+### Completed
+- Pushed all local commits to GitHub (including restructure + cleanup)
+- Fixed ArgoCD git repo connectivity (repo server was using stale cache)
+- Fixed OIDC RBAC: was empty, set to `role:admin`
+- Fixed `argocd-cm` URL from `argocd.example.com` → `argocd-mgmt.mbtux.com`
+- Fixed `traefik-mgmt.mbtux.com` path from `management-infrastructure/traefik` → `clusters/mgmt/traefik`
+- Added `server.config` + `rbacConfig` to running `argocd-management-helm` app values
+- Added `ignoreDifferences` to outline deployment
+- All 8 ArgoCD apps are Synced + Healthy
+- Synced apps: argocd-management-helm, authentik.mbtux.com, outline.mbtux.com, sure.mbtux.com, traefik-data.mbtux.com, traefik-management-helm, traefik-mgmt.mbtux.com, traefik-production-helm
+
+### Pending (next session)
+1. **OIDC login issue**: if "invalid return URL" persists, check Authentik OIDC provider redirect URIs include `https://argocd-mgmt.mbtux.com/auth/callback`
+2. **Missing ArgoCD apps** (running on clusters but not managed by ArgoCD):
+   - cert-manager (both clusters)
+   - cloudflared (both clusters)
+   - monitoring (both clusters)
+   - coder (data cluster)
+3. **Bootstrap root apps**: create the app-of-apps from `gitops/root-app-*.yaml`
+4. **Update `argocd-management-helm`**: replace old inline values with new repo version (v3.3.9, dex disabled, etc.)
+5. **Placeholder secrets**: `REPLACE_WITH_CLOUDFLARE_API_TOKEN` in cert-manager, coder OIDC placeholders

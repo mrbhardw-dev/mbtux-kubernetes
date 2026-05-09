@@ -34,6 +34,7 @@ spec:
             - --insecure=true
           config:
             url: https://argocd-mgmt.mbtux.com
+            admin.enabled: "true"
             # OIDC SSO via Authentik
             # Register redirect URI in Authentik: https://argocd-mgmt.mbtux.com/auth/callback
             oidc.config: |
@@ -45,6 +46,8 @@ spec:
                 - openid
                 - profile
                 - email
+          rbacConfig:
+            policy.default: role:admin
 
         controller:
           replicas: 2
