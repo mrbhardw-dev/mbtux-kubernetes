@@ -8,7 +8,7 @@ data:
   ONBOARDING_STATE: "open"
   RAILS_ASSUME_SSL: "true"
   PORT: "3000"
-  DATABASE_URL: "postgres://sure_user:sure_db_pass@sure-postgres:5432/sure_development"
+  DATABASE_URL: "postgres://sure_user:fZwzeqAJTLwjyN+fpWTSvRauphyf49NYxmqP3MKnsE4=@sure-postgres:5432/sure_development"
   DB_HOST: "sure-postgres"
   DB_PORT: "5432"
   DB_NAME: "sure_development"
