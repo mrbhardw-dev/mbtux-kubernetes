@@ -3,13 +3,23 @@ kind: AppProject
 metadata:
   name: mgmt-platform
   namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: mbtux-platform
+    app.kubernetes.io/managed-by: argocd
+    platform.tier: management
 spec:
-  clusterResourceWhitelist:
-    - group: '*'
-      kind: '*'
-  destinations:
-    - namespace: '*'
-      server: '*'
+  description: Management platform components (Argo CD and related platform infrastructure)
+
   sourceRepos:
-    - https://argoproj.github.io/argo-helm
     - https://github.com/mrbhardw-dev/mbtux-kubernetes.git
+    - https://argoproj.github.io/argo-helm
+
+  destinations:
+    - namespace: argocd
+      server: https://kubernetes.default.svc
+    - namespace: "*"
+      server: https://kubernetes.default.svc
+
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"

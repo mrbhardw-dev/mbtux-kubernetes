@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   # AppProjects define permissions and source repositories
   - app-projects/mgmt-platform.yaml
+  - app-projects/mgmt-infrastructure.yaml
   - app-projects/data-prod-infrastructure.yaml
   - app-projects/data-prod-workloads.yaml
   # Root applications manage all child applications
