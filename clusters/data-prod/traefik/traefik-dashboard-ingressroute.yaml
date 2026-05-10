@@ -9,9 +9,6 @@ spec:
   routes:
     - match: Host(`traefik-data.mbtux.com`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
       kind: Rule
-      middlewares:
-        - name: traefik-oidc-auth
-          namespace: traefik
       services:
         - name: api@internal
           kind: TraefikService
