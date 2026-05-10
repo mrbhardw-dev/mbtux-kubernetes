@@ -39,8 +39,8 @@ spec:
             admin.enabled: "true"
             oidc.config: |
               name: authentik
-              clientID: $argocd-oidc-secret:client-id
-              clientSecret: $argocd-oidc-secret:client-secret
+              clientID: lq7UpiQKTUsI58m9QGeDYWVf1ZatctFi2u7mKwQO
+              clientSecret: 5HS1oKX10sWCyYhhhhl08e74umaePF71aSSi5dKok9ZMH4IJIv6BU1ETrpkMWFpuoSUFF83X7aG5ty63hEhBRdowr5iyio2XBa19UyB0oOIuZJxsqpNK8hy2j4P5vdcF
               issuer: https://authentik.mbtux.com/application/o/argocd/
               scopes:
                 - openid
