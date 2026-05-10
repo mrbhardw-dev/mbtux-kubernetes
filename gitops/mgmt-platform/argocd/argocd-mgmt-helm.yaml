@@ -71,25 +71,6 @@ spec:
               cpu: 2
               memory: 2Gi
           timeout: 180s
-          env:
-            - name: HELM_CACHE_HOME
-              value: /tmp/helm/cache
-            - name: HELM_CONFIG_HOME
-              value: /tmp/helm/config
-            - name: HELM_DATA_HOME
-              value: /tmp/helm/data
-            - name: HTTP_PROXY
-              value: ""
-            - name: HTTPS_PROXY
-              value: ""
-            - name: http_proxy
-              value: ""
-            - name: https_proxy
-              value: ""
-            - name: NO_PROXY
-              value: "*"
-            - name: no_proxy
-              value: "*"
           dnsPolicy: ClusterFirst
           dnsConfig:
             nameservers:
