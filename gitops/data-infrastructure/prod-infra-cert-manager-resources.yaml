@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prod-infra-cert-manager-resources
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: prod-infra-cert-manager-resources
+    app.kubernetes.io/part-of: mbtux-platform
+    app.kubernetes.io/managed-by: argocd
+    platform.scope: data
+    platform.cluster: data-prod
+    app.kubernetes.io/component: infrastructure
+spec:
+  project: data-prod-infrastructure
+
+  source:
+    repoURL: https://github.com/mrbhardw-dev/mbtux-kubernetes.git
+    targetRevision: main
+    path: clusters/data-prod/cert-manager
+    directory:
+      include: cluster-issuer.yaml
+
+  destination:
+    server: https://192.168.0.211:6443
+    namespace: cert-manager
+
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated: null
