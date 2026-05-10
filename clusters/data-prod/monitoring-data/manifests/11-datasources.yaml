@@ -20,7 +20,7 @@ data:
       - name: Prometheus (mgmt-cluster)
         type: prometheus
         access: proxy
-        url: http://prometheus.monitoring:9090
+        url: https://prometheus.mgmt.mbtux.com
         editable: true
         jsonData:
           httpMethod: GET

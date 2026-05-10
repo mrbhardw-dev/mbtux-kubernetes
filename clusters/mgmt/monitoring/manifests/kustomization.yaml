@@ -10,4 +10,5 @@ resources:
   - 10-monitoring.yaml
   - 11-datasources.yaml
   - 20-traefik-headers.yaml
-  - 31-prometheus-ingress.yaml
+  - 30-certificate.yaml
+  - 31-ingressroute-prometheus.yaml
