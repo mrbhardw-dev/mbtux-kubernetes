@@ -152,21 +152,19 @@ Configured in `gitops/mgmt-platform/argocd/argocd-mgmt-helm.yaml` under `server.
 - OIDC groups in Authentik: `authentik Admins`, `authentik Read-only`, `argocd-admins`, `argocd-developers`, `argocd-users`
 - Issuer: `https://authentik.mbtux.com/application/o/argocd/`
 
-## Session Context (2026-05-09)
+## Session Context (2026-05-10)
 
 ### Completed
-- Pushed all local commits to GitHub (including restructure + cleanup)
-- Fixed ArgoCD git repo connectivity (repo server was using stale cache)
-- Fixed OIDC RBAC: was empty, set to `role:admin`
-- Fixed `argocd-cm` URL from `argocd.example.com` → `argocd-mgmt.mbtux.com`
-- Fixed `traefik-mgmt.mbtux.com` path from `management-infrastructure/traefik` → `clusters/mgmt/traefik`
-- Added `server.config` + `rbacConfig` to running `argocd-management-helm` app values
-- Added `ignoreDifferences` to outline deployment
-- All 8 ArgoCD apps are Synced + Healthy
-- Synced apps: argocd-management-helm, authentik.mbtux.com, outline.mbtux.com, sure.mbtux.com, traefik-data.mbtux.com, traefik-management-helm, traefik-mgmt.mbtux.com, traefik-production-helm
+- Fixed data cluster Traefik dashboard 404 — root cause was `traefik-oidc-auth` plugin not installed on data Traefik, so the dashboard IngressRoute's OIDC middleware blocked the route; removed middleware + deleted orphaned `traefik-oidc-auth.yaml` and `oidc-secret.yaml`
+- Stripped Traefik OIDC middleware from Grafana IngressRoute — Grafana already uses native OIDC (`GF_AUTH_GENERIC_OAUTH_*`) via the `grafana-config` ConfigMap, the Traefik plugin layer was redundant
+- Created `traefik-headers` Middleware in mgmt monitoring namespace to fix `middleware "monitoring-traefik-headers@kubernetescrd" does not exist` log warning on Prometheus ingress
+- Fixed field name `hostedProxyHeaders` → removed (invalid field in Traefik Middleware spec)
+- All changes applied directly to clusters (kubectl patch/apply) and committed as `v1.7.0-traefik-oidc-cleanup`
+- `data-prod/traefik` directory now identical to `mgmt/traefik` (certificate.yaml, traefik-dashboard-ingressroute.yaml, values.yaml)
+- `https://traefik-data.mbtux.com/dashboard/` confirmed working
 
-### Pending (next session)
-1. **OIDC login issue**: if "invalid return URL" persists, check Authentik OIDC provider redirect URIs include `https://argocd-mgmt.mbtux.com/auth/callback`
+### Pending (next session — observability focus)
+1. **Observability**: Set up Prometheus + Grafana as managed ArgoCD apps, build dashboards, configure alerting
 2. **Missing ArgoCD apps** (running on clusters but not managed by ArgoCD):
    - cert-manager (both clusters)
    - cloudflared (both clusters)
