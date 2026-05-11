@@ -11,9 +11,11 @@ resources:
   - 10-monitoring.yaml
   - 11-datasources.yaml
   - 12-alerts.yaml
+  - 13-alertmanager.yaml
   - 20-dotdc-dashboards.yaml
   - 21-dashboard-providers.yaml
+  - 23-traefik-dashboard.yaml
+  - 24-argocd-dashboard.yaml
   - ingressroute-grafana.yaml
   - ingressroute-prometheus.yaml
-  - 31-ingressclass.yaml
   - 32-certificates.yaml

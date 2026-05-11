@@ -152,24 +152,38 @@ Configured in `gitops/mgmt-platform/argocd/argocd-mgmt-helm.yaml` under `server.
 - OIDC groups in Authentik: `authentik Admins`, `authentik Read-only`, `argocd-admins`, `argocd-developers`, `argocd-users`
 - Issuer: `https://authentik.mbtux.com/application/o/argocd/`
 
-## Session Context (2026-05-10)
+## Session Context (2026-05-11)
 
-### Completed
-- Fixed data cluster Traefik dashboard 404 — root cause was `traefik-oidc-auth` plugin not installed on data Traefik, so the dashboard IngressRoute's OIDC middleware blocked the route; removed middleware + deleted orphaned `traefik-oidc-auth.yaml` and `oidc-secret.yaml`
-- Stripped Traefik OIDC middleware from Grafana IngressRoute — Grafana already uses native OIDC (`GF_AUTH_GENERIC_OAUTH_*`) via the `grafana-config` ConfigMap, the Traefik plugin layer was redundant
-- Created `traefik-headers` Middleware in mgmt monitoring namespace to fix `middleware "monitoring-traefik-headers@kubernetescrd" does not exist` log warning on Prometheus ingress
-- Fixed field name `hostedProxyHeaders` → removed (invalid field in Traefik Middleware spec)
-- All changes applied directly to clusters (kubectl patch/apply) and committed as `v1.7.0-traefik-oidc-cleanup`
-- `data-prod/traefik` directory now identical to `mgmt/traefik` (certificate.yaml, traefik-dashboard-ingressroute.yaml, values.yaml)
+### Completed (v1.8.0 — Observability Enhancement)
+
+#### Previous session (v1.7.0-traefik-oidc-cleanup)
+- Fixed data cluster Traefik dashboard 404 — removed `traefik-oidc-auth` plugin middleware + deleted orphaned manifests
+- Stripped Traefik OIDC middleware from Grafana IngressRoute (Grafana uses native OIDC)
+- Created `traefik-headers` Middleware in mgmt monitoring namespace for Prometheus ingress
+- `data-prod/traefik` directory now identical to `mgmt/traefik`
 - `https://traefik-data.mbtux.com/dashboard/` confirmed working
 
-### Pending (next session — observability focus)
-1. **Observability**: Set up Prometheus + Grafana as managed ArgoCD apps, build dashboards, configure alerting
-2. **Missing ArgoCD apps** (running on clusters but not managed by ArgoCD):
-   - cert-manager (both clusters)
-   - cloudflared (both clusters)
-   - monitoring (both clusters)
-   - coder (data cluster)
-3. **Bootstrap root apps**: create the app-of-apps from `gitops/root-app-*.yaml`
-4. **Update `argocd-management-helm`**: replace old inline values with new repo version (v3.3.9, dex disabled, etc.)
-5. **Placeholder secrets**: `REPLACE_WITH_CLOUDFLARE_API_TOKEN` in cert-manager, coder OIDC placeholders
+#### Migration to GitOps (aka "all pending items from v1.7.0")
+Items 1-4 from the previous pending list are now DONE (committed across prior commits):
+1. **Observability**: Prometheus + Grafana defined as ArgoCD apps (`gitops/mgmt-infrastructure/monitoring-kustomize.yaml`, `gitops/data-infrastructure/prod-infra-monitoring-kustomize.yaml`) with full manifests in `clusters/*/monitoring*/`
+2. **Missing ArgoCD apps**: cert-manager, cloudflared, monitoring, coder — all have Application manifests in `gitops/`
+3. **Bootstrap root apps**: 4 root app manifests exist in `gitops/root-app-*.yaml`, bundled via `gitops/kustomization.yaml`
+4. **argocd-management-helm**: Chart v7.5.2, image v3.3.9, `dex.enabled: false`, real OIDC credentials
+5. **Placeholder secrets**: Still pending — `REPLACE_WITH_CLOUDFLARE_API_TOKEN` in cert-manager (both clusters), Coder OIDC placeholders in `oidc-secret.yaml` and `03-auth.yaml`
+
+#### This session — Observability dashboards & monitoring enhancements
+- **Traefik scraping**: Added `traefik` Prometheus scrape job to both mgmt and data-prod clusters (`01-config.yaml`)
+- **ArgoCD metrics**: Enabled metrics in ArgoCD Helm values (`argocd-mgmt-helm.yaml`) with ports 8082/8083/8084; added `argocd-server-metrics`, `argocd-metrics`, and `argocd-repo-server` scrape jobs to mgmt Prometheus
+- **Traefik dashboard**: Added `grafana-traefik-dashboard` ConfigMap (`23-traefik-dashboard.yaml`) — official Grafana dashboard gnetId 17346
+- **ArgoCD dashboard**: Added `grafana-argocd-dashboard` ConfigMap (`24-argocd-dashboard.yaml`) — community dashboard gnetId 14584
+- **Alertmanager**: Set up Alertmanager on data-prod cluster (`13-alertmanager.yaml`) with Slack routing for warning/critical severity
+- **Alerting rules**: Added Traefik (TraefikDown, TraefikHigh5xxRate) and ArgoCD (ArgoCDAppSyncFailed, ArgoCDAppMissing, ArgoCDAppDegraded) alerts to `12-alerts.yaml`
+- **Cleanup**: Removed orphaned `clusters/mgmt/monitoring/values.yaml` (unused kube-prometheus-stack values) and `clusters/data-prod/monitoring-data/manifests/31-ingressclass.yaml` (nginx IngressClass on Traefik cluster)
+- Updated both kustomization files to include new resources
+
+### Pending
+1. **Placeholder secrets**: `REPLACE_WITH_CLOUDFLARE_API_TOKEN` in cert-manager (both clusters), Coder OIDC placeholders
+2. **Alertmanager mgmt**: Add Alertmanager to mgmt cluster for cross-cluster alerting consistency
+3. **Slack webhook**: Replace placeholder slack webhook URL in Alertmanager config with real URL
+4. **Grafana external secrets**: Migrate grafana-password from plaintext to external-secrets/SOPS
+5. **ArgoCD dashboard on mgmt**: Currently only on data-prod Grafana; mgmt has no Grafana at all (uses data-prod Grafana with cross-cluster datasource)

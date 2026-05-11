@@ -1,0 +1,118 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-config
+  namespace: monitoring
+data:
+  alertmanager.yml: |
+    global:
+      resolve_timeout: 5m
+    route:
+      group_by: ['alertname', 'cluster', 'severity']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 4h
+      receiver: 'default'
+      routes:
+      - receiver: 'critical'
+        match:
+          severity: critical
+        repeat_interval: 1h
+      - receiver: 'default'
+        match:
+          severity: warning
+    receivers:
+    - name: 'default'
+      slack_configs:
+      - api_url: 'https://hooks.slack.com/services/T00/XXX/YYY'
+        channel: '#alerts-warning'
+        send_resolved: true
+        title: '[{{ .Status | toUpper }}] {{ .GroupLabels.alertname }}'
+        text: >-
+          {{ range .Alerts }}
+            *Alert:* {{ .Annotations.summary }}
+            *Description:* {{ .Annotations.description }}
+            *Cluster:* {{ .Labels.cluster }}
+            *Severity:* {{ .Labels.severity }}
+            *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:>
+          {{ end }}
+    - name: 'critical'
+      slack_configs:
+      - api_url: 'https://hooks.slack.com/services/T00/XXX/YYY'
+        channel: '#alerts-critical'
+        send_resolved: true
+        title: '[{{ .Status | toUpper }}] {{ .GroupLabels.alertname }}'
+        text: >-
+          {{ range .Alerts }}
+            *Alert:* {{ .Annotations.summary }}
+            *Description:* {{ .Annotations.description }}
+            *Cluster:* {{ .Labels.cluster }}
+            *Severity:* {{ .Labels.severity }}
+            *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:>
+          {{ end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alertmanager
+  namespace: monitoring
+  labels:
+    app: alertmanager
+spec:
+  type: ClusterIP
+  selector:
+    app: alertmanager
+  ports:
+  - port: 9093
+    targetPort: 9093
+    protocol: TCP
+    name: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alertmanager
+  namespace: monitoring
+  labels:
+    app: alertmanager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alertmanager
+  template:
+    metadata:
+      labels:
+        app: alertmanager
+    spec:
+      serviceAccountName: monitoring
+      containers:
+      - name: alertmanager
+        image: prom/alertmanager:v0.27.0
+        imagePullPolicy: IfNotPresent
+        args:
+          - '--config.file=/etc/alertmanager/alertmanager.yml'
+          - '--storage.path=/alertmanager'
+          - '--web.listen-address=:9093'
+          - '--cluster.listen-address='
+        ports:
+        - name: http
+          containerPort: 9093
+        volumeMounts:
+        - name: config
+          mountPath: /etc/alertmanager
+        - name: storage
+          mountPath: /alertmanager
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "50m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+      volumes:
+      - name: config
+        configMap:
+          name: alertmanager-config
+      - name: storage
+        emptyDir: {}

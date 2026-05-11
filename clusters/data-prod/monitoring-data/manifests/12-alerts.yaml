@@ -131,6 +131,52 @@ data:
           summary: "Node {{ $labels.node }} disk space is critical"
           description: "Node {{ $labels.node }} has less than 10% disk space remaining"
 
+    - name: traefik
+      rules:
+      - alert: TraefikDown
+        expr: up{job="traefik"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Traefik is down on {{ $labels.cluster }}"
+          description: "Traefik instance {{ $labels.pod }} on cluster {{ $labels.cluster }} has been down for more than 1 minute"
+      - alert: TraefikHigh5xxRate
+        expr: rate(traefik_service_requests_total{code=~"5.."}[5m]) / rate(traefik_service_requests_total[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High 5xx error rate on Traefik"
+          description: "Traefik 5xx error rate is {{ $value | humanizePercentage }} for the last 5 minutes"
+
+    - name: argocd
+      rules:
+      - alert: ArgoCDAppSyncFailed
+        expr: increase(argocd_app_sync_total{phase=~"Error|Failed"}[5m]) > 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "ArgoCD sync failure"
+          description: "ArgoCD application sync failed in namespace {{ $labels.namespace }}"
+      - alert: ArgoCDAppMissing
+        expr: argocd_app_info{health_status="Missing"} > 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "ArgoCD application is missing"
+          description: "ArgoCD application {{ $labels.name }} is in Missing health status"
+      - alert: ArgoCDAppDegraded
+        expr: argocd_app_info{health_status="Degraded"} > 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "ArgoCD application is degraded"
+          description: "ArgoCD application {{ $labels.name }} in {{ $labels.namespace }} is Degraded"
+
     - name: recording_rules
       rules:
       - record: cluster:node_cpu:sum_rate5m
