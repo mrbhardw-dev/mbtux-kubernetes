@@ -107,6 +107,7 @@ spec:
           - '--config.file=/etc/prometheus/prometheus.yml'
           - '--storage.tsdb.path=/prometheus'
           - '--storage.tsdb.retention.time=15d'
+          - '--storage.tsdb.retention.size=8GB'
           - '--web.console.libraries=/usr/share/prometheus/console_libraries'
           - '--web.console.templates=/usr/share/prometheus/consoles'
           - '--web.enable-lifecycle'
@@ -115,10 +116,10 @@ spec:
           containerPort: 9090
         resources:
           requests:
-            memory: "256Mi"
+            memory: "512Mi"
             cpu: "100m"
           limits:
-            memory: "1Gi"
+            memory: "4Gi"
             cpu: "500m"
         volumeMounts:
         - name: config
@@ -263,6 +264,12 @@ spec:
         - name: dashboards
           mountPath: /var/lib/grafana/dashboards
           readOnly: true
+        - name: traefik-dashboard
+          mountPath: /var/lib/grafana/dashboards/traefik
+          readOnly: true
+        - name: argocd-dashboard
+          mountPath: /var/lib/grafana/dashboards/argocd
+          readOnly: true
         - name: dashboard-provisioning
           mountPath: /etc/grafana/provisioning/dashboards
           readOnly: true
@@ -290,6 +297,12 @@ spec:
       - name: dashboard-provisioning
         configMap:
           name: grafana-dashboard-providers
+      - name: traefik-dashboard
+        configMap:
+          name: grafana-traefik-dashboard
+      - name: argocd-dashboard
+        configMap:
+          name: grafana-argocd-dashboard
 ---
 apiVersion: apps/v1
 kind: Deployment

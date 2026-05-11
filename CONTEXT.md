@@ -181,8 +181,16 @@ Items 1-4 from the previous pending list are now DONE (committed across prior co
 - **Cleanup**: Removed orphaned `clusters/mgmt/monitoring/values.yaml` (unused kube-prometheus-stack values) and `clusters/data-prod/monitoring-data/manifests/31-ingressclass.yaml` (nginx IngressClass on Traefik cluster)
 - Updated both kustomization files to include new resources
 
+#### Live fixes applied (not yet in ArgoCD/git)
+- **Prometheus OOM crash**: Cleaned WAL (201 segments), increased memory 1Gi→4Gi, added `--storage.tsdb.retention.size=8GB` on data-prod
+- **Grafana datasource**: Fixed data-cluster URL from `https://prometheus.data.mbtux.com` → `http://prometheus:9090`
+- **CoreDNS**: Restored missing `prometheus.mgmt.mbtux.com` host entry + local DNS forwarder `192.168.0.10` on data-prod
+- **Mgmt Prometheus TLS/Ingress**: Created missing `prometheus-mgmt-tls` Certificate + IngressRoute on mgmt cluster (were never synced)
+- **Grafana OIDC RBAC**: Fixed role mapping from raw `groups` to JMESPath mapping Authentik groups (Admin/Editor/Viewer)
+- **Grafana dashboards**: Mounted Traefik & ArgoCD dashboard ConfigMaps into Grafana deployment, added providers
+
 ### Pending
-1. **Placeholder secrets**: `REPLACE_WITH_CLOUDFLARE_API_TOKEN` in cert-manager (both clusters), Coder OIDC placeholders
+1. **Placeholder secrets**: `REPLACE_WITH_CLOUDFLARE_API_TOKEN` in cert-manager (both clusters), Coder OIDC placeholders in `oidc-secret.yaml` and `03-auth.yaml`
 2. **Alertmanager mgmt**: Add Alertmanager to mgmt cluster for cross-cluster alerting consistency
 3. **Slack webhook**: Replace placeholder slack webhook URL in Alertmanager config with real URL
 4. **Grafana external secrets**: Migrate grafana-password from plaintext to external-secrets/SOPS

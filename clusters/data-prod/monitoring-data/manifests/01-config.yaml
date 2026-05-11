@@ -17,7 +17,7 @@ data:
     alerting:
       alertmanagers:
         - static_configs:
-            - targets: ['localhost:9093']
+            - targets: ['alertmanager:9093']
           scheme: http
           timeout: 10s
     
@@ -218,5 +218,5 @@ data:
   GF_AUTH_GENERIC_OAUTH_TOKEN_URL: "https://authentik.mbtux.com/application/o/token/"
   GF_AUTH_GENERIC_OAUTH_API_URL: "https://authentik.mbtux.com/application/o/userinfo/"
   GF_AUTH_GENERIC_OAUTH_ALLOW_SIGN_UP: "true"
-  GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH: "groups"
+  GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH: "contains(groups, 'authentik Admins') && 'Admin' || contains(groups, 'authentik Read-only') && 'Viewer' || 'Editor'"
   GF_AUTH_OAUTH2_AUTO_LOGIN: "false"
