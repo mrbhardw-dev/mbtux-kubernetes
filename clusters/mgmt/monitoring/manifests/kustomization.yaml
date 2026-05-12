@@ -9,6 +9,8 @@ resources:
   - 02-secret.yaml
   - 10-monitoring.yaml
   - 11-datasources.yaml
+  - 12-alerts.yaml
+  - 13-alertmanager.yaml
   - 20-traefik-headers.yaml
   - 30-certificate.yaml
   - 31-ingressroute-prometheus.yaml

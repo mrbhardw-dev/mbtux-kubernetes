@@ -13,9 +13,9 @@ This repository contains the complete GitOps configuration for the mbtux platfor
 
 ### Data Cluster - data-prod (192.168.0.211)
 - **Purpose**: Production workload cluster
-- **Services**: authentik, sure, outline, coder, plus supporting infra
+- **Services**: authentik, sure, outline, plus supporting infra
 - **Cloudflare Tunnel**: Routes `*.mbtux.com` domains to data cluster services
-- **DNS**: `authentik.mbtux.com`, `sure.mbtux.com`, `outline.mbtux.com`, `coder.mbtux.com`, etc.
+- **DNS**: `authentik.mbtux.com`, `sure.mbtux.com`, `outline.mbtux.com`
 
 ## Directory Structure
 
@@ -39,7 +39,6 @@ mbtux-kubernetes/
 │       ├── authentik/
 │       ├── sure/
 │       ├── outline/
-│       ├── coder/
 │       ├── traefik/
 │       ├── cloudflared/
 │       ├── cert-manager/
@@ -85,7 +84,7 @@ mbtux-kubernetes/
 | `authentik.mbtux.com` | `clusters/data-prod/authentik/manifests` | data-prod |
 | `sure.mbtux.com` | `clusters/data-prod/sure/manifests` | data-prod |
 | `outline.mbtux.com` | `clusters/data-prod/outline/manifests` | data-prod |
-| `coder.mbtux.com` | `clusters/data-prod/coder/manifests` | data-prod |
+
 | `prod-infra-traefik` | Helm chart `traefik` | data-prod |
 | `prod-infra-traefik-infra` | `clusters/data-prod/traefik` | data-prod |
 | `prod-infra-cert-manager` | Helm chart `cert-manager` | data-prod |
@@ -95,7 +94,7 @@ mbtux-kubernetes/
 - `mgmt-platform` - Platform components (ArgoCD itself)
 - `mgmt-infrastructure` - Mgmt cluster infrastructure
 - `data-prod-infrastructure` - Data cluster infrastructure (traefik, cert-manager, authentik, monitoring)
-- `data-prod-workloads` - Workload applications (sure, outline, coder)
+- `data-prod-workloads` - Workload applications (sure, outline)
 
 ## OIDC SSO
 
@@ -109,7 +108,7 @@ All services use Authentik as their OIDC provider:
 
 Two independent tunnels:
 - **Mgmt cluster tunnel** (`c6a8da22-...`): Routes `argocd-mgmt.mbtux.com`, `traefik-mgmt.mbtux.com`, `prometheus.mgmt.mbtux.com` → mgmt cluster Traefik
-- **Data cluster tunnel** (`ae1dd134-...`): Routes `*.mbtux.com` (authentik, sure, outline, coder) → data cluster Traefik
+- **Data cluster tunnel** (`ae1dd134-...`): Routes `*.mbtux.com` (authentik, sure, outline) → data cluster Traefik
 
 Both tunnels route to their respective cluster's Traefik service at `https://traefik.traefik.svc.cluster.local:443`. Ingress configuration per-host is managed via Traefik IngressRoute CRDs, not in the tunnel config.
 
@@ -166,10 +165,10 @@ Configured in `gitops/mgmt-platform/argocd/argocd-mgmt-helm.yaml` under `server.
 #### Migration to GitOps (aka "all pending items from v1.7.0")
 Items 1-4 from the previous pending list are now DONE (committed across prior commits):
 1. **Observability**: Prometheus + Grafana defined as ArgoCD apps (`gitops/mgmt-infrastructure/monitoring-kustomize.yaml`, `gitops/data-infrastructure/prod-infra-monitoring-kustomize.yaml`) with full manifests in `clusters/*/monitoring*/`
-2. **Missing ArgoCD apps**: cert-manager, cloudflared, monitoring, coder — all have Application manifests in `gitops/`
+2. **Missing ArgoCD apps**: cert-manager, cloudflared, monitoring — all have Application manifests in `gitops/`
 3. **Bootstrap root apps**: 4 root app manifests exist in `gitops/root-app-*.yaml`, bundled via `gitops/kustomization.yaml`
 4. **argocd-management-helm**: Chart v7.5.2, image v3.3.9, `dex.enabled: false`, real OIDC credentials
-5. **Placeholder secrets**: Still pending — `REPLACE_WITH_CLOUDFLARE_API_TOKEN` in cert-manager (both clusters), Coder OIDC placeholders in `oidc-secret.yaml` and `03-auth.yaml`
+5. **Placeholder secrets**: Still pending — `REPLACE_WITH_CLOUDFLARE_API_TOKEN` in cert-manager (both clusters)
 
 #### This session — Observability dashboards & monitoring enhancements
 - **Traefik scraping**: Added `traefik` Prometheus scrape job to both mgmt and data-prod clusters (`01-config.yaml`)
@@ -190,8 +189,8 @@ Items 1-4 from the previous pending list are now DONE (committed across prior co
 - **Grafana dashboards**: Mounted Traefik & ArgoCD dashboard ConfigMaps into Grafana deployment, added providers
 
 ### Pending
-1. **Placeholder secrets**: `REPLACE_WITH_CLOUDFLARE_API_TOKEN` in cert-manager (both clusters), Coder OIDC placeholders in `oidc-secret.yaml` and `03-auth.yaml`
-2. **Alertmanager mgmt**: Add Alertmanager to mgmt cluster for cross-cluster alerting consistency
+1. **Placeholder secrets**: `REPLACE_WITH_CLOUDFLARE_API_TOKEN` in cert-manager (both clusters)
+2. **Alertmanager mgmt**: ✅ Added Alertmanager, alerting rules, and Prometheus alerting config to mgmt cluster
 3. **Slack webhook**: Replace placeholder slack webhook URL in Alertmanager config with real URL
 4. **Grafana external secrets**: Migrate grafana-password from plaintext to external-secrets/SOPS
 5. **ArgoCD dashboard on mgmt**: Currently only on data-prod Grafana; mgmt has no Grafana at all (uses data-prod Grafana with cross-cluster datasource)

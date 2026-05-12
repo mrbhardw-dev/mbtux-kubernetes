@@ -8,7 +8,9 @@ resources:
   - redis.yaml
   - deployment.yaml
   - hpa-server.yaml
+  - hpa-worker.yaml
   - pdb-server.yaml
+  - pdb-worker.yaml
   - outpost-secret.yaml
   - outpost-deployment.yaml
   - ingressroute.yaml
