@@ -82,18 +82,19 @@ mbtux-kubernetes/
 | Application | Source Path | Deploys To |
 |---|---|---|
 | `authentik.mbtux.com` | `clusters/data-prod/authentik/manifests` | data-prod |
-| `sure.mbtux.com` | `clusters/data-prod/sure/manifests` | data-prod |
-| `outline.mbtux.com` | `clusters/data-prod/outline/manifests` | data-prod |
-
 | `prod-infra-traefik` | Helm chart `traefik` | data-prod |
 | `prod-infra-traefik-infra` | `clusters/data-prod/traefik` | data-prod |
 | `prod-infra-cert-manager` | Helm chart `cert-manager` | data-prod |
-| `prod-infra-monitoring` | `clusters/data-prod/monitoring/manifests` | data-prod |
+| `prod-infra-cert-manager-resources` | `clusters/data-prod/cert-manager` | data-prod |
+| `prod-infra-cloudflared` | `clusters/data-prod/cloudflared/manifests` | data-prod |
+| `prod-infra-monitoring` | `clusters/data-prod/monitoring-data/manifests` | data-prod |
+| `outline.mbtux.com` | `clusters/data-prod/outline/manifests` | data-prod |
+| `sure.mbtux.com` | `clusters/data-prod/sure/manifests` | data-prod |
 
 ### AppProjects
 - `mgmt-platform` - Platform components (ArgoCD itself)
 - `mgmt-infrastructure` - Mgmt cluster infrastructure
-- `data-prod-infrastructure` - Data cluster infrastructure (traefik, cert-manager, authentik, monitoring)
+- `data-prod-infrastructure` - Data cluster infrastructure (traefik, cert-manager, cloudflared, authentik, monitoring)
 - `data-prod-workloads` - Workload applications (sure, outline)
 
 ## OIDC SSO
