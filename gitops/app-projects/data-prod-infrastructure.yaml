@@ -16,6 +16,7 @@ spec:
     - https://charts.jetstack.io
     - https://helm.traefik.io/traefik
     - https://charts.goauthentik.io
+    - https://charts.external-secrets.io
   destinations:
     - namespace: '*'
       server: '*'

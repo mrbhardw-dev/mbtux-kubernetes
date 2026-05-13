@@ -6,5 +6,5 @@ namespace: cloudflared
 resources:
   - namespace.yaml
   - configmap.yaml
-  - secret.yaml
+  - 30-external-secrets.yaml
   - deployment.yaml

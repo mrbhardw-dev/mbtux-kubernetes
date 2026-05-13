@@ -133,13 +133,13 @@ spec:
               key: REDIS_URL
         - name: SECRET_KEY
           valueFrom:
-            configMapKeyRef:
-              name: outline-config
+            secretKeyRef:
+              name: outline-secrets
               key: SECRET_KEY
         - name: UTILS_SECRET
           valueFrom:
-            configMapKeyRef:
-              name: outline-config
+            secretKeyRef:
+              name: outline-secrets
               key: UTILS_SECRET
         - name: PGSSLMODE
           valueFrom:

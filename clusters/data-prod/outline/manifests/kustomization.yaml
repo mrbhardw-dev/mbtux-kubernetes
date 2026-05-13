@@ -6,9 +6,8 @@ namespace: outline
 resources:
   - 00-namespace.yaml
   - 01-config.yaml
-  - 02-secret.yaml
+  - 30-external-secrets.yaml
   - 03-auth.yaml
-  - oidc-secret.yaml
   - 10-postgres.yaml
   - 11-redis.yaml
   - certificate.yaml
