@@ -18,7 +18,7 @@ spec:
     targetRevision: main
     path: clusters/data-prod/cert-manager
     directory:
-      include: cluster-issuer.yaml
+      include: "{cluster-issuer.yaml,30-external-secrets.yaml}"
 
   destination:
     server: https://192.168.0.211:6443
