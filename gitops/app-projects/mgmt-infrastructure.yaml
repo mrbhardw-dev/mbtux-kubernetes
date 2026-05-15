@@ -12,7 +12,6 @@ spec:
 
   sourceRepos:
     - https://charts.jetstack.io
-    - https://helm.traefik.io/traefik
     - https://github.com/mrbhardw-dev/mbtux-kubernetes.git
 
   destinations:
@@ -23,8 +22,6 @@ spec:
     - namespace: cloudflared
       server: https://kubernetes.default.svc
     - namespace: monitoring
-      server: https://kubernetes.default.svc
-    - namespace: traefik
       server: https://kubernetes.default.svc
     - namespace: "*"
       server: https://kubernetes.default.svc

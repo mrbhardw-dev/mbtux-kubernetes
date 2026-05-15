@@ -131,25 +131,6 @@ data:
           summary: "Node {{ $labels.node }} disk space is critical"
           description: "Node {{ $labels.node }} has less than 10% disk space remaining"
 
-    - name: traefik
-      rules:
-      - alert: TraefikDown
-        expr: up{job="traefik"} == 0
-        for: 1m
-        labels:
-          severity: critical
-        annotations:
-          summary: "Traefik is down on {{ $labels.cluster }}"
-          description: "Traefik instance {{ $labels.pod }} on cluster {{ $labels.cluster }} has been down for more than 1 minute"
-      - alert: TraefikHigh5xxRate
-        expr: rate(traefik_service_requests_total{code=~"5.."}[5m]) / rate(traefik_service_requests_total[5m]) > 0.05
-        for: 5m
-        labels:
-          severity: warning
-        annotations:
-          summary: "High 5xx error rate on Traefik"
-          description: "Traefik 5xx error rate is {{ $value | humanizePercentage }} for the last 5 minutes"
-
     - name: argocd
       rules:
       - alert: ArgoCDAppSyncFailed

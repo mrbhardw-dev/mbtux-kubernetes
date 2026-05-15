@@ -8,5 +8,5 @@ resources:
   - namespace.yaml
   - certificate.yaml
   - oidc-secret.yaml
-  - ingressroute.yaml
+  - ingress.yaml
   - networkpolicy.yaml

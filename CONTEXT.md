@@ -6,10 +6,10 @@ This repository contains the complete GitOps configuration for the mbtux platfor
 ## Cluster Architecture
 
 ### Management Cluster (192.168.0.201)
-- **Purpose**: Runs ArgoCD, Traefik, cert-manager, Cloudflare tunnel, monitoring
+- **Purpose**: Runs ArgoCD, cert-manager, Cloudflare tunnel, monitoring
 - **ArgoCD**: Manages applications across all clusters via registered cluster secrets
 - **Cloudflare Tunnel**: Routes `*.mgmt.mbtux.com` domains to mgmt cluster services
-- **DNS**: `argocd-mgmt.mbtux.com`, `traefik-mgmt.mbtux.com`, `prometheus.mgmt.mbtux.com`
+- **DNS**: `argocd-mgmt.mbtux.com`, `prometheus.mgmt.mbtux.com`
 
 ### Data Cluster - data-prod (192.168.0.211)
 - **Purpose**: Production workload cluster
@@ -31,7 +31,6 @@ mbtux-kubernetes/
 │   │   ├── argocd/                    # ArgoCD infra (cert, ingress, oidc secret, network policy)
 │   │   ├── cert-manager/              # ClusterIssuer, API token
 │   │   ├── cloudflared/               # Cloudflare tunnel for mgmt cluster
-│   │   ├── traefik/                   # Traefik Helm values + dashboard
 │   │   ├── monitoring/                # Monitoring for mgmt cluster
 │   │   └── clusters/                  # Cluster registration for ArgoCD multi-cluster
 │   │
@@ -71,8 +70,6 @@ mbtux-kubernetes/
 |---|---|---|
 | `argocd-management-helm` | Helm chart `argo-cd` | mgmt cluster (self-manage) |
 | `mgmt-platform-infra` | `clusters/mgmt/argocd` | mgmt cluster |
-| `traefik-management-helm` | Helm chart `traefik` | mgmt cluster |
-| `traefik-mgmt.mbtux.com` | `clusters/mgmt/traefik` | mgmt cluster |
 | `mgmt-infrastructure-cert-manager` | Helm chart `cert-manager` | mgmt cluster |
 | `mgmt-infrastructure-cert-manager-resources` | `clusters/mgmt/cert-manager` | mgmt cluster |
 | `mgmt-infrastructure-cloudflared` | `clusters/mgmt/cloudflared/manifests` | mgmt cluster |
@@ -108,10 +105,10 @@ All services use Authentik as their OIDC provider:
 ## Cloudflare Tunnels
 
 Two independent tunnels:
-- **Mgmt cluster tunnel** (`c6a8da22-...`): Routes `argocd-mgmt.mbtux.com`, `traefik-mgmt.mbtux.com`, `prometheus.mgmt.mbtux.com` → mgmt cluster Traefik
+- **Mgmt cluster tunnel** (`c6a8da22-...`): Routes `argocd-mgmt.mbtux.com`, `prometheus.mgmt.mbtux.com` → mgmt cluster services (via cloudflared, no Traefik)
 - **Data cluster tunnel** (`ae1dd134-...`): Routes `*.mbtux.com` (authentik, sure, outline) → data cluster Traefik
 
-Both tunnels route to their respective cluster's Traefik service at `https://traefik.traefik.svc.cluster.local:443`. Ingress configuration per-host is managed via Traefik IngressRoute CRDs, not in the tunnel config.
+The mgmt cluster tunnel routes traffic directly to services via cloudflared (no ingress controller needed on a single-node cluster). The data cluster tunnel routes to its Traefik service at `https://traefik.traefik.svc.cluster.local:443`.
 
 ## TLS Certificates
 

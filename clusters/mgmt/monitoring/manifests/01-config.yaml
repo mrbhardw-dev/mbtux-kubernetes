@@ -162,36 +162,6 @@ data:
             replacement: 'node-exporter'
             target_label: job
        
-      - job_name: 'traefik'
-        kubernetes_sd_configs:
-          - role: pod
-        relabel_configs:
-          - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_name]
-            action: keep
-            regex: traefik
-          - source_labels: [__meta_kubernetes_pod_container_port_number]
-            action: keep
-            regex: "9000"
-          - action: replace
-            source_labels: [__meta_kubernetes_pod_ip]
-            target_label: __address__
-          - source_labels: [__address__]
-            regex: (.+):\d+
-            replacement: $1:9000
-            target_label: __address__
-          - source_labels: [__meta_kubernetes_pod_name]
-            target_label: pod
-          - source_labels: [__meta_kubernetes_pod_namespace]
-            target_label: namespace
-          - source_labels: [__meta_kubernetes_pod_node_name]
-            target_label: node
-          - action: replace
-            replacement: 'mgmt-cluster'
-            target_label: cluster
-          - action: replace
-            replacement: 'traefik'
-            target_label: job
-     
       - job_name: 'argocd-server-metrics'
         kubernetes_sd_configs:
           - role: pod
